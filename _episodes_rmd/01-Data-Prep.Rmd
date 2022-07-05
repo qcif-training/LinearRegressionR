@@ -3,11 +3,11 @@ title: "Data Preperation"
 teaching: 45
 exercises: 10
 questions:
-- What data will we be using?
-- How do I load the data?
+- "What data will we be using?"
+- "How do I load the data?"
 objectives:
-- Introduction to RStudio
-- Loading the data
+- "Introduction to RStudio"
+- "Loading the data"
 keypoints:
 - 
 output: html_document
@@ -129,7 +129,7 @@ setwd("C:\Users\YourUserName\Downloads") # for Windows
 First, import the data into our R environment as a data frame and display its dimensions.
 
 ```{r}
-data <- read.csv("data.csv",sep=",", header=TRUE)
+data <- read.csv("data/data.csv",sep=",", header=TRUE)
 
 dim(data)
 ```

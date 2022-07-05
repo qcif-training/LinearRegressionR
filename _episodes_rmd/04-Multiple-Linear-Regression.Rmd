@@ -1,0 +1,598 @@
+---
+title: "Multiple Linear Regression"
+teaching: 45
+exercises: 10
+questions:
+- What is multiple linear regression?
+- What are the additional assumptions we need to meet to use multiple linear regression?
+- How do I perform multiple linear regression in R?
+- How do I ensure that my data meets the model assumptions?
+objectives:
+- Extend our theory of simple linear regression to multiple linear regression.
+- Use multiple linear regression on our dataset.
+- Check the model diagnostics to ensure the data meets the assumptions of multiple linear regression.
+keypoints:
+- 
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo=FALSE}
+data <- read.csv("data.csv",sep=",", header=TRUE, stringsAsFactors = TRUE)
+data$ID <-as.factor(data$ID)
+data$sex <- factor(data$sex,levels=c(0,1), labels = c( "Female","Male"))
+data$fbs <- factor(data$fbs,levels=c(0,1), labels = c("<120", ">120"))
+data$restecg <- factor(data$restecg,levels=c(0,1,2), labels = c("Normal", "ST Abnormality", "LVH"))
+data$exang <- factor(data$exang,levels=c(0,1), labels = c("No", "Yes"))
+data$slope <- factor(data$slope,levels=c(1,2,3), labels = c("Up-sloping", "Flat", "Down-sloping"))
+data$cp <- factor(data$cp,levels=c(1,2,3,4), labels = c( "Typical angina","A-typical angina", "Non-Anginal pain", "Asymptomatic"))
+data$class <- as.factor(data$class)
+levels(data$class)[which(levels(data$class)=="0")] <- "No Disease"
+levels(data$class)[which(levels(data$class)%in%c("1","2","3","4"))] <- "Disease"
+```
+
+In simple linear regression, we want to test the effect of one independent variable on one dependent variable.
+Multiple linear regression is an extension of simple linear regression and allows for multiple independent variables to predict the dependent variable.
+
+Our simple linear regression model of cigarettes and coronary heart disease gave us that 50% of the variance in CHD could be explained by cigarette smoking.
+What about the other 50%? Maybe exercise or cholesterol?
+
+As an extension of simple linear regression, the multiple linear regression model is very similar.
+If we have $p$ independent variables, then our model is
+
+\[ Y = a + b_1 X_1 + b_2 X_2 + \cdots + b_p X_p + e, \]
+
+where 
+
+* $Y$ is the dependent or outcome variable
+* $a$ is again the estimated Y-intercept
+* $X_i$ is the value of the $i$-th independent variable
+* $b_i$ is the estimated regression coefficient (effect size) of the $i$-th independent variable
+* $e$ is the residual term.
+
+Here, $Y$ is a continuous variable and the independent variables $X_i$ are either continuous or a binary value.
+
+Each regression coefficient is the amount of change in the outcome variable that would be expected per one-unit change of the predictor, if all other variables in the model were held constant	
+
+Multivariable analysis can be used to control for confounder effects (e.g. to adjust for age), to test for interactions between predictors and to improve prediction.
+
+## Model Assumptions
+
+Along with a few familiar assumptions from multiple regression (normality of residuals, homoscedasticity of residuals, outliers), there are a number of new assumptions to account for multiple independent variables.
+
+### Sample Size
+
+The sample size should be at least 10 or 20 times the number of independent variables (n>>p) otherwise the estimates of the regression are unstable.
+
+### Multicollinearity
+
+If two (independent) variables are closely related it is difficult to estimate their regression coefficients because they will both have a similar effect on the outcome.
+This difficulty is called collinearity.
+The solution to this problem is to exclude one of the highly correlated variables.
+
+### Overfitting
+
+Related to our sample size assumption, in multivariable modeling, you can get highly significant but meaningless results if you put too many predictors in the model compared to the number of samples.
+This is known as overfitting, where the model is fit perfectly to the quirks of your particular sample, but has no predictive ability in a new sample.
+A common approach that controls over fitting by keeping the number of predictors to a minimum is step-wise multiple regression:
+
+We start with the one predictor that explains the most predicted variance (i.e. has the highest correlation coefficient with the outcome). Next, the most statistically significant predictors is to the model. The process is repeated until no remaining predictor has a statistically significant correlation with the outcome.
+
+Similarly to simple linear regression, the coefficient of determination ($R^2$) indicates the percent of variance in the dependant variable explained by combined effects of the independent variables.
+The adjusted $R^2$ is used for estimating explained variance in a population (not just the sample) when the sample size is small.
+
+### Outliers
+
+Outliers are observations with extreme values that differ greatly from the rest of your sample.
+
+Even a few outliers can dramatically change estimates of the slope, $b$.
+
+The figure below shows an example dataset with an outlier.
+
+![RStudio layout](fig/03-outlierwith.png)
+
+After removing the outlier from the sample, the regression line better fits the rest of the data.
+
+![RStudio layout](fig/03-outlierwithout.png)
+
+Outliers can result from:
+
+* Errors in coding or data entry (rectify the observation)
+* Impossible values in real life (remove the observation)
+* Or, sometimes they reflect important “real” variation (include - run the analysis both with and without the observation)
+
+If you see no reason why your outliers are erroneous measurements, then there is no truly objective way to remove them.
+
+## Example - Does ignoring problems and not worrying predict psychological distress?
+
+*Neill (2001)*
+
+Here, we will look into an example in the literature, where two predictor variables: "ignoring problems" and "not worrying" were used in a multiple linear regression model to predict psychological distress. The study design is:
+
+* $n = 224$ participants (Australian adolescent population)
+* $Y$: Measure of psychological distress (low scores indicated a high level of psychological distress)
+* $X_1$: Not Worrying (score based on items)
+* $X_2$: Ignoring problems (score based on items)
+
+Our model is
+
+\[ \text{PsychDistress} = a + b_1 \times (\text{NotWorrying}) + b_2 \times (\text{IgnoringProblems}). \]
+
+### Correlations
+
+The figure below shows the correlations between the three variables being assessed.
+We can see that the correlation between the independent variables is low (0.352), suggesting that multicollinearity may not be present in this data set.
+The correlations between the independent and dependent variables are negative (-0.521 and -0.325).
+
+![RStudio layout](fig/04-correlations.png)
+
+### Model Summary and Coefficients
+
+The figure below shows the $R$, $R^2$ and Adjusted $R^2$ values after fitting the model.
+We have $R^2 = 0.295$, which indicates that, under our model, approximately $30\%$ of the variance in psychological distress can be attributed to the combined effects of ignoring the problem and not worrying.
+
+![RStudio layout](fig/04-model-summary.png)
+
+The estimated coefficients of the model is shown in the figure below.
+
+![RStudio layout](fig/04-coefficients.png)
+
+On the right hand side of the table we can see the p-value of each estimate
+
+For each estimated effect, we wish to ask: Is there a linear relationship between each variable $X_i$ and $Y$?
+The hypotheses for these tests are:
+
+* $H_0$: $b_i = 0$ (no linear relationship)
+* $H_1$: $b_i \neq 0$ (linear relationship between $X_i$ and $Y$)
+
+We can see from the coefficients table that all estimates are highly significant.
+
+The unstandardised coefficients give us our values of $a = 138.93$, $b_1 = -11.51$ and $b_2 = -4.74$, and so our model is
+
+\[ \text{PsychDistress} = 138.93 - 11.51 \times (\text{NotWorrying}) - 4.74 \times (\text{IgnoringProblems}). \]
+
+We can make some interpretations of the model using these estimates:
+
+* When the score of not worrying and ignoring problems are both zero, then the psychological distress score is 138.93.
+* When the score of ignoring problems is held constant, each unit increase in the score of not worrying decreases the psychological distress score by $11.51$ units.
+* When the score of not worring is held constant, each unit increase in the score of ignoring problems decreases the psychological distress score by $4.71$ units.
+
+The standardised coefficients (Beta) are calculated using the unstandardised coefficients and their respective standard error.
+These values allow us to compare the relative effect size of the predictor variables; here, we see that not worrying has a relatively larger (negative) effect size.
+
+The figure below gives 95% confidence intervals for the intercept term and the standardised coefficients.
+We can interpret these intervals as: we can be 95% confident that the interval captures the true value of the estimate.
+
+![RStudio layout](fig/04-coefficients-ci.png)
+
+
+## Non-linear Models
+
+Linear Regression fits a straight line to your data, but in some cases a non-linear model may be more appropriate, such as logistic or cox regression.
+Non-linear models are usually used when non-linear relationships have some biological explanation.
+
+### Examples of Non-linear Models
+
+Examples of different multivariate regression models are shown in the table below.
+
+![RStudio layout](fig/04-examples.png)
+
+## Summary
+
+In summary, choose simple linear regression when you are predicting a continuous variable with one predictor variable, and choose multiple linear regression when predicting with more than one predictor variable.
+
+![RStudio layout](fig/04-flowchart.png)
+
+## Exercise 1 - Identify potential predictors of Systolic Blood Pressure
+
+### Step 1: Checking for correlations
+
+First, we will check for correlations between our variables of interest.
+
+```{r}
+n = c("trestbps","age","chol", "thalach")
+round(cor(data[,n],method="spearman",use="pairwise.complete.obs"),2)
+```
+
+Here we observe that age and cholestoral have the highest correlations with SBP, and there are no high correlations within the predictor variables.
+
+### Step 2: Identifying potential predictors
+
+Next, we will identify potential predictors of SBP in univariable linear regressions (i.e, SBP vs. each predictor). We can check this manually one-by-one, or in a loop.
+
+We can manually fit a simple linear regression model for each predictor variable, with SBP as the dependent variable, and check the significance of the relationship to determine if the predictor variable should be included in the multivariable model.
+The example below does so for the age variable.
+
+```{r}
+i="age"
+anova(lm(data$trestbps~data[,i]))
+summary(lm(data$trestbps~data[,i]))
+```
+
+A more advanced and efficient method would be to perform these checks in a loop.
+
+```{r}
+result_LM<-c()
+N = c(2:6)
+for(i in N){
+  res = lm(data$trestbps~data[,i])
+  result_LM[i] = anova(res)$`Pr(>F)`[1]
+}
+signfic_res_or_close = colnames(data)[which(result_LM<0.2)]
+
+
+print(signfic_res_or_close)
+```
+
+Next, we will create a new dataset containing the predictors of interest along with the SBP and ID data using the `signfic_res_or_close` vector we just created.
+
+```{r}
+newdataset<-data[,c("ID", "trestbps",signfic_res_or_close)] # create a new dataset only containing the data we will use in the model
+rownames(newdataset)<-newdataset$ID # set the row names to be the ID of the observations
+newdataset<-newdataset[,-1] # remove the ID column from the data
+```
+
+### Step 3: Fitting the model
+
+Now we will fit the multiple linear regression model on the data of interest, using the same `lm` function from simple linear regression, and print the summary of the model.
+
+```{r}
+result<-lm(trestbps~.,data=newdataset)
+anova(result)
+summary(result)
+```
+
+The adjusted $R^2$ is approximately $0.13$, indicating that 13% of the variability in SBP is explained by the combination of all the independent variables included in the model.
+However, we can see that sex and cholestoral are not significant.
+We will use step-wise elimination to obtain a better model by removing a variable one-by-one.
+
+One option is using the Akaike information criterion (AIC) to determine which model is best for the dataset. We can use `step` to do so.
+
+```{r}
+step(result,direction="backward") #Base R
+```
+
+Alternatively, we can use the `MASS` library's `stepAIC` function.
+
+```{r}
+library(MASS)
+stepAIC(result, direction="backward") #library MASS
+```
+
+In both functions, the call of the final model is outputted. Let's have a look at the summary.
+
+```{r}
+finalmodel<-lm(trestbps~age+fbs, data = newdataset)
+summary(finalmodel)
+```
+
+Now, with all estimates significant, we can make some interpretations:
+
+* SBP increases by 0.52 units for every unit increase of age when all other variables in the model are kept constant.
+* SBP is estimated to be 9.90 units higher for participants with fbs > 120 than those with fbs < 120 when all other variables in the model are kept constant.
+
+However, we still need to check the assumptions of a multiple linear regression model are met before using the model.
+
+### Step 4: Checking the assumptions
+
+```{r}
+par(mfrow=c(2,2))
+plot(finalmodel)
+```
+
+Here, we observe that the variance of the residuals seems constant and the distribution of the residuals appears to be normal.
+To measure multicolinearity, we can use the `vif` function from the `cars` package.
+VIF measures how much the variance of any one of the coefficients is inflated due to multicollinearity in the overall model.
+As a rule of thumb, any value above 5 is a cause for concern.
+
+```{r}
+library(car)
+car::vif(finalmodel)
+```
+
+There appears to be no evidence of colinearity, and so we can conclude that the assumptions of the model are met.
+
+### Another approach - a priori selection of variables.
+
+An alternative approach is to simply include all variables determined to be important.
+
+First, we select all variables of interest and fit the model.
+
+```{r}
+Select<-c("ID","age","sex","chol","trestbps","fbs","thalach")
+
+select_data<-data[,Select]
+rownames(select_data)<-select_data$ID
+select_data<-select_data[,-1]
+
+result2<-lm(trestbps~.,data=select_data) # . means add all variables except for the specified dependent variable
+anova(result2)
+summary(result2)
+```
+
+The interpretation of the model estimates are:
+
+* SBP level equals 104.9 mmHg when all the other variables in the model equal zero (note: this doesn't make sense in real life given the nature of the variables)
+* SBP increases by 0.41 units for each unit increase of age
+* SBP level is 9.6 units higher in patients with fbs greater than 120 as compared to those with fbs less than 120 units.
+
+As always, we must check the assumptions of the model.
+First, we look at multicolinearity.
+
+```{r}
+library(car)
+car::vif(result2)
+```
+
+As there are no values above 5, there appears to be no evidence of multicolinearity.
+
+Next, we check the other assumptions.
+
+```{r}
+par(mfrow=c(2,2))
+plot(result2)
+```
+
+The variance of the residuals appears constant and the distribution of the residuals appear normal.
+However, despite adding more variables, this model explains 12% variability ($R^2 = 0.117$) in the outcome as compared to 13% from the other model.
+Some variables that had significant effect in the other model are now insignificant (age, sex), which limits the interpretability of the model.
+
+A more robust approach, such as stepwise or lasso regression, could be used to select the final model.
+
+## Exercise 2 - Identifying potential predictors of plasma beta-carotene level
+
+Data not published yet but a related reference is:
+*Nierenberg DW, Stukel TA, Baron JA, Dain BJ, Greenberg ER. Determinants of plasma levels of beta-carotene and retinol. American Journal of Epidemiology 1989;130:511-521*
+
+For this exercise, we will use multiple linear regression to identify determinants of plasma beta-carotene levels.
+The data we will use is from a cross-sectional study investigating the relationship between personal characteristics and dietary factors, and plasma concentrations of beta-carotene.
+This study observed $n = 315$ patients who had a surgical procedure to remove a non-cancerous lesion of the lung, colon, breast, skin, ovary or uterus.  
+
+Variable    | Description
+--------    | ------------
+age         | Age (years)
+sex         | Sex (1 = male, 2 = female)
+smokstat    | Smoking status (1 = Never, 2 = Former, 3 = Current Smoker)
+quetelet    | Quetelet ($\text{weight} / \text{height}^2$)
+vituse      | Vitamin use (1 = Yes, fairly often, 2 = Yes, not often, 3 = No)
+calories    | Number of calories consumed per day
+fat         | Grams of fat consumed per day
+fiber       | Grams of fiber consumed per day
+alcohol     | Number of alcoholic drinks consumed per week
+cholesterol | Cholestoral consumed (mg per day)
+betadiet    | Dietary beta-carotene consumed (mcg per day)
+retdiet     | Dietary retinol consumed (mcg per day)
+betaplasma  | Plasma beta-carotene ($\text{ng}/\text{ml}$)
+retplasma   | Plasma retinol ($\text{ng}/\text{ml}$)
+
+### Importing and cleaning the data
+
+First, we will import the data and use the `str` function to check its coding.
+
+```{r}
+plasma <- read.csv("Plasma.csv",sep=",", header=TRUE, stringsAsFactors = TRUE)
+str(plasma)
+```
+
+As with our systolic blood pressure example, we have categorical variables being coded as numerical values, and so we will change them to factors.
+
+```{r}
+plasma$Patient.ID <- as.factor(plasma$Patient.ID)
+plasma$sex <- as.factor(plasma$sex)
+plasma$smokstat <- as.factor(plasma$smokstat)
+plasma$vituse <- as.factor(plasma$vituse)
+```
+
+To aid in interpreting the model, we will change the levels of the factors, where appropriate.
+
+```{r}
+levels(plasma$sex)<-c("Male","Female")
+levels(plasma$smokstat)<-c("Never","Former","Current")
+levels(plasma$vituse)<-c("Often","notoften","No")
+```
+
+Now we can view a summary of the data with the correct variable types.
+
+```{r}
+summary(plasma)
+```
+
+Let's view a histogram of the plasma beta-carotene variable.
+
+```{r}
+hist(plasma$betaplasma)
+```
+
+This doesn't appear to be normally distributed, which may affect the performance of our model.
+We can check this using the Shapiro-Wilk normality test.
+
+```{r}
+shapiro.test(plasma$betaplasma)
+```
+
+This tiny p-value suggests it is incredibly unlikely that the data is normally distributed.
+However, the data is right-skewed, as shown below, which could mean that the data is log-normally distributed.
+
+![RStudio layout](fig/04-rightskew.png)
+
+Under this distribution, the logarithm of the data is normally distributed.
+
+Other transformations include:
+
+* When the data are counts, perform a square-root transformation:
+
+\[ x_{\text{trans}} = \sqrt{x + 1/2}. \]
+
+* When data are proportions, perform an arcsine transformation
+
+\[ x_{\text{trans}} = \arcsin(\sqrt{x}). \]
+
+* When frequency distribution of data is left-skewed, perform a square transformation:
+
+\[ x_{\text{trans}} = x^2. \]
+
+Using the `log` function, we will create a new variable for plasma beta-carotene with a log-transformation applied and plot a histogram for this new variable.
+
+```{r}
+plasma$logbetaplasma <- log(plasma$betaplasma + 1)
+hist(plasma$logbetaplasma)
+```
+
+### Checking for correlations
+
+Next, we will check for correlations between beta-carotene and the potential independent variables.
+
+```{r}
+n <- as.vector(which(sapply(plasma,is.numeric)))
+cor(plasma$betaplasma, plasma[,n], method="spearman", use="pairwise.complete.obs")
+```
+
+Here, we observe quetelet (-), cholesterol (-), betadiet (+) and fiber (+) have the highest correlations with betaplasma.
+
+### Regression with untransformed beta-carotene
+
+As in our previous example, we will identify potential predictors of beta-carotene in univariate linear regression.
+As we are now R experts, we will do so using the advanced option!
+
+```{r}
+result_LM <- c()
+N <- c(2:13)
+for(i in N){
+  res <- lm(plasma$betaplasma~plasma[,i])
+  result_LM[i] <- anova(res)$`Pr(>F)`[1]
+}
+signfic_res_or_close <- colnames(plasma)[which(result_LM < 0.2)]
+
+print(signfic_res_or_close)
+```
+
+### Fitting the model
+
+Now that we have the predictor variables of interest, we can fit our initial model.
+
+```{r}
+signif <- c("Patient.ID","age","sex","smokstat","quetelet","vituse","fat","fiber","cholesterol","betadiet")
+
+newdataset <- plasma[ , c(signif,"betaplasma")]
+rownames(newdataset) <- newdataset$Patient.ID
+newdataset <- newdataset[,-1]
+
+#Conduct multiple linear regression on initially selected variables 
+initial_result <- lm(betaplasma~.,data=newdataset)
+summary(initial_result)
+```
+
+We can see that there are many insignificant predictor variables.
+To find a better model, we will use backward elimination.
+
+```{r}
+step(initial_result, direction="backward")
+```
+
+So, our final model uses quetelet, vitamin use, fiber, cholesterol and dietary beta-carotene as the predictor variables.
+
+```{r}
+finalmodel_raw <- lm(formula = betaplasma ~ quetelet + vituse + fiber + cholesterol + betadiet, data = newdataset)
+summary(finalmodel_raw)
+```
+
+Finally, as always, we will check if the model meets the assumptions of multiple linear regression.
+
+```{r}
+par(mfrow=c(2,2))
+plot(finalmodel_raw)
+```
+
+Here, we observe non-constant residual variance and deviation of residuals from normality.
+Let's refit a model using the log-transformed plasma beta-carotene.
+
+First, we obtain the significant variables from running seperate univariate linear regression models on each candidate predictor variable.
+
+```{r}
+result_LM <- c()
+N <- c(2:13)
+for(i in N){
+  res <- lm(plasma$logbetaplasma~plasma[,i])
+  result_LM[i] <- anova(res)$`Pr(>F)`[1]
+}
+signfic_res_or_close <- colnames(data)[which(result_LM < 0.2)]
+```
+
+Next, we fit an initial model using the significant variables and then perform backwards elimination to obtain the final model
+
+```{r}
+signif <- c("Patient.ID","age","sex","quetelet","vituse","smokstat","fat","fiber","cholesterol","betadiet")
+
+newdataset <- plasma[ , c(signif,"logbetaplasma")]
+rownames(newdataset) <- newdataset$Patient.ID
+newdataset <- newdataset[,-1]
+
+#Conduct multiple linear regression on initially selected variables 
+initial_result <- lm(logbetaplasma~.,data=newdataset)
+summary(initial_result)
+
+#Backward Elimination
+step(initial_result,direction="backward")
+```
+
+Notice that our final model using the log-transformation includes a different set of variables than the model with no transformation.
+
+```{r}
+finalmodel<-lm(formula = logbetaplasma ~ age + quetelet + vituse + smokstat + 
+                 fiber + cholesterol + betadiet, data = newdataset)
+summary(finalmodel)
+```
+
+From reading the summary, we can see:
+
+* logbetaplasma decreases by 0.03 units for every unit increase of quetelet
+* logbetaplasma decreases by 0.26 units for patients not using vitamins as opposed to using them often
+* logbetaplasma decreases by 0.26 units for smokers versus non-smoker
+
+Let's take a look at our diagnostic plots.
+
+```{r}
+par(mfrow=c(2,2))
+plot(finalmodel)
+```
+
+The residuals look much better with the transformation, however, observation 257 appears to be an outlier.
+Let's look at the data to see if there's anything strange.
+
+```{r}
+plasma[257,]
+```
+
+This observation has a plasma-beta level of 0, which is not possible in real life.
+So, we should remove this observation and refit the data.
+
+```{r}
+data <- na.omit(plasma)
+n <- which(data$Patient.ID=="257")
+data <- data[-n,]
+data$logbetaplasma <- log(data$betaplasma) # don't need +1 anymore as the 0 value has been removed
+
+finalmodel <- lm(formula = logbetaplasma ~ age + quetelet + vituse + smokstat + 
+                 fiber + cholesterol + betadiet, data = data)
+summary(finalmodel)
+```
+
+```{r}
+step(finalmodel,direction="backward")
+```
+
+```{r}
+res <- lm(formula = logbetaplasma ~ age + quetelet + vituse + smokstat + 
+          fiber + cholesterol + betadiet, data = data)
+summary(res)
+```
+
+Finally, checking the model plot diagnostics, we see that this model does not appear to violate any assumptions of multiple linear regression.
+
+```{r}
+par(mfrow=c(2,2))
+plot(res)
+```

@@ -1,0 +1,187 @@
+---
+title: "Data Preperation"
+teaching: 45
+exercises: 10
+questions:
+- What data will we be using?
+- How do I load the data?
+objectives:
+- Introduction to RStudio
+- Loading the data
+keypoints:
+- 
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction to RStudio
+
+We will be using RStudio throughout this workshop and so the first prerequisite is installing [R](https://www.r-project.org/) and [RStudio](https://www.rstudio.com/products/rstudio/).
+Upon installing and opening RStudio, you will be greeted by three panels:
+
+* The interactive R console/Terminal (entire left)
+* Environment/History/Connections (tabbed in upper right)
+* Files/Plots/Packages/Help/Viewer (tabbed in lower right)
+
+![RStudio Layout](fig/01-noscript.png)
+
+Opening a text file (such as an R or Rmd file) in RStudio will open the file in a new panel in the top left.
+
+![RStudio Layout](fig/01-script.png)
+
+There are two main ways that you can run R commands or scripts within RStudio:
+
+1. The interactive R console
+  * This works well when running individual lines to test code and when starting your analysis
+  * It can become laborious and inefficient and is not suitable when running many commands at once.
+2. Writing in a .R file
+  * All of your code is saved for editing and later use
+  * You can run as many lines as you wish at once
+  
+The hash symbol (#) can be used to signal text in our script file that should not be run, which are called comments.
+An example of using comments to describe code is shown below.
+
+```{r, eval=FALSE}
+# Chunk of code that will add two numbers together
+
+1 + 2 # Adds one and two together
+```
+
+
+> ## Tip: Running segments of code
+>
+> There are a few ways you can run lines of code from a .R file.
+> If you want to run a single line, place your cursor at the end of the line, or if you want to run multiple lines, select the lines you would like to run.
+> We have a few options for running the code:
+>
+> * click on the Run button above the editor panel, or
+> * hit Ctrl+Return on Windows or Linux or ⌘+Return on OS X
+> 
+> If you edit a segment of code after running it and want to quickly re-run the segment, you can press the button to the right of the Run button above the editor panel to re-run the previous code region.
+{: .callout}
+
+> ## Tip: Getting help in R
+>
+> For help with any function in R, put a question mark before the function name to determine what arguments to use, examples and other background information. 
+For example, running `? hist` will you a description for base R's function to generate a histogram.
+>
+> If you don't know the name of the function you want, you can use two question marks (??) to search for functions relating to a keyword (e.g. `?? histogram`)
+> 
+{: .callout}
+
+# Workshop Data files
+
+Prior to the workshop, you must download the example data files and test importing them into R. To do this:
+
+1) Download the data sets from [here](http://fillthisin.com)
+
+2) Save the downloaded zip file to Downloads, Desktop or another convenient location on your computer and double click the zip file to expand it.
+This will create a directory called "data".
+
+3) Open Rstudio and set your working directory to **the same location where you saved the downloaded file** - not the data directory itself.
+The easiest way to do this is click on the Files tab (normally in the bottom right pane) and navigate to the folder that way, then use the function “Set as working directory” from the More (cog icon) menu just at the top of the file pane.
+
+4) Read in the workshop data by typing the command `data <- read.csv("data/data.csv",sep=",", header=TRUE, stringsAsFactors = TRUE)` in the RStudio console pane (usually bottom left).
+This should complete without any warnings. If you get a message starting `Error in file(file, "rt") : cannot open the connection`, you have not set your working directory to the correct location - recheck where you saved and extracted the workshop data directory and repeat step 3.
+
+# First Example - Data Dictionary
+
+Today, we will be working on two data sets throughout the day to understand correlation and linear regression in R.
+
+In our first example we will use a data set consisting of 100 individuals with 13 different measurements taken.
+This is data of medical records, vitals and clinical examinations of participants with heart disease. 
+Descriptions of the 13 variables are given in the data dictionary below.
+
+Variable    | Description
+--------    | -----------
+Age         | Age in years
+Sex         | Sex; 0=Female, 1=Male
+Cp          | Chest Pain; 1=Typical Angina, 2=Atypical Angina, 3=Non-Anginal pain, 4=Asymptomatic
+Trestbps    | Resting Systolic BP in mmHg
+Chol        | Blood Cholesterol Level in mg/dl
+Fbs         | Fasting Blood Sugar;  0 =  less than 120mg/dl  and 1= greater than 120 mg/dl
+Exang       | Exercise Induced Angina;  0=No, 1=Yes
+Thalach     | Maximum Heart Rate Achieved
+Old Peak ST | ST wave depression induced by exercise
+Slope       | The slope of peak exercise segment;  1=Up-sloping, 2=Flat, 3=Down Sloping
+Ca          | Number of major vessels coloured by fluoroscopy
+Class       | Diagnosis Class; 0=No disease, 1-4 Various stage of disease in ascending order
+restecg     | Resting ECG abnormalities; 0=Normal, 1=ST Abnormality, 2=LVH
+
+# Working Directory
+
+Above, we saw that we can set the working directory using the Files pane in RStudio.
+Alternatively, you can do this through the RStudio console using the command `setwd` by entering the absolute filepath as a string.
+Use `getwd` to get the current working directory.
+
+For example, to set the working directory to the downloads folder on Mac or Windows, use
+
+```{r, eval=FALSE}
+setwd("~/Downloads") # for Mac
+setwd("C:\Users\YourUserName\Downloads") # for Windows
+```
+
+# Importing and Preparing the Data
+
+First, import the data into our R environment as a data frame and display its dimensions.
+
+```{r}
+data <- read.csv("data.csv",sep=",", header=TRUE)
+
+dim(data)
+```
+
+From this we know that we have 100 rows, or observations, and 14 columns, or variables (1 ID variable and 13 measurement variables).
+
+> ## Tip: stringsAsFactors
+>
+> When importing data with columns containing character strings to be used as categories (e.g. male/female low/medium/high), we can set the `stringsAsFactors` argument as `TRUE` to automatically set these columns to factors.
+{: .callout}
+
+We can use the `str` function to look at the first few observations for each variable.
+
+```{r}
+str(data)
+```
+
+Using the `summary` function, we can view some information about each variable.
+
+```{r}
+summary(data)
+```
+
+We can see that the categorical variables such as sex, slope and class are being treated as numerical data.
+We can fix this by setting these categorical variables as factors.
+
+# Recoding Variables
+
+To do this, we can use `as.factor` on each of the categorical columns in our data frame, specifying the levels and labels of each variable as arguments.
+
+```{r}
+data$ID <- as.factor(data$ID)
+data$sex <- factor(data$sex,levels=c(0,1), labels = c( "Female","Male"))
+data$fbs <- factor(data$fbs,levels=c(0,1), labels = c("<120", ">120"))
+data$restecg <- factor(data$restecg,levels=c(0,1,2), labels = c("Normal", "ST Abnormality", "LVH"))
+data$exang <- factor(data$exang,levels=c(0,1), labels = c("No", "Yes"))
+data$slope <- factor(data$slope,levels=c(1,2,3), labels = c("Up-sloping", "Flat", "Down-sloping"))
+data$cp <- factor(data$cp,levels=c(1,2,3,4), labels = c( "Typical angina","A-typical angina", "Non-Anginal pain", "Asymptomatic"))
+```
+
+For the class variable, we will merge the four levels of disease into a single "disease" factor, leaving us with a binary variable.
+
+```{r}
+data$class <- as.factor(data$class)
+levels(data$class)[which(levels(data$class)=="0")] <- "No Disease"
+levels(data$class)[which(levels(data$class)%in%c("1","2","3","4"))] <- "Disease"
+```
+
+Running `summary` on the data again, now with the correct types, will give us the correct description of the data (counts for categorical variables and a five number summary and mean for the numerical variables).
+
+```{r}
+summary(data)
+```
+
+We can now use this data in our analyses!

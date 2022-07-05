@@ -42,7 +42,7 @@ Associations can be positive, where an **increase** in one variable is associate
 >
 > Label the following three scatter plots as showing no correlation or a positive or negative correlation
 >
-> ![RStudio layout](fig/02-correlations.png)
+> ![RStudio layout](../fig/02-correlations.png)
 >
 > > ## Solution to Challenge X
 > >  
@@ -64,27 +64,27 @@ Two R functions for measuring and testing the significance of association are `c
 
 ### Pearson's correlation coefficient
 
-The Pearson's correlation coefficient ($r$) is defined as
+The Pearson's correlation coefficient (_r_) is defined as
 
-\[ r = \frac{\sum_i (x_i - \bar x)(y_i - \bar y)}{\sqrt{\sum_i (x_i - \bar x)^2(y_i - \bar y)^2}} \]
+$$ r = \frac{\sum_i (x_i - \bar x)(y_i - \bar y)}{\sqrt{\sum_i (x_i - \bar x)^2(y_i - \bar y)^2}} $$
 
-and varies between -1 and 1, where 1 indicates a perfect positive linear relationship and -1 indicates a perfect negative linear relationship. Here, $\bar x = \sum_i x_i / n$ is the mean of all values of x. 
+and varies between -1 and 1, where 1 indicates a perfect positive linear relationship and -1 indicates a perfect negative linear relationship. Here, $$\bar x = \sum_i x_i / n$$ is the mean of all values of x. 
 
 A common interpretation of the value of $r$ is described in the table below
 
-Value of $r$        | Relationship
+Value of _r_        | Relationship
 --------            | -----------
-$|r| = 0$           | No relationship
-$|r| = 1$           | Perfect **linear** relationship
-$|r| < 0.3$         | Weak relationship
-$0.3 ≤ |r| ≤ 0.7$   | Moderate relationship
-$|r| > 0.7$         | Strong relationship
+|\|r\| = 0 |No relationship|
+|\|r\| = 1 |Perfect **linear** relationship|
+|\|r\| < 0.3 | Weak relationship|
+|0.3 ≤ \|r\| ≤ 0.7  | Moderate relationship|
+|\|r\| = 0.7 | Strong relationship|
 
 ### Coefficient of determination
 
-Pearson's $r$ can be squared to give us $r^2$, the coefficient of determination, which indicates the proportion of variability in one of the variables that can be accounted for by the variability in the second variable.
+Pearson's _r_ can be squared to give us _r<sup>2</sup>_, the coefficient of determination, which indicates the proportion of variability in one of the variables that can be accounted for by the variability in the second variable.
 
-For example, the if two variables X and Y have a Pearson’s correlation coefficient of $r = -0.7$, then the coefficient of determination is $r^2 = 0.49$. 
+For example, the if two variables X and Y have a Pearson’s correlation coefficient of _r_ = -0.7, then the coefficient of determination is _r<sup>2</sup>_ = 0.49. 
 Thus, 49% of the variability in variable X is determined by the variability of variable Y.
 
 ## Visualising Relationships
@@ -94,7 +94,7 @@ This is useful in the exploratory phase of data analysis to visually determine i
 
 The figure below shows a scatter plot of variables with different levels of correlation.
 
-![RStudio layout](fig/02-relationships.png)
+![RStudio layout](../fig/02-relationships.png)
 
 ## Correlation Analysis Exercise 1
 

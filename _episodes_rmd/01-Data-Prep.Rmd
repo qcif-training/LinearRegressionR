@@ -27,11 +27,11 @@ Upon installing and opening RStudio, you will be greeted by three panels:
 * Environment/History/Connections (tabbed in upper right)
 * Files/Plots/Packages/Help/Viewer (tabbed in lower right)
 
-![RStudio Layout](../fig/01-noscript.png)
+![RStudio Layout](../fig/01-fig1.png)
 
 Opening a text file (such as an R or Rmd file) in RStudio will open the file in a new panel in the top left.
 
-![RStudio Layout](../fig/01-script.png)
+![RStudio Layout](../fig/01-fig2.png)
 
 There are two main ways that you can run R commands or scripts within RStudio:
 

@@ -111,7 +111,7 @@ hist(data$trestbps)
 ![RStudio layout](../fig/02-fig4.png)
 
 It appears that the variable could potentially be normally distributed, although slightly skewed, but we should analytically test this assumption.
-We can perform a Shapiro-wilk normality test for this variable using the `shapiro.test` function.
+We can perform a Shapiro-Wilk normality test for this variable using the `shapiro.test` function.
 
 
 ```r

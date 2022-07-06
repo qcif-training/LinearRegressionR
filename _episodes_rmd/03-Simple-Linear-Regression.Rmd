@@ -41,10 +41,15 @@ knit_hooks$set(output = function(x, options) {
   x <- paste(c(x, ""), collapse = "\n")
   hook_output(x, options)
 })
+
+
 ```
 
 ```{r, echo=FALSE}
-data <- read.csv("data.csv",sep=",", header=TRUE, stringsAsFactors = TRUE)
+setwd("~/git/LinearRegressionR/_episodes_rmd")
+library(ggplot2)
+library(GGally)
+data <- read.csv("data/data.csv",sep=",", header=TRUE, stringsAsFactors = TRUE)
 data$ID <-as.factor(data$ID)
 data$sex <- factor(data$sex,levels=c(0,1), labels = c( "Female","Male"))
 data$fbs <- factor(data$fbs,levels=c(0,1), labels = c("<120", ">120"))
@@ -57,58 +62,58 @@ levels(data$class)[which(levels(data$class)=="0")] <- "No Disease"
 levels(data$class)[which(levels(data$class)%in%c("1","2","3","4"))] <- "Disease"
 ```
 
-Regression analysis is used to describe the relationship between a single dependent variable $Y$ (also called the outcome) and one or more independent variables $X_1, X_2, \dots, X_p$ (also called the predictors).
+Regression analysis is used to describe the relationship between a single dependent variable $Y$ (also called the outcome) and one or more independent variables _X<sub>1</sub>, X<sub>2</sub>, \dots, X<sub>p</sub>_ (also called the predictors).
 The case of one independent variable, i.e. $p=1$, is known as simple regression and the case where $p>1$ is known as multiple regression.
 
 ## Simple Linear Regression
 
-In simple linear regression, the aim is to predict the dependent variable $Y$ based on a given value of the independent variable $X$ using a linear relationship. This relationship is described by the following equation:
+In simple linear regression, the aim is to predict the dependent variable _Y_ based on a given value of the independent variable $X$ using a linear relationship. This relationship is described by the following equation:
 
-\[ Y = a + bX + e \]
+_Y = a + bX + e_
 
-where $a$ is the intercept, i.e. the value of $Y$ when $X=0$, and $b$ is the regression coefficient, i.e. the slope of the line.
+where $a$ is the intercept, i.e. the value of _Y_ when _X=0_, and _b_ is the regression coefficient, i.e. the slope of the line.
 $e$ represents an additive residual term (error) that accounts for random statistical noise or the effect of unobserved independent variables not included in the model.
 
-In simple linear regression, we wish to find the values of $a$ and $b$ that best describe the relationship given by the data.
+In simple linear regression, we wish to find the values of _a_ and _b_ that best describe the relationship given by the data.
 
 This objective can be thought of as drawing a straight line that best fits the plotted data points.
 The line can then be used to predict Y from X.
 
-![RStudio layout](fig/03-goodvsbadfit.png)
+![RStudio layout](../fig/03-fig1.png)
 
 ## Least Squares Estimation
 
 Ordinary least squares (OLS) is a common method used to determine values of $a$ and $b$ through minimising the sum of the squares of the residuals, which can be described mathematically as the problem
 
-\[ \min_{a,b} \sum_i (Y_i - (a + bX_i))^2. \]
+$$ \min_{a,b} \sum_i (Y_i - (a + bX_i))^2 $$
 
 Solving through calculus, the solution to this problem is
 
-\[ \hat b = \frac{\sum_i (x_i - \bar x) (y_i - \bar y)}{\sum_i (x_i - \bar x)^2} \]
+$$ \hat b = \frac{\sum_i (x_i - \bar x) (y_i - \bar y)}{\sum_i (x_i - \bar x)^2} $$
 
 and
 
-\[ \hat a = \bar y - \hat b \bar x. \]
+$$ \hat a = \bar y - \hat b \bar x. $$
 
 In the figure below, we have four observations and two lines attempting to fit the data.
 
-![RStudio layout](fig/03-sumofsquares.png)
+![RStudio layout](../fig/03-fig2.png)
 
 The sum of squares for the red sloped line is
 
-\[ (2 - 1)^2 + (4 - 2)^2 + (1.5 - 3)^2 + (3.2 - 4)^2 = 7.9, \]
+$$ (2 - 1)^2 + (4 - 2)^2 + (1.5 - 3)^2 + (3.2 - 4)^2 = 7.9, $$
 
 and the sum of squares for the green flat line is
 
-\[ (2 - 2.5)^2 + (4 - 2.5)^2 + (1.5 - 2.5)^2 + (3 - 2.5)^2 = 3.75. \]
+$$ (2 - 2.5)^2 + (4 - 2.5)^2 + (1.5 - 2.5)^2 + (3 - 2.5)^2 = 3.75. $$
 
 As the sum of squares for the green line is smaller, we can say it is a better fit to the data.
 
-The coefficient $b$ is related to the correlation coefficient $r$.
+The coefficient _b_ is related to the correlation coefficient _r_.
 
-\[  r = b \frac{\text{SD}_X}{\text{SD}_Y}. \]
+$$  r = b \frac{\text{SD}_X}{\text{SD}_Y} $$
 
-If $X$ and $Y$ are positively correlated, then the slope $b$ is positive.
+If _X_ and _Y_ are positively correlated, then the slope $b$ is positive.
 
 ## Regression Hypothesis Test
 
@@ -117,14 +122,14 @@ We can perform a hypothesis test that asks: Is the slope significantly different
 
 **Hypothesis**
 
-* $H_0: b = 0$ (no linear relationship)
-* $H_1: b \neq 0$ (linear relationship)
+* H<sub>0</sub: b = 0 (no linear relationship)
+* H<sub>1</sub>: b ≠ 0 (linear relationship)
 
-**Test of Significance**: $T = \hat b\ / \text{SE}(\hat b)$
+**Test of Significance**: $$T = \hat b\ / \text{SE}(\hat b)$$
 
 **Result**: p-value significant or not
 
-**Conclusion**: If p-value is significant, then the slope is different from $0$ and there is a significant linear relationship.
+**Conclusion**: If p-value is significant, then the slope is different from 0 and there is a significant linear relationship.
 
 ## Standard Error
 
@@ -132,7 +137,7 @@ The standard error of Y given X is the average variability around the regression
 It is assumed to be equal at all values of X.
 Each observed residual can be thought of as an estimate of the actual unknown "true error" term.
 
-![RStudio layout](fig/03-se.png)
+![RStudio layout](fig/03-fig3.png)
 
 
 ## Assumptions of Linear Regression
@@ -146,21 +151,21 @@ There are four assumptions associated with using linear models:
 
 These assumptions can be considered criteria that should be met before drawing inferences from the fitted model or using it to make predictions.
 
-The residual $e_i$ of the $i$th observation is the difference between the observed dependent variable value $Y_i$ and the predicted value for the value of the independent variable(s) $X_i$,
+The residual e<sub>i</sub> of the _i_th observation is the difference between the observed dependent variable value _Y<sub>i</sub> and the predicted value for the value of the independent variable(s) X<sub>i</sub>,
 
-\[ e_i = Y_i - \hat Y_i = Y_i - (a + bX_i). \]
+$$ e_i = Y_i - \hat Y_i = Y_i - (a + bX_i). $$
 
 ## Coefficient of Determination
 
-The coefficient of determination $R^2$ represents the proportion of the total sample variability (sum of squares) explained by the regression model.
+The coefficient of determination _R<sup>2</sup>_ represents the proportion of the total sample variability (sum of squares) explained by the regression model.
 This can also be interpreted as the proportion of the variance of the dependent variable that is explained by the independent variable(s).
 The most general definition of the coefficient of determination is
 
-\[ R^2 = 1 - \frac{SS_{res}}{SS_{tot}} \]
+$$ R^2 = 1 - \frac{SS_{res}}{SS_{tot}} $$
 
-where $SS_{res}$ is the sum of the squares of the residuals as defined above and $SS_{tot}$ is the total sum of squares,
+where _SS<sub>res</sub> is the sum of the squares of the residuals as defined above and _SS<sub>tot</sub>_ is the total sum of squares,
 
-\[ SS_{tot} = \sum_i (Y_i - \bar Y)^2, \]
+$$ SS_{tot} = \sum_i (Y_i - \bar Y)^2, $$
 
 which is proportional to the variance of the dependent variable.
 
@@ -197,30 +202,30 @@ Cig. | CHD
 3    | 4
 3    | 14
 
-![RStudio layout](fig/03-cigdata.png)
+![RStudio layout](../fig/03-fig4.png)
 
 As a reminder, the linear regression equation is
 
-\[ \hat Y = a + bX  \]
+$$ \hat Y = a + bX  $$
 
-In this example, $Y$ is the CHD mortality rate (CHD) and $X$ is the average number of cigarettes smoked per adult per day (CigCons), so the equation is
+In this example, _Y_ is the CHD mortality rate (CHD) and _X_ is the average number of cigarettes smoked per adult per day (CigCons), so the equation is
 
-\[ \text{CHD}_{\text{pred}} = a + b \times \text{CigsCons} + e. \]
+$$ \text{CHD}_{\text{pred}} = a + b \times \text{CigsCons} + e $$
 
-The intercept $a$ represents the predicted CHD mortality rate in a nation where the average number of cigarettes smoked per adult per day is zero.
-The slope $b$ represents the rate of increase of CHD mortality rate for each unit increase in the average number of cigarettes smoked per adult per day.
+The intercept _a_ represents the predicted CHD mortality rate in a nation where the average number of cigarettes smoked per adult per day is zero.
+The slope _b_ represents the rate of increase of CHD mortality rate for each unit increase in the average number of cigarettes smoked per adult per day.
 
 ### Regression Results
 
 The results of fitting a linear model to the data is shown below.
 
-![RStudio layout](fig/03-cigregression.png)
+![RStudio layout](../fig/03-fig5.png)
 
 The p-value associated with the prediction of the slope is less than 0.05, indicating there is significant evidence that the slope is different from zero, and therefore there is a significant relationship between cigarette consumption and CHD mortality.
 
 Substituting these values into our linear regression equation, we get the predicted model
 
-\[ \text{CHD}_{\text{pred}} = 2.37 + 2.04 \times \text{CigsCons}.  \]
+$$ \text{CHD}_{\text{pred}} = 2.37 + 2.04 \times \text{CigsCons} $$
 
 We can interpret this as:
 
@@ -231,22 +236,22 @@ We can interpret this as:
 
 We may want to predict CHD mortality when cigarette consumption is 6, which can be done using our model.
 
-\[ \text{CHD}_{\text{pred}} = 2.37 + 2.04 \times 6 = 14.61, \]
+$$ \text{CHD}_{\text{pred}} = 2.37 + 2.04 \times 6 = 14.61 $$
 
-and so we predict that on average 14.61/10000 people will die of CHD per annum in a country with an average cigarette consumption of 6 per person per day.
+and so we predict that on average 14.61/10,000 people will die of CHD _per annum_ in a country with an average cigarette consumption of 6 per person per day.
 
 ### Residuals
 
 Now that we have a fitted model, we can check the residuals between our model and the data we used to fit the model.
 In simple regression, the residuals is the vertical distance between the actual and predicted values for each observation; an example of the residual for a particular observation is shown in the figure below.
 
-![RStudio layout](fig/03-cigresiduals.png)
+![RStudio layout](../fig/03-fig6.png)
 
 For one observation, there was a CHD mortality of 23 deaths per 10,000 with the average number of cigarettes smoked per adult per day is 6.
-Our prediction for the same cigarette consumption level was 14.61 deaths per 10,000, and so the residual for this observation is $23 - 14.61 = 8.39$.
+Our prediction for the same cigarette consumption level was 14.61 deaths per 10,000, and so the residual for this observation is 23 - 14.61 = 8.39.
 
-For this model, we obtained an $R$ value of 0.71.
-Squaring this, we get $R^2 = 0.51$, and so we find that almost 50% of the variability of incidence of CHD mortality is associated with variability in smoking rates.
+For this model, we obtained an _R_ value of 0.71.
+Squaring this, we get _R<sup>2</sup>_ = 0.51$, and so we find that almost 50% of the variability of incidence of CHD mortality is associated with variability in smoking rates.
 
 ## Linear Regression R Functions
 
@@ -262,9 +267,10 @@ In this exercise we will be exploring the relationship between systolic blood pr
 
 First, we will use a scatter plot to visually check that there is a linear relationship.
 
-```{r}
+```{r, eval=FALSE}
 plot(data$trestbps~data$age)
 ```
+![RStudio layout](../fig/03-fig7.png)
 
 The `lm` function is used to fit a linear model and obtain the estimated values of $a$ and $b$, and we can use the `summary` function to view a summary of the results.
 
@@ -305,14 +311,15 @@ resid(model1)
 
 By using `abline` with our model after plotting a scatter plot, we can plot the estimated regression line over our data.
 
-```{r}
+```{r, eval=FALSE}
 plot(trestbps~age,data=data)
 abline(model1,col="red")
 ```
+![RStudio layout](../fig/03-fig8.png)
 
 We can do the same with ggplot2.
 
-```{r}
+```{r, eval=FALSE}
 library(ggplot2)
 ggplot(data, aes(x=age, y=trestbps)) +
   geom_point(shape=16,size=2) +
@@ -320,6 +327,7 @@ ggplot(data, aes(x=age, y=trestbps)) +
   theme(axis.text=element_text(size=12),
         axis.title=element_text(size=14,face="bold"))
 ```
+![RStudio layout](../fig/03-fig9.png)
 
 ### Confidence and Prediction
 
@@ -371,39 +379,43 @@ We can make the above checks manually by creating the necessary plots.
 
 **Linearity between outcome and predictor**: Residuals vs predictor variable
 
-```{r}
+```{r, eval = FALSE}
 plot(resid(model1)~age,data=data)
 ```
+![RStudio layout](../fig/03-fig10.png)
 
 **Constant variance of residuals**: Residuals vs fitted values
 
-```{r}
+```{r, eval=FALSE}
 plot(resid(model1)~fitted(model1))
 ```
+![RStudio layout](../fig/03-fig11.png)
 
 **Normality of residuals**: Q-Q plot of residuals
 
-```{r}
+```{r, eval=FALSE}
 qqnorm(resid(model1))
 ```
+![RStudio layout](../fig/03-fig12.png)
 
 Or, we can use R's built-in diagnostic plotting with the `plot` function.
 
-```{r}
+```{r, eval = FALSE}
 par(mfrow=c(2,2))
 plot(model1)
 ```
+![RStudio layout](../fig/03-fig13.png)
 
 Let's break down each of these plots.
 
 For the *Residuals vs Fitted* plot, the residuals should be randomly distributed around the horizontal line representing a residual error of zero; that is, there should not be a distinct trend in the distribution of points.
 Good and bad examples of these plots are shown in the figures below.
 
-![RStudio layout](fig/03-residualexample1.png)
+![RStudio layout](../fig/03-fig14.png)
 
-![RStudio layout](fig/03-residualexample2.png)
+![RStudio layout](../fig/03-fig15.png)
 
-![RStudio layout](fig/03-residualexample3.png)
+![RStudio layout](../fig/03-fig16.png)
 
 *Normal Q-Q* plots the ordered standardised residuals against their theoretical expectations.
 We expect these points to lie on a straight line, with significant deviation from a straight line indicating non-normality.
@@ -416,16 +428,16 @@ If any point in this plot falls outside of a Cook’s distance of 1 (indicated b
 
 ## Leverage Points 
 
-* Leverage points are observations which have an $x$-value that is distant from other $x$-values.
+* Leverage points are observations which have an _x_-value that is distant from other _x_-values.
 * These points have great influence on the fitted model, in that if they were to be removed from the data set and the model refitted, the resulting model would be significantly different from the original.
-* Leverage points are bad if it is also an outlier (the $y$-value does not follow the pattern set by the other data points).
+* Leverage points are bad if it is also an outlier (the _y_-value does not follow the pattern set by the other data points).
 * Never remove data points unless we are certain that the data point is invalid and could not occur in real life.
 * Otherwise, we should fit a different regression model if we are not confident that the basic linear model is suitable.
 * We can create a different regression model by including higher-order terms or transforming the data.
 
 ## Cook's Distance
 
-The Cook's distance statistic $D$ combines the effects of leverage and the magnitude of the residual and is used to evaluate the impact of a given observation on the estimated regression coefficient.
+The Cook's distance statistic _D_ combines the effects of leverage and the magnitude of the residual and is used to evaluate the impact of a given observation on the estimated regression coefficient.
 As a rule of thumb, a point with Cook's distance greater than 1 has undue influence on the model.
 
 ## Statistical Tests for Model Assumptions
@@ -459,7 +471,7 @@ Each of these tests show that the models assumptions are met.
 There are other packages you can use to test the assumptions of the model, such as the `car` library.
 ``qqPlot` gives us a QQ plot with 95% confidence intervals.
 
-```{r, message=FALSE}
+```{r, message=FALSE, eval=FALSE}
 library(car)
 qqPlot(model1, main="QQ Plot")
 ```
@@ -479,10 +491,11 @@ The main difference between this exercise and the last is that age is a numerica
 
 Comparing boxplots can give us a good indication if the distributions of SBP is different between males and females.
 
-```{r}
+```{r, eval=FALSE}
 ggplot(data = data, aes(x = sex,y = trestbps, fill="blues")) + 
   geom_boxplot()
 ```
+![RStudio layout](../fig/03-fig18.png)
 
 Visually, it seems that females on average have a higher systolic blood pressure than males.
 The male distribution seems to be right-skewed.
@@ -510,7 +523,7 @@ summary(model_sex)
 
 In this model, the first level of sex has been taken as reference (Females).
 We can think of females being assigned a value of 0 in the linear model and males a value of 1.
-Therefore, the model estimates that females, on average, have a systolic blood pressure of $136.76$, and for males $136.76 - 5.07 = 131.69$.
+Therefore, the model estimates that females, on average, have a systolic blood pressure of __136.76__, and for males __136.76 - 5.07 = 131.69__.
 However, we see that the p-value for the sex effect is not significant, and so we can conclude that there is no difference in SBP between men and women.
 
 Again, we can view and report the confidence intervals for the model coefficients for the model using `confint`.
@@ -521,10 +534,11 @@ confint(model_sex)
 
 And we can check the assumptions of the model by plotting the model diagnostics.
 
-```{r}
+```{r, eval=FALSE}
 par(mfrow=c(2,2))
 plot(model_sex)
 ```
+![RStudio layout](../fig/03-fig19.png)
 
 Intepreting these model diagnostics is a bit harder, as we are using a binary predictor and thus only fitted values for the entire dataset.
 

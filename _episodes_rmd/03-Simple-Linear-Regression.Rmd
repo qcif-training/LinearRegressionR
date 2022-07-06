@@ -3,14 +3,15 @@ title: "Simple Linear Regression"
 teaching: 45
 exercises: 10
 questions:
-- "What is linear regression?
+- "What is linear regression?"
 - "What are the assumptions we need to meet to use linear regression?"
 - "How do I perform linear regression in R?"
 - "How do I ensure that my data meets the model assumptions?"
 objectives:
 - "Understand theory of linear regression."
 - "Use linear regression on our dataset."
-- "Check the model diagnostics to ensure the data meets the assumptions of linear regression."
+- "Check the model diagnostics to ensure the data meets the assumptions of 
+linear regression."
 keypoints:
 - 
 output: html_document
@@ -55,37 +56,57 @@ data <- read.csv("data/data.csv",sep=",", header=TRUE, stringsAsFactors = TRUE)
 data$ID <-as.factor(data$ID)
 data$sex <- factor(data$sex,levels=c(0,1), labels = c( "Female","Male"))
 data$fbs <- factor(data$fbs,levels=c(0,1), labels = c("<120", ">120"))
-data$restecg <- factor(data$restecg,levels=c(0,1,2), labels = c("Normal", "ST Abnormality", "LVH"))
+data$restecg <- factor(data$restecg,levels=c(0,1,2), labels = c("Normal", "ST 
+                                                                Abnormality", 
+                                                                "LVH"))
 data$exang <- factor(data$exang,levels=c(0,1), labels = c("No", "Yes"))
-data$slope <- factor(data$slope,levels=c(1,2,3), labels = c("Up-sloping", "Flat", "Down-sloping"))
-data$cp <- factor(data$cp,levels=c(1,2,3,4), labels = c( "Typical angina","A-typical angina", "Non-Anginal pain", "Asymptomatic"))
+data$slope <- factor(data$slope,levels=c(1,2,3), labels = c("Up-sloping", 
+                                                            "Flat", 
+                                                            "Down-sloping"))
+data$cp <- factor(data$cp,levels=c(1,2,3,4), labels = c( "Typical angina",
+                                                         "A-typical angina", 
+                                                         "Non-Anginal pain", 
+                                                         "Asymptomatic"))
 data$class <- as.factor(data$class)
 levels(data$class)[which(levels(data$class)=="0")] <- "No Disease"
 levels(data$class)[which(levels(data$class)%in%c("1","2","3","4"))] <- "Disease"
 ```
 
-Regression analysis is used to describe the relationship between a single dependent variable _Y_ (also called the outcome) and one or more independent variables _X<sub>1</sub>, X<sub>2</sub>, ..., X<sub>p</sub>_ (also called the predictors).
-The case of one independent variable, i.e. _p_=1, is known as simple regression and the case where _p_>1 is known as multiple regression.
+Regression analysis is used to describe the relationship between a single 
+dependent variable _Y_ (also called the outcome) and one or more independent 
+variables _X<sub>1</sub>, X<sub>2</sub>, ..., X<sub>p</sub>_ (also called the 
+predictors).
+The case of one independent variable, i.e. _p_=1, is known as simple regression 
+and the case where _p_>1 is known as multiple regression.
 
 ## Simple Linear Regression
 
-In simple linear regression, the aim is to predict the dependent variable _Y_ based on a given value of the independent variable _X_ using a linear relationship. This relationship is described by the following equation:
+In simple linear regression, the aim is to predict the dependent variable _Y_ 
+based on a given value of the independent variable _X_ using a linear 
+relationship. This relationship is described by the following equation:
 
 _Y = a + bX + e_
 
-where _a_ is the intercept, i.e. the value of _Y_ when _X=0_, and _b_ is the regression coefficient, i.e. the slope of the line.
-_e_ represents an additive residual term (error) that accounts for random statistical noise or the effect of unobserved independent variables not included in the model.
+where _a_ is the intercept (the value of _Y_ when _X=0_) and _b_ is the 
+regression coefficient (the slope of the line).
+_e_ represents an additive residual term (error) that accounts for random 
+statistical noise or the effect of unobserved independent variables not included 
+in the model.
 
-In simple linear regression, we wish to find the values of _a_ and _b_ that best describe the relationship given by the data.
+In simple linear regression, we wish to find the values of _a_ and _b_ that best 
+describe the relationship given by the data.
 
-This objective can be thought of as drawing a straight line that best fits the plotted data points.
+This objective can be thought of as drawing a straight line that best fits the 
+plotted data points.
 The line can then be used to predict Y from X.
 
 ![RStudio layout](../fig/03-fig1.png)
 
 ## Least Squares Estimation
 
-Ordinary least squares (OLS) is a common method used to determine values of $a$ and $b$ through minimising the sum of the squares of the residuals, which can be described mathematically as the problem
+Ordinary least squares (OLS) is a common method used to determine values of _a_
+and _b_ through minimising the sum of the squares of the residuals, which can be 
+described mathematically as the problem
 
 $$ \min_{a,b} \sum_i (Y_i - (a + bX_i))^2 $$
 
@@ -97,7 +118,8 @@ and
 
 $$ \hat a = \bar y - \hat b \bar x. $$
 
-In the figure below, we have four observations and two lines attempting to fit the data.
+In the figure below, we have four observations and two lines attempting to fit 
+the data.
 
 ![RStudio layout](../fig/03-fig2.png)
 
@@ -109,7 +131,8 @@ and the sum of squares for the green flat line is
 
 $$ (2 - 2.5)^2 + (4 - 2.5)^2 + (1.5 - 2.5)^2 + (3 - 2.5)^2 = 3.75. $$
 
-As the sum of squares for the green line is smaller, we can say it is a better fit to the data.
+As the sum of squares for the green line is smaller, we can say it is a better 
+fit to the data.
 
 The coefficient _b_ is related to the correlation coefficient _r_.
 
@@ -119,8 +142,10 @@ If _X_ and _Y_ are positively correlated, then the slope _b_ is positive.
 
 ## Regression Hypothesis Test
 
-We can estimate the most suitable values for our model, but how can we be confident that we have indeed found a significant linear relationship?
-We can perform a hypothesis test that asks: Is the slope significantly different from 0?
+We can estimate the most suitable values for our model, but how can we be 
+confident that we have indeed found a significant linear relationship?
+We can perform a hypothesis test that asks: Is the slope significantly different 
+from 0?
 
 **Hypothesis**
 
@@ -131,13 +156,15 @@ We can perform a hypothesis test that asks: Is the slope significantly different
 
 **Result**: p-value significant or not
 
-**Conclusion**: If p-value is significant, then the slope is different from 0 and there is a significant linear relationship.
+**Conclusion**: If p-value is significant, then the slope is different from 0 
+and there is a significant linear relationship.
 
 ## Standard Error
 
-The standard error of Y given X is the average variability around the regression line at any given value of X.
-It is assumed to be equal at all values of X.
-Each observed residual can be thought of as an estimate of the actual unknown "true error" term.
+The standard error of Y given X is the average variability around the regression 
+line at any given value of X. It is assumed to be equal at all values of X.
+Each observed residual can be thought of as an estimate of the actual unknown 
+"true error" term.
 
 ![RStudio layout](../fig/03-fig3.png)
 

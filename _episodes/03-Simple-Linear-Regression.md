@@ -5,7 +5,7 @@ title: "Simple Linear Regression"
 teaching: 45
 exercises: 10
 questions:
-- "What is linear regression?
+- "What is linear regression?"
 - "What are the assumptions we need to meet to use linear regression?"
 - "How do I perform linear regression in R?"
 - "How do I ensure that my data meets the model assumptions?"
@@ -48,7 +48,8 @@ The line can then be used to predict Y from X.
 
 ## Least Squares Estimation
 
-Ordinary least squares (OLS) is a common method used to determine values of $a$ and $b$ through minimising the sum of the squares of the residuals, which can be described mathematically as the problem
+Ordinary least squares (OLS) is a common method used to determine values of _a_ and _b_ through minimising the sum of the squares of the residuals, which 
+can be described mathematically as the problem
 
 $$ \min_{a,b} \sum_i (Y_i - (a + bX_i))^2 $$
 
@@ -64,7 +65,7 @@ In the figure below, we have four observations and two lines attempting to fit t
 
 ![RStudio layout](../fig/03-fig2.png)
 
-The sum of squares for the red sloped line is (2-1)<sup>2> + (4 - 2)<sup>2</sup> + (1.5 - 3)<sup>2</sup> + (3.2 - 4)<sup>2</sup> = 7.9
+The sum of squares for the red sloped line is (2-1)<sup>2</sup> + (4 - 2)<sup>2</sup> + (1.5 - 3)<sup>2</sup> + (3.2 - 4)<sup>2</sup> = 7.9
 
 $$ (2 - 1)^2 + (4 - 2)^2 + (1.5 - 3)^2 + (3.2 - 4)^2 = 7.9 $$
 

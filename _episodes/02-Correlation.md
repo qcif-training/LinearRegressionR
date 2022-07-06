@@ -259,7 +259,6 @@ round(cor(data$trestbps,data$ca,method="kendall"),2)
 
 ~~~
 ## [1] -0.05
-correlation <- round(cor(data$trestbps,data$age,method="spearman"),2)
 ~~~
 {: .output}
 
@@ -279,10 +278,6 @@ cor.test(data$trestbps,data$ca,method="kendall")
 ## -0.04876231
 ~~~
 {: .output}
-
-```r
-correlation <- round(cor(data$trestbps,data$age,method="spearman"),2)
-```
 
 We can obtain a vector indexing the numeric variables in our dataset using a combination of functions in a single line.
 We will exclude the 12th column as this is the ca column.
@@ -315,10 +310,6 @@ round(cor(mydata$trestbps, mydata[,cont], method="spearman",use="pairwise.comple
 ## [1,] 0.27 0.21   -0.07        1     0.2
 ~~~
 {: .output}
-
-```r
-correlation <- round(cor(data$trestbps,data$age,method="spearman"),2)
-```
 
 The correlation between BPS and BPS is 1, as this "relationship" is completely linear.
 

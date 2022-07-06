@@ -56,7 +56,7 @@ Two R functions for measuring and testing the significance of association are `c
 
 The Pearson's correlation coefficient (_r_) is defined as
 
-![RStudio layout](../fig/02-fig2.png)
+\[ r = \frac{\sum_i (x_i - \bar x)(y_i - \bar y)}{\sqrt{\sum_i (x_i - \bar x)^2(y_i - \bar y)^2}} \]
 
 and varies between -1 and 1, where 1 indicates a perfect positive linear relationship and -1 indicates a perfect negative linear relationship. Here, $$\bar x = \sum_i x_i / n$$ is the mean of all values of x. 
 

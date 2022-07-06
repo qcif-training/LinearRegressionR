@@ -18,17 +18,15 @@ keypoints:
 output: html_document
 ---
 
+<script
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+  type="text/javascript">
+</script>
 
 
-
-```
-## Registered S3 method overwritten by 'GGally':
-##   method from   
-##   +.gg   ggplot2
-```
-
-Regression analysis is used to describe the relationship between a single dependent variable $Y$ (also called the outcome) and one or more independent variables _X<sub>1</sub>, X<sub>2</sub>, \dots, X<sub>p</sub>_ (also called the predictors).
-The case of one independent variable, i.e. $p=1$, is known as simple regression and the case where $p>1$ is known as multiple regression.
+Regression analysis is used to describe the relationship between a single dependent variable _Y_ (also called the outcome) and one or more independent 
+variables _X<sub>1</sub>, X<sub>2</sub>, ..., X<sub>p</sub>_ (also called the predictors).
+The case of one independent variable, i.e. _p_=1, is known as simple regression and the case where _p_>1 is known as multiple regression.
 
 ## Simple Linear Regression
 

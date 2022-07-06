@@ -30,12 +30,14 @@ The case of one independent variable, i.e. _p_=1, is known as simple regression 
 
 ## Simple Linear Regression
 
-In simple linear regression, the aim is to predict the dependent variable _Y_ based on a given value of the independent variable $X$ using a linear relationship. This relationship is described by the following equation:
+In simple linear regression, the aim is to predict the dependent variable _Y_ based on a given value of the independent variable _X_ using a linear 
+relationship. This relationship is described by the following equation:
 
 _Y = a + bX + e_
 
-where $a$ is the intercept, i.e. the value of _Y_ when _X=0_, and _b_ is the regression coefficient, i.e. the slope of the line.
-$e$ represents an additive residual term (error) that accounts for random statistical noise or the effect of unobserved independent variables not included in the model.
+where _a_ is the intercept, i.e. the value of _Y_ when _X=0_, and _b_ is the regression coefficient, i.e. the slope of the line.
+_e_ represents an additive residual term (error) that accounts for random statistical noise or the effect of unobserved independent variables not included 
+in the model.
 
 In simple linear regression, we wish to find the values of _a_ and _b_ that best describe the relationship given by the data.
 
@@ -62,13 +64,13 @@ In the figure below, we have four observations and two lines attempting to fit t
 
 ![RStudio layout](../fig/03-fig2.png)
 
-The sum of squares for the red sloped line is
+The sum of squares for the red sloped line is (2-1)<sup>2> + (4 - 2)<sup>2</sup> + (1.5 - 3)<sup>2</sup> + (3.2 - 4)<sup>2</sup> = 7.9
 
-$$ (2 - 1)^2 + (4 - 2)^2 + (1.5 - 3)^2 + (3.2 - 4)^2 = 7.9, $$
+$$ (2 - 1)^2 + (4 - 2)^2 + (1.5 - 3)^2 + (3.2 - 4)^2 = 7.9 $$
 
 and the sum of squares for the green flat line is
 
-$$ (2 - 2.5)^2 + (4 - 2.5)^2 + (1.5 - 2.5)^2 + (3 - 2.5)^2 = 3.75. $$
+$$ (2 - 2.5)^2 + (4 - 2.5)^2 + (1.5 - 2.5)^2 + (3 - 2.5)^2 = 3.75 $$
 
 As the sum of squares for the green line is smaller, we can say it is a better fit to the data.
 
@@ -76,7 +78,7 @@ The coefficient _b_ is related to the correlation coefficient _r_.
 
 $$  r = b \frac{\text{SD}_X}{\text{SD}_Y} $$
 
-If _X_ and _Y_ are positively correlated, then the slope $b$ is positive.
+If _X_ and _Y_ are positively correlated, then the slope _b_ is positive.
 
 ## Regression Hypothesis Test
 
@@ -85,7 +87,7 @@ We can perform a hypothesis test that asks: Is the slope significantly different
 
 **Hypothesis**
 
-* H<sub>0</sub: b = 0 (no linear relationship)
+* H<sub>0</sub>: b = 0 (no linear relationship)
 * H<sub>1</sub>: b ≠ 0 (linear relationship)
 
 **Test of Significance**: $$T = \hat b\ / \text{SE}(\hat b)$$
@@ -100,7 +102,7 @@ The standard error of Y given X is the average variability around the regression
 It is assumed to be equal at all values of X.
 Each observed residual can be thought of as an estimate of the actual unknown "true error" term.
 
-![RStudio layout](fig/03-fig3.png)
+![RStudio layout](../fig/03-fig3.png)
 
 
 ## Assumptions of Linear Regression
@@ -114,9 +116,10 @@ There are four assumptions associated with using linear models:
 
 These assumptions can be considered criteria that should be met before drawing inferences from the fitted model or using it to make predictions.
 
-The residual e<sub>i</sub> of the _i_th observation is the difference between the observed dependent variable value _Y<sub>i</sub> and the predicted value for the value of the independent variable(s) X<sub>i</sub>,
+The residual e<sub>i</sub> of the i<sup>th</sup> observation is the difference between the observed dependent variable value Y<sub>i</sub> and the 
+predicted value for the value of the independent variable(s) X<sub>i</sub>
 
-$$ e_i = Y_i - \hat Y_i = Y_i - (a + bX_i). $$
+$$ e_i = Y_i - \hat Y_i = Y_i - (a + bX_i) $$
 
 ## Coefficient of Determination
 
@@ -128,7 +131,7 @@ $$ R^2 = 1 - \frac{SS_{res}}{SS_{tot}} $$
 
 where _SS<sub>res</sub> is the sum of the squares of the residuals as defined above and _SS<sub>tot</sub>_ is the total sum of squares,
 
-$$ SS_{tot} = \sum_i (Y_i - \bar Y)^2, $$
+$$ SS_{tot} = \sum_i (Y_i - \bar Y)^2 $$
 
 which is proportional to the variance of the dependent variable.
 
@@ -642,7 +645,7 @@ Comparing boxplots can give us a good indication if the distributions of SBP is 
 ggplot(data = data, aes(x = sex,y = trestbps, fill="blues")) + 
   geom_boxplot()
 ```
-![RStudio layout](../fig/03-fig17.png)
+![RStudio layout](../fig/03-fig18.png)
 
 Visually, it seems that females on average have a higher systolic blood pressure than males.
 The male distribution seems to be right-skewed.
@@ -751,7 +754,7 @@ And we can check the assumptions of the model by plotting the model diagnostics.
 par(mfrow=c(2,2))
 plot(model_sex)
 ```
-![RStudio layout](../fig/03-fig18.png)
+![RStudio layout](../fig/03-fig18\9.png)
 
 Intepreting these model diagnostics is a bit harder, as we are using a binary predictor and thus only fitted values for the entire dataset.
 

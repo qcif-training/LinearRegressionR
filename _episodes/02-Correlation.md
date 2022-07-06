@@ -57,7 +57,7 @@ The Pearson's correlation coefficient (_r_) is defined as
 
 and varies between -1 and 1, where 1 indicates a perfect positive linear relationship and -1 indicates a perfect negative linear relationship. Here, $$\bar x = \sum_i x_i / n$$ is the mean of all values of x. 
 
-A common interpretation of the value of $r$ is described in the table below
+A common interpretation of the value of _r_ is described in the table below
 
 |Value of _r_        | Relationship
 |--------            | -----------

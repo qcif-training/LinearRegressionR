@@ -65,7 +65,7 @@ An example of using comments to describe code is shown below.
 > We have a few options for running the code:
 >
 > * click on the Run button above the editor panel, or
-> * hit Ctrl+Return on Windows or Linux or ⌘+Return on OS X
+> * hit Ctrl+Return (⌘+Return also works if you are using OS X)
 > 
 > If you edit a segment of code after running it and want to quickly re-run the segment, you can press the button to the right of the Run button above the editor panel to re-run the previous code region.
 {: .callout}
@@ -78,21 +78,6 @@ For example, running `? hist` will you a description for base R's function to ge
 > If you don't know the name of the function you want, you can use two question marks (??) to search for functions relating to a keyword (e.g. `?? histogram`)
 > 
 {: .callout}
-
-# Workshop Data files
-
-Prior to the workshop, you must download the example data files and test importing them into R. To do this:
-
-1) Download the data sets from [here](http://fillthisin.com)
-
-2) Save the downloaded zip file to Downloads, Desktop or another convenient location on your computer and double click the zip file to expand it.
-This will create a directory called "data".
-
-3) Open Rstudio and set your working directory to **the same location where you saved the downloaded file** - not the data directory itself.
-The easiest way to do this is click on the Files tab (normally in the bottom right pane) and navigate to the folder that way, then use the function “Set as working directory” from the More (cog icon) menu just at the top of the file pane.
-
-4) Read in the workshop data by typing the command `data <- read.csv("data/data.csv",sep=",", header=TRUE, stringsAsFactors = TRUE)` in the RStudio console pane (usually bottom left).
-This should complete without any warnings. If you get a message starting `Error in file(file, "rt") : cannot open the connection`, you have not set your working directory to the correct location - recheck where you saved and extracted the workshop data directory and repeat step 3.
 
 # First Example - Data Dictionary
 
@@ -141,7 +126,7 @@ data <- read.csv("data/data.csv",sep=",", header=TRUE)
 dim(data)
 ```
 
-From this we know that we have 100 rows, or observations, and 14 columns, or variables (1 ID variable and 13 measurement variables).
+From this we know that we have 100 rows (observations) and 14 columns (variables): 1 identification variable and 13 measurement variables. 
 
 > ## Tip: stringsAsFactors
 >
@@ -160,10 +145,9 @@ Using the `summary` function, we can view some information about each variable.
 summary(data)
 ```
 
-We can see that the categorical variables such as sex, slope and class are being treated as numerical data.
-We can fix this by setting these categorical variables as factors.
-
 # Recoding Variables
+
+Looking at the `summary` output, we can see that the categorical variables such as sex, slope and class are being treated as numerical data. We can fix this by setting these categorical variables as factors.
 
 To do this, we can use `as.factor` on each of the categorical columns in our data frame, specifying the levels and labels of each variable as arguments.
 

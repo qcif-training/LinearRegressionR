@@ -22,6 +22,9 @@ output: html_document
 
 
 
+
+
+
 ## Introduction
 
 Correlation describes the degree of association between two variables and is most commonly used to measure the extent to which two variables are linear related.
@@ -54,7 +57,7 @@ Two R functions for measuring and testing the significance of association are `c
 
 ### Pearson's correlation coefficient
 
-The Pearson's correlation coefficient (_r_) is defined as
+The Pearson's correlation coefficient (_r_) is defined as 
 
 $$ r = \frac{\sum_i (x_i - \bar x)(y_i - \bar y)}{\sqrt{\sum_i (x_i - \bar x)^2(y_i - \bar y)^2}} $$
 
@@ -127,6 +130,7 @@ shapiro.test(data$trestbps)
 ~~~
 {: .output}
 
+
 The null hypothesis of the Shapiro-wilk normality test is that the data comes from a normal distribution.
 The p-value resulting from this test is significant and so we can reject the null hypothesis that the data is normally distributed and infer that it is not normally distributed.
 Thus, we will estimate the correlation between SBP and age using a non-parametric test, i.e. Spearman's rank test.
@@ -159,6 +163,7 @@ cor.test(data$trestbps,data$age,method="spearman")
 ## 0.2685589
 ~~~
 {: .output}
+
 
 The null hypothesis for this test is that there is no correlation (rho = 0), and these alternative hypothesis is that there is a correlation (rho is not equal to 0).
 The resulting p-value for this test is 0.0069, and therefore there is significant evidence that there is moderate correlation between Age and resting SBP level.
@@ -265,6 +270,7 @@ round(cor(data$trestbps,data$ca,method="kendall"),2)
 ~~~
 {: .output}
 
+
 ```r
 cor.test(data$trestbps,data$ca,method="kendall")
 ```
@@ -281,6 +287,7 @@ cor.test(data$trestbps,data$ca,method="kendall")
 ## -0.04876231
 ~~~
 {: .output}
+
 
 We can obtain a vector indexing the numeric variables in our dataset using a combination of functions in a single line.
 We will exclude the 12th column as this is the ca column.
@@ -313,6 +320,7 @@ round(cor(mydata$trestbps, mydata[,cont], method="spearman",use="pairwise.comple
 ## [1,] 0.27 0.21   -0.07        1     0.2
 ~~~
 {: .output}
+
 
 The correlation between BPS and BPS is 1, as this "relationship" is completely linear.
 

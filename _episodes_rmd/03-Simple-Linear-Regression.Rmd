@@ -115,22 +115,14 @@ the data.
 
 ![RStudio layout](../fig/03-fig2.png)
 
-The sum of squares for the red sloped line is
+The sum of squares for the red sloped line is (2 - 1)<sup>2</sup> + (4 - 2)<sup>2</sup> + (1.5 - 3)<sup>2</sup> + (3.2 - 4)<sup>2</sup> = 7.9
 
-$$ (2 - 1)^2 + (4 - 2)^2 + (1.5 - 3)^2 + (3.2 - 4)^2 = 7.9, $$
-
-and the sum of squares for the green flat line is
-
-$$ (2 - 2.5)^2 + (4 - 2.5)^2 + (1.5 - 2.5)^2 + (3 - 2.5)^2 = 3.75. $$
+and the sum of squares for the green flat line is (2 - 2.5)<sup>2</sup> + (4 - 2.5)<sup>2</sup> + (1.5 - 2.5)<sup>2</sup> + (3 - 2.5)<sup>2</sup> = 3.75
 
 As the sum of squares for the green line is smaller, we can say it is a better 
 fit to the data.
 
-The coefficient _b_ is related to the correlation coefficient _r_.
-
-$$  r = b \frac{\text{SD}_X}{\text{SD}_Y} $$
-
-If _X_ and _Y_ are positively correlated, then the slope _b_ is positive.
+The coefficient _b_ is related to the correlation coefficient _r_: $$  r = b \frac{\text{SD}_X}{\text{SD}_Y} $$. If _X_ and _Y_ are positively correlated, then the slope _b_ is positive.
 
 ## Regression Hypothesis Test
 
@@ -144,7 +136,7 @@ from 0?
 * H<sub>0</sub>: b = 0 (no linear relationship)
 * H<sub>1</sub>: b ≠ 0 (linear relationship)
 
-**Test of Significance**: $$T = \hat b\ / \text{SE}(\hat b)$$
+**Test of Significance**: $$T = \hat{b}\ / \text{SE}(\hat{b})$$
 
 **Result**: p-value significant or not
 
@@ -174,7 +166,7 @@ These assumptions can be considered criteria that should be met before drawing i
 
 The residual e<sub>i</sub> of the i<sup>th</sup> observation is the difference between the observed dependent variable value Y<sub>i</sub> and the predicted value for the value of the independent variable(s) X<sub>i</sub>,
 
-$$ e_i = Y_i - \hat Y_i = Y_i - (a + bX_i). $$
+$$ e_i = Y_i - \hat{Y}_i = Y_i - (a + bX_i) $$
 
 ## Coefficient of Determination
 
@@ -184,11 +176,7 @@ The most general definition of the coefficient of determination is
 
 $$ R^2 = 1 - \frac{SS_{res}}{SS_{tot}} $$
 
-where _SS<sub>res</sub> is the sum of the squares of the residuals as defined above and _SS<sub>tot</sub>_ is the total sum of squares,
-
-$$ SS_{tot} = \sum_i (Y_i - \bar Y)^2, $$
-
-which is proportional to the variance of the dependent variable.
+where _SS<sub>res</sub> is the sum of the squares of the residuals as defined above and _SS<sub>tot</sub>_ is the total sum of squares $$ SS_{tot} = \sum_i (Y_i - \bar Y)^2 $$ which is proportional to the variance of the dependent variable.
 
 ## Example - Cigarettes and Coronary Heart Disease
 
@@ -225,13 +213,9 @@ Cig. | CHD
 
 ![RStudio layout](../fig/03-fig4.png)
 
-As a reminder, the linear regression equation is
+As a reminder, the linear regression equation is $$ \hat Y = a + bX  $$
 
-$$ \hat Y = a + bX  $$
-
-In this example, _Y_ is the CHD mortality rate (CHD) and _X_ is the average number of cigarettes smoked per adult per day (CigCons), so the equation is
-
-$$ \text{CHD}_{\text{pred}} = a + b \times \text{CigsCons} + e $$
+In this example, _Y_ is the CHD mortality rate (CHD) and _X_ is the average number of cigarettes smoked per adult per day (CigCons), so the equation is $$ \text{CHD}_{\text{pred}} = a + b \times \text{CigsCons} + e $$
 
 The intercept _a_ represents the predicted CHD mortality rate in a nation where the average number of cigarettes smoked per adult per day is zero.
 The slope _b_ represents the rate of increase of CHD mortality rate for each unit increase in the average number of cigarettes smoked per adult per day.
@@ -272,7 +256,7 @@ For one observation, there was a CHD mortality of 23 deaths per 10,000 with the 
 Our prediction for the same cigarette consumption level was 14.61 deaths per 10,000, and so the residual for this observation is 23 - 14.61 = 8.39.
 
 For this model, we obtained an _R_ value of 0.71.
-Squaring this, we get _R<sup>2</sup>_ = 0.51$, and so we find that almost 50% of the variability of incidence of CHD mortality is associated with variability in smoking rates.
+Squaring this, we get _R<sup>2</sup>_ = 0.51, and so we find that almost 50% of the variability of incidence of CHD mortality is associated with variability in smoking rates.
 
 ## Linear Regression R Functions
 

@@ -12,7 +12,8 @@ questions:
 objectives:
 - "Understand theory of linear regression."
 - "Use linear regression on our dataset."
-- "Check the model diagnostics to ensure the data meets the assumptions of linear regression."
+- "Check the model diagnostics to ensure the data meets the assumptions of 
+linear regression."
 keypoints:
 - 
 output: html_document
@@ -24,84 +25,85 @@ output: html_document
 </script>
 
 
-Regression analysis is used to describe the relationship between a single dependent variable _Y_ (also called the outcome) and one or more independent 
-variables _X<sub>1</sub>, X<sub>2</sub>, ..., X<sub>p</sub>_ (also called the predictors).
-The case of one independent variable, i.e. _p_=1, is known as simple regression and the case where _p_>1 is known as multiple regression.
+
+
+Regression analysis is used to describe the relationship between a single 
+dependent variable _Y_ (also called the outcome) and one or more independent 
+variables _X<sub>1</sub>, X<sub>2</sub>, ..., X<sub>p</sub>_ (also called the 
+predictors).
+The case of one independent variable, i.e. _p_=1, is known as simple regression 
+and the case where _p_>1 is known as multiple regression.
 
 ## Simple Linear Regression
 
-In simple linear regression, the aim is to predict the dependent variable _Y_ based on a given value of the independent variable _X_ using a linear 
+In simple linear regression, the aim is to predict the dependent variable _Y_ 
+based on a given value of the independent variable _X_ using a linear 
 relationship. This relationship is described by the following equation:
 
 _Y = a + bX + e_
 
-where _a_ is the intercept, i.e. the value of _Y_ when _X=0_, and _b_ is the regression coefficient, i.e. the slope of the line.
-_e_ represents an additive residual term (error) that accounts for random statistical noise or the effect of unobserved independent variables not included 
+where _a_ is the intercept (the value of _Y_ when _X=0_) and _b_ is the 
+regression coefficient (the slope of the line).
+_e_ represents an additive residual term (error) that accounts for random 
+statistical noise or the effect of unobserved independent variables not included 
 in the model.
 
-In simple linear regression, we wish to find the values of _a_ and _b_ that best describe the relationship given by the data.
+In simple linear regression, we wish to find the values of _a_ and _b_ that best 
+describe the relationship given by the data.
 
-This objective can be thought of as drawing a straight line that best fits the plotted data points.
+This objective can be thought of as drawing a straight line that best fits the 
+plotted data points.
 The line can then be used to predict Y from X.
 
 ![RStudio layout](../fig/03-fig1.png)
 
 ## Least Squares Estimation
 
-Ordinary least squares (OLS) is a common method used to determine values of _a_ and _b_ through minimising the sum of the squares of the residuals, which 
-can be described mathematically as the problem
+Ordinary least squares (OLS) is a common method used to determine values of _a_
+and _b_ through minimising the sum of the squares of the residuals, which can be 
+described mathematically as the problem $$ \min_{a,b} \sum_i (Y_i - (a + bX_i))^2 $$
 
-$$ \min_{a,b} \sum_i (Y_i - (a + bX_i))^2 $$
+Solving through calculus, the solution to this problem is $$ \hat{b} = \frac{\sum_i (x_i - \bar x) (y_i - \bar y)}{\sum_i (x_i - \bar x)^2} $$ and $$ \hat{a} = \bar y - \hat{b} \bar x $$ .
 
-Solving through calculus, the solution to this problem is
-
-$$ \hat b = \frac{\sum_i (x_i - \bar x) (y_i - \bar y)}{\sum_i (x_i - \bar x)^2} $$
-
-and
-
-$$ \hat{a} = \bar y - \hat{b} \bar x. $$
-
-In the figure below, we have four observations and two lines attempting to fit the data.
+In the figure below, we have four observations and two lines attempting to fit 
+the data.
 
 ![RStudio layout](../fig/03-fig2.png)
 
-The sum of squares for the red sloped line is (2-1)<sup>2</sup> + (4 - 2)<sup>2</sup> + (1.5 - 3)<sup>2</sup> + (3.2 - 4)<sup>2</sup> = 7.9
+The sum of squares for the red sloped line is (2 - 1)<sup>2</sup> + (4 - 2)<sup>2</sup> + (1.5 - 3)<sup>2</sup> + (3.2 - 4)<sup>2</sup> = 7.9
 
-$$ (2 - 1)^2 + (4 - 2)^2 + (1.5 - 3)^2 + (3.2 - 4)^2 = 7.9 $$
+and the sum of squares for the green flat line is (2 - 2.5)<sup>2</sup> + (4 - 2.5)<sup>2</sup> + (1.5 - 2.5)<sup>2</sup> + (3 - 2.5)<sup>2</sup> = 3.75
 
-and the sum of squares for the green flat line is
+As the sum of squares for the green line is smaller, we can say it is a better 
+fit to the data.
 
-$$ (2 - 2.5)^2 + (4 - 2.5)^2 + (1.5 - 2.5)^2 + (3 - 2.5)^2 = 3.75 $$
-
-As the sum of squares for the green line is smaller, we can say it is a better fit to the data.
-
-The coefficient _b_ is related to the correlation coefficient _r_.
-
-$$  r = b \frac{\text{SD}_X}{\text{SD}_Y} $$
-
-If _X_ and _Y_ are positively correlated, then the slope _b_ is positive.
+The coefficient _b_ is related to the correlation coefficient _r_: $$  r = b \frac{\text{SD}_X}{\text{SD}_Y} $$. If _X_ and _Y_ are positively correlated, then the slope _b_ is positive.
 
 ## Regression Hypothesis Test
 
-We can estimate the most suitable values for our model, but how can we be confident that we have indeed found a significant linear relationship?
-We can perform a hypothesis test that asks: Is the slope significantly different from 0?
+We can estimate the most suitable values for our model, but how can we be 
+confident that we have indeed found a significant linear relationship?
+We can perform a hypothesis test that asks: Is the slope significantly different 
+from 0?
 
 **Hypothesis**
 
 * H<sub>0</sub>: b = 0 (no linear relationship)
 * H<sub>1</sub>: b ≠ 0 (linear relationship)
 
-**Test of Significance**: $$T = \hat b\ / \text{SE}(\hat b)$$
+**Test of Significance**: $$T = \hat{b}\ / \text{SE}(\hat{b})$$
 
 **Result**: p-value significant or not
 
-**Conclusion**: If p-value is significant, then the slope is different from 0 and there is a significant linear relationship.
+**Conclusion**: If p-value is significant, then the slope is different from 0 
+and there is a significant linear relationship.
 
 ## Standard Error
 
-The standard error of Y given X is the average variability around the regression line at any given value of X.
-It is assumed to be equal at all values of X.
-Each observed residual can be thought of as an estimate of the actual unknown "true error" term.
+The standard error of Y given X is the average variability around the regression 
+line at any given value of X. It is assumed to be equal at all values of X.
+Each observed residual can be thought of as an estimate of the actual unknown 
+"true error" term.
 
 ![RStudio layout](../fig/03-fig3.png)
 
@@ -117,10 +119,9 @@ There are four assumptions associated with using linear models:
 
 These assumptions can be considered criteria that should be met before drawing inferences from the fitted model or using it to make predictions.
 
-The residual e<sub>i</sub> of the i<sup>th</sup> observation is the difference between the observed dependent variable value Y<sub>i</sub> and the 
-predicted value for the value of the independent variable(s) X<sub>i</sub>
+The residual e<sub>i</sub> of the i<sup>th</sup> observation is the difference between the observed dependent variable value Y<sub>i</sub> and the predicted value for the value of the independent variable(s) X<sub>i</sub>,
 
-$$ e_i = Y_i - \hat Y_i = Y_i - (a + bX_i) $$
+$$ e_i = Y_i - \hat{Y}_i = Y_i - (a + bX_i) $$
 
 ## Coefficient of Determination
 
@@ -130,11 +131,7 @@ The most general definition of the coefficient of determination is
 
 $$ R^2 = 1 - \frac{SS_{res}}{SS_{tot}} $$
 
-where _SS<sub>res</sub> is the sum of the squares of the residuals as defined above and _SS<sub>tot</sub>_ is the total sum of squares,
-
-$$ SS_{tot} = \sum_i (Y_i - \bar Y)^2 $$
-
-which is proportional to the variance of the dependent variable.
+where _SS<sub>res</sub> is the sum of the squares of the residuals as defined above and _SS<sub>tot</sub>_ is the total sum of squares $$ SS_{tot} = \sum_i (Y_i - \bar Y)^2 $$ which is proportional to the variance of the dependent variable.
 
 ## Example - Cigarettes and Coronary Heart Disease
 
@@ -171,13 +168,9 @@ Cig. | CHD
 
 ![RStudio layout](../fig/03-fig4.png)
 
-As a reminder, the linear regression equation is
+As a reminder, the linear regression equation is $$ \hat Y = a + bX  $$
 
-$$ \hat Y = a + bX  $$
-
-In this example, _Y_ is the CHD mortality rate (CHD) and _X_ is the average number of cigarettes smoked per adult per day (CigCons), so the equation is
-
-$$ \text{CHD}_{\text{pred}} = a + b \times \text{CigsCons} + e $$
+In this example, _Y_ is the CHD mortality rate (CHD) and _X_ is the average number of cigarettes smoked per adult per day (CigCons), so the equation is $$ \text{CHD}_{\text{pred}} = a + b \times \text{CigsCons} + e $$
 
 The intercept _a_ represents the predicted CHD mortality rate in a nation where the average number of cigarettes smoked per adult per day is zero.
 The slope _b_ represents the rate of increase of CHD mortality rate for each unit increase in the average number of cigarettes smoked per adult per day.
@@ -218,7 +211,7 @@ For one observation, there was a CHD mortality of 23 deaths per 10,000 with the 
 Our prediction for the same cigarette consumption level was 14.61 deaths per 10,000, and so the residual for this observation is 23 - 14.61 = 8.39.
 
 For this model, we obtained an _R_ value of 0.71.
-Squaring this, we get _R<sup>2</sup>_ = 0.51$, and so we find that almost 50% of the variability of incidence of CHD mortality is associated with variability in smoking rates.
+Squaring this, we get _R<sup>2</sup>_ = 0.51, and so we find that almost 50% of the variability of incidence of CHD mortality is associated with variability in smoking rates.
 
 ## Linear Regression R Functions
 
@@ -504,6 +497,7 @@ qqnorm(resid(model1))
 
 Or, we can use R's built-in diagnostic plotting with the `plot` function.
 
+
 ```r
 par(mfrow=c(2,2))
 plot(model1)
@@ -616,21 +610,20 @@ qqPlot(model1, main="QQ Plot")
 ```
 ![RStudio layout](../fig/03-fig17.png)
 
-
 `outlierTest` tests for outliers and prints a p-value for the most extreme outlier.
+
 
 ```r
 outlierTest(model1)
 ```
 
 ~~~
-## No Studentized residuals with Bonferroni p < 0.05
-## Largest |rstudent|:
-##    rstudent unadjusted p-value Bonferroni p
-## 15  2.84362          0.0054398      0.54398
+No Studentized residuals with Bonferroni p < 0.05
+Largest |rstudent|:
+   rstudent unadjusted p-value Bonferroni p
+15  2.84362          0.0054398      0.54398
 ~~~
 {: .output}
-
 
 In this case, we observe no significant outliers.
 
@@ -694,7 +687,6 @@ wilcox.test(data$trestbps~data$sex)
 ~~~
 {: .output}
 
-
 The p-value of approximately 0.08 indicates that male's and female's systolic blood pressure are not significantly different.
 
 Now, let’s run a regression model to test the relationship between SBP and sex when SBP is considered as the outcome variable.
@@ -727,14 +719,12 @@ summary(model_sex)
 ~~~
 {: .output}
 
-
 In this model, the first level of sex has been taken as reference (Females).
 We can think of females being assigned a value of 0 in the linear model and males a value of 1.
 Therefore, the model estimates that females, on average, have a systolic blood pressure of __136.76__, and for males __136.76 - 5.07 = 131.69__.
 However, we see that the p-value for the sex effect is not significant, and so we can conclude that there is no difference in SBP between men and women.
 
 Again, we can view and report the confidence intervals for the model coefficients for the model using `confint`.
-
 
 ```r
 confint(model_sex)
@@ -747,7 +737,6 @@ confint(model_sex)
 ~~~
 {: .output}
 
-
 And we can check the assumptions of the model by plotting the model diagnostics.
 
 
@@ -755,7 +744,9 @@ And we can check the assumptions of the model by plotting the model diagnostics.
 par(mfrow=c(2,2))
 plot(model_sex)
 ```
-![RStudio layout](../fig/03-fig18\9.png)
+![RStudio layout](../fig/03-fig19.png)
+~~~
+{: .output}
 
 Intepreting these model diagnostics is a bit harder, as we are using a binary predictor and thus only fitted values for the entire dataset.
 

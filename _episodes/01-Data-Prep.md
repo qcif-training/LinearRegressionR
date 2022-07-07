@@ -15,6 +15,12 @@ keypoints:
 output: html_document
 ---
 
+<script
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+  type="text/javascript">
+</script>
+
+
 
 
 # Introduction to RStudio
@@ -137,9 +143,11 @@ data <- read.csv("data/data.csv",sep=",", header=TRUE)
 dim(data)
 ```
 
-```
+~~~
 ## [1] 100  14
-```
+~~~
+{: .output}
+
 
 From this we know that we have 100 rows, or observations, and 14 columns, or variables (1 ID variable and 13 measurement variables).
 
@@ -155,7 +163,7 @@ We can use the `str` function to look at the first few observations for each var
 str(data)
 ```
 
-```
+~~~
 ## 'data.frame':	100 obs. of  14 variables:
 ##  $ ID      : int  1 2 3 4 5 6 7 8 9 10 ...
 ##  $ age     : int  63 67 67 37 41 56 62 57 63 53 ...
@@ -171,7 +179,9 @@ str(data)
 ##  $ ca      : int  0 3 2 0 0 0 2 0 1 0 ...
 ##  $ class   : int  0 2 1 0 0 0 3 0 2 1 ...
 ##  $ cp      : int  1 4 4 3 2 2 4 4 4 4 ...
-```
+~~~
+{: .output}
+
 
 Using the `summary` function, we can view some information about each variable.
 
@@ -180,7 +190,7 @@ Using the `summary` function, we can view some information about each variable.
 summary(data)
 ```
 
-```
+~~~
 ##        ID              age             sex            chol            fbs      
 ##  Min.   :  1.00   Min.   :37.00   Min.   :0.00   Min.   :141.0   Min.   :0.00  
 ##  1st Qu.: 25.75   1st Qu.:48.75   1st Qu.:0.00   1st Qu.:215.2   1st Qu.:0.00  
@@ -202,7 +212,9 @@ summary(data)
 ##  Mean   :1.61   Mean   :0.59   Mean   :0.85   Mean   :3.18  
 ##  3rd Qu.:2.00   3rd Qu.:1.00   3rd Qu.:1.00   3rd Qu.:4.00  
 ##  Max.   :3.00   Max.   :3.00   Max.   :4.00   Max.   :4.00
-```
+~~~
+{: .output}
+
 
 We can see that the categorical variables such as sex, slope and class are being treated as numerical data.
 We can fix this by setting these categorical variables as factors.
@@ -238,7 +250,7 @@ Running `summary` on the data again, now with the correct types, will give us th
 summary(data)
 ```
 
-```
+~~~
 ##        ID          age            sex          chol         fbs    
 ##  1      : 1   Min.   :37.00   Female:29   Min.   :141.0   <120:87  
 ##  2      : 1   1st Qu.:48.75   Male  :71   1st Qu.:215.2   >120:13  
@@ -263,6 +275,8 @@ summary(data)
 ##                    3rd Qu.:1.00                                        
 ##                    Max.   :3.00                                        
 ## 
-```
+~~~
+{: .output}
+
 
 We can now use this data in our analyses!

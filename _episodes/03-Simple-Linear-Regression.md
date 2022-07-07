@@ -59,7 +59,7 @@ $$ \hat b = \frac{\sum_i (x_i - \bar x) (y_i - \bar y)}{\sum_i (x_i - \bar x)^2}
 
 and
 
-$$ \hat a = \bar y - \hat b \bar x. $$
+$$ \hat{a} = \bar y - \hat{b} \bar x. $$
 
 In the figure below, we have four observations and two lines attempting to fit the data.
 

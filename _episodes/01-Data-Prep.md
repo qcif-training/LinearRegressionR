@@ -65,7 +65,7 @@ An example of using comments to describe code is shown below.
 > We have a few options for running the code:
 >
 > * click on the Run button above the editor panel, or
-> * hit Ctrl+Return (⌘+Returnals  works if you are using OS X)
+> * hit Ctrl+Return (⌘+Return also works if you are using OS X)
 > 
 > If you edit a segment of code after running it and want to quickly re-run the segment, you can press the button to the right of the Run button above the editor panel to re-run the previous code region.
 {: .callout}
@@ -134,7 +134,7 @@ dim(data)
 {: .output}
 
 
-From this we know that we have 100 rows (observations) and 14 columns (variables): 1 identification variable and 13 measurement variables.
+From this we know that we have 100 rows (observations) and 14 columns (variables): 1 identification variable and 13 measurement variables. 
 
 > ## Tip: stringsAsFactors
 >
@@ -166,7 +166,6 @@ str(data)
 ##  $ cp      : int  1 4 4 3 2 2 4 4 4 4 ...
 ~~~
 {: .output}
-
 
 Using the `summary` function, we can view some information about each variable.
 
@@ -200,14 +199,11 @@ summary(data)
 ~~~
 {: .output}
 
-
 # Recoding Variables
 
-Looking at the `summary` output, we can see that the categorical variables such as sex, slope and class are being treated as numerical data. We can fix 
-this by setting these categorical variables as factors.
+Looking at the `summary` output, we can see that the categorical variables such as sex, slope and class are being treated as numerical data. We can fix this by setting these categorical variables as factors.
 
-To do this, we can use `as.factor` on each of the categorical columns in our data frame, specifying 
-the levels and labels of each variable as arguments.
+To do this, we can use `as.factor` on each of the categorical columns in our data frame, specifying the levels and labels of each variable as arguments.
 
 
 ```r
@@ -263,6 +259,5 @@ summary(data)
 ## 
 ~~~
 {: .output}
-
 
 We can now use this data in our analyses!

@@ -122,7 +122,7 @@ and the sum of squares for the green flat line is (2 - 2.5)<sup>2</sup> + (4 - 2
 As the sum of squares for the green line is smaller, we can say it is a better 
 fit to the data.
 
-The coefficient _b_ is related to the correlation coefficient _r_: $$  r = b \frac{\text{SD}_X}{\text{SD}_Y} $$. If _X_ and _Y_ are positively correlated, then the slope _b_ is positive.
+The coefficient _b_ is related to the correlation coefficient $$  r = b \frac{\text{SD}_X}{\text{SD}_Y} $$. If _X_ and _Y_ are positively correlated, then the slope _b_ is positive.
 
 ## Regression Hypothesis Test
 

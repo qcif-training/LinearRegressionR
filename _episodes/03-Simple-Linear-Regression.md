@@ -77,7 +77,7 @@ and the sum of squares for the green flat line is (2 - 2.5)<sup>2</sup> + (4 - 2
 As the sum of squares for the green line is smaller, we can say it is a better 
 fit to the data.
 
-The coefficient _b_ is related to the correlation coefficient _r_: $$  r = b \frac{\text{SD}_X}{\text{SD}_Y} $$. If _X_ and _Y_ are positively correlated, then the slope _b_ is positive.
+The coefficient _b_ is related to the correlation coefficient $$  r = b \frac{\text{SD}_X}{\text{SD}_Y} $$. If _X_ and _Y_ are positively correlated, then the slope _b_ is positive.
 
 ## Regression Hypothesis Test
 
@@ -264,7 +264,6 @@ summary(model1)
 ~~~
 {: .output}
 
-
 Under the Coefficients heading, we can view information about the predicted variables and their significance.
 We see that age has a significant effect on SBP ($p = 0.00139$) and for each year increase in age there is a 0.60 unit increase in SBP level.
 
@@ -282,7 +281,6 @@ confint(model1)
 ~~~
 {: .output}
 
-
 We can interpret the 95% confidence interval for the relationship with age as: We can be 95% confident that the range 0.24 to 0.97 contains the true value of the linear relationship between age and SBP.
 
 The `coefficients` function gives us the model coefficients, as outputted by `summary`.
@@ -297,7 +295,6 @@ coefficients(model1)
 ## 100.1065749   0.6039361
 ~~~
 {: .output}
-
 
 `fitted` gives us the predicted SBP values for each value of age in our data set.
 
@@ -335,7 +332,6 @@ fitted(model1)
 ## 135.7388 136.3427 131.5113 129.0955
 ~~~
 {: .output}
-
 
 `resid` gives the residuals for each observation in our data set.
 
@@ -381,7 +377,6 @@ resid(model1)
 ## -25.7388073  13.6572565   2.4887457  -7.0955098
 ~~~
 {: .output}
-
 
 By using `abline` with our model after plotting a scatter plot, we can plot the estimated regression line over our data.
 
@@ -441,7 +436,6 @@ predict(model1, int="c")
 ...
 ~~~
 {: .output}
-
 
 Note that when we have a model fitted using `lm`, the `predict` and `fitted` functions give the same predicted values.
 
@@ -559,7 +553,6 @@ bptest(model1, ~ age, data = data, studentize = FALSE)
 ~~~
 {: .output}
 
-
 For the Breusch-Godfrey test for higher-order serial correlation, the null hypothesis is the residuals are independent.
 
 
@@ -576,7 +569,6 @@ bgtest(model1, order = 1, order.by = NULL, type = c("Chisq", "F"), data = list()
 ## LM test = 0.41755, df = 1, p-value = 0.5182
 ~~~
 {: .output}
-
 
 For the Goldfeld-Quandt test against heteroscedasticity, the null hypothesis is the errors are homoscedastic (equal variance).
 
@@ -596,7 +588,6 @@ gqtest(model1, point = 0.5, fraction = 0, alternative = c("greater", "two.sided"
 ## alternative hypothesis: variance increases from segment 1 to 2
 ~~~
 {: .output}
-
 
 Each of these tests show that the models assumptions are met.
 
@@ -623,7 +614,7 @@ Largest |rstudent|:
    rstudent unadjusted p-value Bonferroni p
 15  2.84362          0.0054398      0.54398
 ~~~
-{: .output}
+{:output}
 
 In this case, we observe no significant outliers.
 
@@ -667,7 +658,6 @@ by(data$trestbps,data$sex, shapiro.test)
 ## W = 0.94999, p-value = 0.006713
 ~~~
 {: .output}
-
 
 We see here that there is significant evidence that the male dataset is non-normally distributed, and so we cannot use a t-test to determine if the means are different.
 The Wilcoxon rank sum test, given by `wilcox.test` in R, is a non-parametric alternative to the unpaired two-samples t-test.
@@ -726,6 +716,7 @@ However, we see that the p-value for the sex effect is not significant, and so w
 
 Again, we can view and report the confidence intervals for the model coefficients for the model using `confint`.
 
+
 ```r
 confint(model_sex)
 ```
@@ -745,8 +736,6 @@ par(mfrow=c(2,2))
 plot(model_sex)
 ```
 ![RStudio layout](../fig/03-fig19.png)
-~~~
-{: .output}
 
 Intepreting these model diagnostics is a bit harder, as we are using a binary predictor and thus only fitted values for the entire dataset.
 

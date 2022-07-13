@@ -52,7 +52,7 @@ Along with a few familiar assumptions from multiple regression (normality of res
 
 ### Sample Size
 
-The sample size should be at least 10 or 20 times the number of independent variables (n>>p) otherwise the estimates of the regression are unstable.
+The sample size should be at least 10 or 20 times the number of independent variables ($$n >> p$$) otherwise the estimates of the regression are unstable.
 
 ### Multicollinearity
 
@@ -68,14 +68,15 @@ A common approach that controls over fitting by keeping the number of predictors
 
 We start with the one predictor that explains the most predicted variance (i.e. has the highest correlation coefficient with the outcome). Next, the most statistically significant predictors is to the model. The process is repeated until no remaining predictor has a statistically significant correlation with the outcome.
 
-Similarly to simple linear regression, the coefficient of determination ($R^2$) indicates the percent of variance in the dependant variable explained by combined effects of the independent variables.
+Similarly to simple linear regression, the coefficient of determination ($$R^2$$) indicates the percent of variance in the dependant variable explained by 
+combined effects of the independent variables.
 The adjusted $$R^2$$ is used for estimating explained variance in a population (not just the sample) when the sample size is small.
 
 ### Outliers
 
 Outliers are observations with extreme values that differ greatly from the rest of your sample.
 
-Even a few outliers can dramatically change estimates of the slope, $b$.
+Even a few outliers can dramatically change estimates of the slope, $$b$$.
 
 The figure below shows an example dataset with an outlier.
 

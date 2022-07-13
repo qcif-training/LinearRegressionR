@@ -86,14 +86,14 @@ A common approach that controls over fitting by keeping the number of predictors
 
 We start with the one predictor that explains the most predicted variance (i.e. has the highest correlation coefficient with the outcome). Next, the most statistically significant predictors is to the model. The process is repeated until no remaining predictor has a statistically significant correlation with the outcome.
 
-Similarly to simple linear regression, the coefficient of determination ($R^2$) indicates the percent of variance in the dependant variable explained by combined effects of the independent variables.
+Similarly to simple linear regression, the coefficient of determination ($$R^2$$) indicates the percent of variance in the dependant variable explained by combined effects of the independent variables.
 The adjusted $$R^2$$ is used for estimating explained variance in a population (not just the sample) when the sample size is small.
 
 ### Outliers
 
 Outliers are observations with extreme values that differ greatly from the rest of your sample.
 
-Even a few outliers can dramatically change estimates of the slope, $b$.
+Even a few outliers can dramatically change estimates of the slope, $$b$$.
 
 The figure below shows an example dataset with an outlier.
 
@@ -344,7 +344,7 @@ plot(result2)
 ![RStudio layout](../fig/04-fig10.png)
 
 The variance of the residuals appears constant and the distribution of the residuals appear normal.
-However, despite adding more variables, this model explains 12% variability ($R^2 = 0.117$) in the outcome as compared to 13% from the other model.
+However, despite adding more variables, this model explains 12% variability ($$R^2 = 0.117$$) in the outcome as compared to 13% from the other model.
 Some variables that had significant effect in the other model are now insignificant (age, sex), which limits the interpretability of the model.
 
 A more robust approach, such as stepwise or lasso regression, could be used to select the final model.

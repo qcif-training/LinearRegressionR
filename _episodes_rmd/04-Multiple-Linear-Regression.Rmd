@@ -282,10 +282,11 @@ However, we still need to check the assumptions of a multiple linear regression 
 
 ### Step 4: Checking the assumptions
 
-```{r}
+```{r, eval = FALSE}
 par(mfrow = c(2,2))
 plot(finalmodel)
 ```
+![RStudio layout](../fig/04-fig9.png)
 
 Here, we observe that the variance of the residuals seems constant and the distribution of the residuals appears to be normal.
 To measure multicolinearity, we can use the `vif` function from the `cars` package.
@@ -306,9 +307,9 @@ An alternative approach is to simply include all variables determined to be impo
 First, we select all variables of interest and fit the model.
 
 ```{r}
-Select<-c("ID", "age", "sex", "chol", "trestbps", "fbs", "thalach")
+selection <- c("ID", "age", "sex", "chol", "trestbps", "fbs", "thalach")
 
-select_data <- data[,Select]
+select_data <- data[, selection]
 rownames(select_data) <- select_data$ID
 select_data <- select_data[,-1]
 
@@ -335,10 +336,12 @@ As there are no values above 5, there appears to be no evidence of multicolinear
 
 Next, we check the other assumptions.
 
-```{r}
+```{r, eval = FALSE}
 par(mfrow = c(2,2))
 plot(result2)
 ```
+
+![RStudio layout](../fig/04-fig10.png)
 
 The variance of the residuals appears constant and the distribution of the residuals appear normal.
 However, despite adding more variables, this model explains 12% variability ($R^2 = 0.117$) in the outcome as compared to 13% from the other model.
@@ -406,9 +409,10 @@ summary(plasma)
 
 Let's view a histogram of the plasma beta-carotene variable.
 
-```{r}
+```{r, eval = FALSE}
 hist(plasma$betaplasma)
 ```
+![RStudio layout](../fig/04-fig11.png)
 
 This doesn't appear to be normally distributed, which may affect the performance of our model.
 We can check this using the Shapiro-Wilk normality test.
@@ -420,7 +424,7 @@ shapiro.test(plasma$betaplasma)
 This tiny p-value suggests it is incredibly unlikely that the data is normally distributed.
 However, the data is right-skewed, as shown below, which could mean that the data is log-normally distributed.
 
-![RStudio layout](../fig/04-fig9.png)
+![RStudio layout](../fig/04-fig12.png)
 
 Under this distribution, the logarithm of the data is normally distributed.
 
@@ -440,9 +444,14 @@ $$ x_{\text{trans}} = x^2 $$
 
 Using the `log` function, we will create a new variable for plasma beta-carotene with a log-transformation applied and plot a histogram for this new variable.
 
-```{r}
+```{r, eval = FALSE}
 plasma$logbetaplasma <- log(plasma$betaplasma + 1)
 hist(plasma$logbetaplasma)
+```
+![RStudio layout](../fig/04-fig13.png)
+
+```{r, include = FALSE}
+plasma$logbetaplasma <- log(plasma$betaplasma + 1)
 ```
 
 ### Checking for correlations
@@ -505,10 +514,11 @@ summary(finalmodel_raw)
 
 Finally, as always, we will check if the model meets the assumptions of multiple linear regression.
 
-```{r}
+```{r, eval = FALSE}
 par(mfrow = c(2,2))
 plot(finalmodel_raw)
 ```
+![RStudio layout](../fig/04-fig14.png)
 
 Here, we observe non-constant residual variance and deviation of residuals from normality.
 Let's refit a model using the log-transformed plasma beta-carotene.
@@ -558,10 +568,11 @@ From reading the summary, we can see:
 
 Let's take a look at our diagnostic plots.
 
-```{r}
+```{r, eval = FALSE}
 par(mfrow = c(2,2))
 plot(finalmodel)
 ```
+![RStudio layout](../fig/04-fig15.png)
 
 The residuals look much better with the transformation, however, observation 257 appears to be an outlier.
 Let's look at the data to see if there's anything strange.
@@ -596,7 +607,8 @@ summary(res)
 
 Finally, checking the model plot diagnostics, we see that this model does not appear to violate any assumptions of multiple linear regression.
 
-```{r}
+```{r, eval = FALSE}
 par(mfrow = c(2,2))
 plot(res)
 ```
+![RStudio layout](../fig/04-fig16.png)

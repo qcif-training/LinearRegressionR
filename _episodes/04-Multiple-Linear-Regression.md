@@ -469,7 +469,7 @@ par(mfrow = c(2,2))
 plot(finalmodel)
 ```
 
-![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10-1.png)
+![RStudio layout](../fig/04-fig9.png)
 
 Here, we observe that the variance of the residuals seems constant and the distribution of the residuals appears to be normal.
 To measure multicolinearity, we can use the `vif` function from the `cars` package.
@@ -482,7 +482,8 @@ library(car)
 car::vif(finalmodel)
 ```
 
-~~~##    age    fbs 
+~~~
+##    age    fbs 
 ## 1.0469 1.0469
 ~~~
 {: .output}
@@ -582,7 +583,7 @@ par(mfrow = c(2,2))
 plot(result2)
 ```
 
-![plot of chunk unnamed-chunk-14](figure/unnamed-chunk-14-1.png)
+![RStudio layout](../fig/04-fig10.png)
 
 The variance of the residuals appears constant and the distribution of the residuals appear normal.
 However, despite adding more variables, this model explains 12% variability ($R^2 = 0.117$) in the outcome as compared to 13% from the other model.
@@ -715,7 +716,7 @@ Let's view a histogram of the plasma beta-carotene variable.
 hist(plasma$betaplasma)
 ```
 
-![plot of chunk unnamed-chunk-19](figure/unnamed-chunk-19-1.png)
+![RStudio layout](../fig/04-fig11.png)
 
 This doesn't appear to be normally distributed, which may affect the performance of our model.
 We can check this using the Shapiro-Wilk normality test.
@@ -737,7 +738,7 @@ shapiro.test(plasma$betaplasma)
 This tiny p-value suggests it is incredibly unlikely that the data is normally distributed.
 However, the data is right-skewed, as shown below, which could mean that the data is log-normally distributed.
 
-![RStudio layout](../fig/04-fig9.png)
+![RStudio layout](../fig/04-fig12.png)
 
 Under this distribution, the logarithm of the data is normally distributed.
 
@@ -763,7 +764,7 @@ plasma$logbetaplasma <- log(plasma$betaplasma + 1)
 hist(plasma$logbetaplasma)
 ```
 
-![plot of chunk unnamed-chunk-21](figure/unnamed-chunk-21-1.png)
+![RStudio layout](../fig/04-fig13.png)
 
 ### Checking for correlations
 
@@ -991,7 +992,7 @@ par(mfrow = c(2,2))
 plot(finalmodel_raw)
 ```
 
-![plot of chunk unnamed-chunk-27](figure/unnamed-chunk-27-1.png)
+![RStudio layout](../fig/04-fig14.png)
 
 Here, we observe non-constant residual variance and deviation of residuals from normality.
 Let's refit a model using the log-transformed plasma beta-carotene.
@@ -1175,7 +1176,7 @@ par(mfrow = c(2,2))
 plot(finalmodel)
 ```
 
-![plot of chunk unnamed-chunk-31](figure/unnamed-chunk-31-1.png)
+![RStudio layout](../fig/04-fig15.png)
 
 The residuals look much better with the transformation, however, observation 257 appears to be an outlier.
 Let's look at the data to see if there's anything strange.
@@ -1319,4 +1320,4 @@ par(mfrow = c(2,2))
 plot(res)
 ```
 
-![plot of chunk unnamed-chunk-36](figure/unnamed-chunk-36-1.png)
+![RStudio layout](../fig/04-fig16.png)

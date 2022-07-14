@@ -70,7 +70,7 @@ Along with a few familiar assumptions from multiple regression (normality of res
 
 ### Sample Size
 
-The sample size should be at least 10 or 20 times the number of independent variables (n>>p) otherwise the estimates of the regression are unstable.
+The sample size should be at least 10 or 20 times the number of independent variables ($$n >> p$$) otherwise the estimates of the regression are unstable.
 
 ### Multicollinearity
 

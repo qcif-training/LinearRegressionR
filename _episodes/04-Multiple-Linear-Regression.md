@@ -587,7 +587,9 @@ plot(result2)
 ![RStudio layout](../fig/04-fig10.png)
 
 The variance of the residuals appears constant and the distribution of the residuals appear normal.
-However, despite adding more variables, this model explains 12% variability ($R^2 = 0.117$) in the outcome as compared to 13% from the other model.
+However, despite adding more variables, this model explains 12% variability ($$R^2 = 0.117$
+
+$) in the outcome as compared to 13% from the other model.
 Some variables that had significant effect in the other model are now insignificant (age, sex), which limits the interpretability of the model.
 
 A more robust approach, such as stepwise or lasso regression, could be used to select the final model.

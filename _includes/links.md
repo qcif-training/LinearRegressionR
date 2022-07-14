@@ -45,5 +45,5 @@
 [swc-lessons]: https://software-carpentry.org/lessons/
 [swc-releases]: https://github.com/swcarpentry/swc-releases
 [training]: https://carpentries.github.io/instructor-training/
-[workshop-repo]: https://github.com/marklcrowe/HypothesisTestingUsingR
+[workshop-repo]: https://github.com/qcif-training/LinearRegressionR/
 [yaml]: http://yaml.org/

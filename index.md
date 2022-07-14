@@ -3,27 +3,29 @@ layout: lesson
 root: .  # Is the only page that doesn't follow the pattern /:path/index.html
 permalink: index.html  # Is the only page that doesn't follow the pattern /:path/index.html
 ---
-This practical workshop will help participants to choose and use the appropriate standard statistical test for their data by introducing key concepts of inferential statistics in R. 
-Participants will learn how to compute and interpret hypothesis tests for popular statistical models such as correlation, contingency tables, chi-square test, t-test and ANOVA. 
+This workshop is designed to increase participants' understanding of statistical relationships between data. It introduces principles and methods of regression models using R, and how to interpret relationships between variables. The course covers basic principles of regression methods through to interpreting the output of statistical analyses, and also includes practical sessions giving hands-on experience with regression analysis in R.
 
-The workshop is recommended for researchers wanting to understand how to choose the right statistical test for the context/condition and how to conduct the analysis by themselves using R. 
-The workshop is relevant for all disciplines, although examples and exercises will be based around biological and clinical datasets.
+The workshop is recommended for researchers who wish to expand their skills into regression methods and who are considering using regression approaches in their research. Participants are expected to have a basic familiarity with the concepts of descriptive statistics and elementary statistical hypothesis testing.
+
+The workshop is applicable for all disciplines, although examples and exercises will be based around clinical and biological datasets. 
 
 <b>Learning Objectives</b><br>
 During the workshop, participants will learn how to:
 <ul>
-	<li>Choose the right statistical test appropriate for the data and the research questions</li>
-	<li>Carry out inferential statistics in R</li>
-	<li>Generate plots, figures and tables of hypothesis tests using specific R packages</li>
-	<li>Interpret and report the results of a range of commonly-used statistical tests</li>
+  <li>Understand the principles of linear regression methods</li>
+  <li>Identify the appropriate correlation or regression analysis for a dataset</li>
+  <li>Carry out regression analysis using R</li>
+  <li>Interpret and report on the results of that analysis</li>
+
 </ul>
 <b>Syllabus</b><br>
 Topics covered during the workshop will include:
 <ul>
-	<li>An introduction to hypothesis testing terminology</li>
-	<li>Correlation analysis between two continuous variables</li>
-	<li>Statistical tests for both categorial and continuous variables</li>
-	<li>ANOVA - testing with more than two groups</li>
+  <li>An introduction to continuous, discontinuous and categorical variables</li>
+  <li>Understanding the relationship between variables and plotting that relationship graphically</li>
+  <li>Calculating parametric and non-parametric correlation</li>
+  <li>Performing simple and multiple linear regression</li>
+  <li>Assumptions, errors, and what can go wrong in regression analysis</li>
 </ul>
 <!-- This is an html comment -->
 

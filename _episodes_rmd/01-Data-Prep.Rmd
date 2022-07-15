@@ -121,9 +121,9 @@ setwd("C:\Users\YourUserName\Downloads") # for Windows
 First, import the data into our R environment as a data frame and display its dimensions.
 
 ```{r}
-data <- read.csv("data/data.csv",sep=",", header=TRUE)
+heart <- read.csv("data/heart_disease.csv")
 
-dim(data)
+dim(heart)
 ```
 
 From this we know that we have 100 rows (observations) and 14 columns (variables): 1 identification variable and 13 measurement variables. 
@@ -136,13 +136,13 @@ From this we know that we have 100 rows (observations) and 14 columns (variables
 We can use the `str` function to look at the first few observations for each variable.
 
 ```{r}
-str(data)
+str(heart)
 ```
 
 Using the `summary` function, we can view some information about each variable.
 
 ```{r}
-summary(data)
+summary(heart)
 ```
 
 # Recoding Variables
@@ -152,27 +152,27 @@ Looking at the `summary` output, we can see that the categorical variables such 
 To do this, we can use `as.factor` on each of the categorical columns in our data frame, specifying the levels and labels of each variable as arguments.
 
 ```{r}
-data$ID <- as.factor(data$ID)
-data$sex <- factor(data$sex,levels=c(0,1), labels = c( "Female","Male"))
-data$fbs <- factor(data$fbs,levels=c(0,1), labels = c("<120", ">120"))
-data$restecg <- factor(data$restecg,levels=c(0,1,2), labels = c("Normal", "ST Abnormality", "LVH"))
-data$exang <- factor(data$exang,levels=c(0,1), labels = c("No", "Yes"))
-data$slope <- factor(data$slope,levels=c(1,2,3), labels = c("Up-sloping", "Flat", "Down-sloping"))
-data$cp <- factor(data$cp,levels=c(1,2,3,4), labels = c( "Typical angina","A-typical angina", "Non-Anginal pain", "Asymptomatic"))
+heart$ID <- as.factor(heart$ID)
+heart$sex <- factor(heart$sex,levels = c(0, 1), labels = c("Female", "Male"))
+heart$fbs <- factor(heart$fbs,levels = c(0, 1), labels = c("<120", ">120"))
+heart$restecg <- factor(heart$restecg,levels = c(0, 1, 2), labels = c("Normal", "ST Abnormality", "LVH"))
+heart$exang <- factor(heart$exang,levels = c(0, 1), labels = c("No", "Yes"))
+heart$slope <- factor(heart$slope,levels = c(1, 2, 3), labels = c("Up-sloping", "Flat", "Down-sloping"))
+heart$cp <- factor(heart$cp,levels = c(1, 2, 3, 4), labels = c("Typical angina", "Atypical angina", "Non-Anginal pain", "Asymptomatic"))
 ```
 
 For the class variable, we will merge the four levels of disease into a single "disease" factor, leaving us with a binary variable.
 
 ```{r}
-data$class <- as.factor(data$class)
-levels(data$class)[which(levels(data$class)=="0")] <- "No Disease"
-levels(data$class)[which(levels(data$class)%in%c("1","2","3","4"))] <- "Disease"
+heart$class <- as.factor(heart$class)
+levels(heart$class)[which(levels(heart$class) == "0")] <- "No Disease"
+levels(heart$class)[which(levels(heart$class) %in% c("1", "2", "3", "4"))] <- "Disease"
 ```
 
 Running `summary` on the data again, now with the correct types, will give us the correct description of the data (counts for categorical variables and a five number summary and mean for the numerical variables).
 
 ```{r}
-summary(data)
+summary(heart)
 ```
 
 We can now use this data in our analyses!

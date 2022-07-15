@@ -11,7 +11,7 @@ objectives:
 - "Introduction to RStudio"
 - "Loading the data"
 keypoints:
-- 
+-
 output: html_document
 ---
 
@@ -46,7 +46,7 @@ There are two main ways that you can run R commands or scripts within RStudio:
 2. Writing in a .R file
   * All of your code is saved for editing and later use
   * You can run as many lines as you wish at once
-  
+
 The hash symbol (#) can be used to signal text in our script file that should not be run, which are called comments.
 An example of using comments to describe code is shown below.
 
@@ -66,17 +66,17 @@ An example of using comments to describe code is shown below.
 >
 > * click on the Run button above the editor panel, or
 > * hit Ctrl+Return (⌘+Return also works if you are using OS X)
-> 
+>
 > If you edit a segment of code after running it and want to quickly re-run the segment, you can press the button to the right of the Run button above the editor panel to re-run the previous code region.
 {: .callout}
 
 > ## Tip: Getting help in R
 >
-> For help with any function in R, put a question mark before the function name to determine what arguments to use, examples and other background information. 
+> For help with any function in R, put a question mark before the function name to determine what arguments to use, examples and other background information.
 For example, running `? hist` will you a description for base R's function to generate a histogram.
 >
 > If you don't know the name of the function you want, you can use two question marks (??) to search for functions relating to a keyword (e.g. `?? histogram`)
-> 
+>
 {: .callout}
 
 # First Example - Data Dictionary
@@ -84,7 +84,7 @@ For example, running `? hist` will you a description for base R's function to ge
 Today, we will be working on two data sets throughout the day to understand correlation and linear regression in R.
 
 In our first example we will use a data set consisting of 100 individuals with 13 different measurements taken.
-This is data of medical records, vitals and clinical examinations of participants with heart disease. 
+This is data of medical records, vitals and clinical examinations of participants with heart disease.
 Descriptions of the 13 variables are given in the data dictionary below.
 
 Variable    | Description
@@ -123,9 +123,9 @@ First, import the data into our R environment as a data frame and display its di
 
 
 ```r
-data <- read.csv("data/data.csv",sep=",", header=TRUE)
+heart <- read.csv("data/heart_disease.csv")
 
-dim(data)
+dim(heart)
 ```
 
 ~~~
@@ -133,8 +133,7 @@ dim(data)
 ~~~
 {: .output}
 
-
-From this we know that we have 100 rows (observations) and 14 columns (variables): 1 identification variable and 13 measurement variables. 
+From this we know that we have 100 rows (observations) and 14 columns (variables): 1 identification variable and 13 measurement variables.
 
 > ## Tip: stringsAsFactors
 >
@@ -145,7 +144,7 @@ We can use the `str` function to look at the first few observations for each var
 
 
 ```r
-str(data)
+str(heart)
 ```
 
 ~~~
@@ -171,30 +170,30 @@ Using the `summary` function, we can view some information about each variable.
 
 
 ```r
-summary(data)
+summary(heart)
 ```
 
 ~~~
-##        ID              age             sex            chol            fbs      
-##  Min.   :  1.00   Min.   :37.00   Min.   :0.00   Min.   :141.0   Min.   :0.00  
-##  1st Qu.: 25.75   1st Qu.:48.75   1st Qu.:0.00   1st Qu.:215.2   1st Qu.:0.00  
-##  Median : 50.50   Median :55.50   Median :1.00   Median :239.0   Median :0.00  
-##  Mean   : 50.50   Mean   :54.73   Mean   :0.71   Mean   :246.5   Mean   :0.13  
-##  3rd Qu.: 75.25   3rd Qu.:60.25   3rd Qu.:1.00   3rd Qu.:270.8   3rd Qu.:0.00  
-##  Max.   :100.00   Max.   :71.00   Max.   :1.00   Max.   :417.0   Max.   :1.00  
-##     thalach         trestbps        restecg         exang        oldpeak     
-##  Min.   : 99.0   Min.   :104.0   Min.   :0.00   Min.   :0.0   Min.   :0.000  
-##  1st Qu.:142.0   1st Qu.:120.0   1st Qu.:0.00   1st Qu.:0.0   1st Qu.:0.400  
-##  Median :155.5   Median :130.0   Median :2.00   Median :0.0   Median :1.000  
-##  Mean   :152.2   Mean   :133.2   Mean   :1.14   Mean   :0.3   Mean   :1.235  
-##  3rd Qu.:165.8   3rd Qu.:140.0   3rd Qu.:2.00   3rd Qu.:1.0   3rd Qu.:1.800  
-##  Max.   :188.0   Max.   :180.0   Max.   :2.00   Max.   :1.0   Max.   :6.200  
-##      slope            ca           class            cp      
-##  Min.   :1.00   Min.   :0.00   Min.   :0.00   Min.   :1.00  
-##  1st Qu.:1.00   1st Qu.:0.00   1st Qu.:0.00   1st Qu.:3.00  
-##  Median :1.50   Median :0.00   Median :0.00   Median :3.00  
-##  Mean   :1.61   Mean   :0.59   Mean   :0.85   Mean   :3.18  
-##  3rd Qu.:2.00   3rd Qu.:1.00   3rd Qu.:1.00   3rd Qu.:4.00  
+##        ID              age             sex            chol            fbs
+##  Min.   :  1.00   Min.   :37.00   Min.   :0.00   Min.   :141.0   Min.   :0.00
+##  1st Qu.: 25.75   1st Qu.:48.75   1st Qu.:0.00   1st Qu.:215.2   1st Qu.:0.00
+##  Median : 50.50   Median :55.50   Median :1.00   Median :239.0   Median :0.00
+##  Mean   : 50.50   Mean   :54.73   Mean   :0.71   Mean   :246.5   Mean   :0.13
+##  3rd Qu.: 75.25   3rd Qu.:60.25   3rd Qu.:1.00   3rd Qu.:270.8   3rd Qu.:0.00
+##  Max.   :100.00   Max.   :71.00   Max.   :1.00   Max.   :417.0   Max.   :1.00
+##     thalach         trestbps        restecg         exang        oldpeak
+##  Min.   : 99.0   Min.   :104.0   Min.   :0.00   Min.   :0.0   Min.   :0.000
+##  1st Qu.:142.0   1st Qu.:120.0   1st Qu.:0.00   1st Qu.:0.0   1st Qu.:0.400
+##  Median :155.5   Median :130.0   Median :2.00   Median :0.0   Median :1.000
+##  Mean   :152.2   Mean   :133.2   Mean   :1.14   Mean   :0.3   Mean   :1.235
+##  3rd Qu.:165.8   3rd Qu.:140.0   3rd Qu.:2.00   3rd Qu.:1.0   3rd Qu.:1.800
+##  Max.   :188.0   Max.   :180.0   Max.   :2.00   Max.   :1.0   Max.   :6.200
+##      slope            ca           class            cp
+##  Min.   :1.00   Min.   :0.00   Min.   :0.00   Min.   :1.00
+##  1st Qu.:1.00   1st Qu.:0.00   1st Qu.:0.00   1st Qu.:3.00
+##  Median :1.50   Median :0.00   Median :0.00   Median :3.00
+##  Mean   :1.61   Mean   :0.59   Mean   :0.85   Mean   :3.18
+##  3rd Qu.:2.00   3rd Qu.:1.00   3rd Qu.:1.00   3rd Qu.:4.00
 ##  Max.   :3.00   Max.   :3.00   Max.   :4.00   Max.   :4.00
 ~~~
 {: .output}
@@ -207,56 +206,56 @@ To do this, we can use `as.factor` on each of the categorical columns in our dat
 
 
 ```r
-data$ID <- as.factor(data$ID)
-data$sex <- factor(data$sex,levels=c(0,1), labels = c( "Female","Male"))
-data$fbs <- factor(data$fbs,levels=c(0,1), labels = c("<120", ">120"))
-data$restecg <- factor(data$restecg,levels=c(0,1,2), labels = c("Normal", "ST Abnormality", "LVH"))
-data$exang <- factor(data$exang,levels=c(0,1), labels = c("No", "Yes"))
-data$slope <- factor(data$slope,levels=c(1,2,3), labels = c("Up-sloping", "Flat", "Down-sloping"))
-data$cp <- factor(data$cp,levels=c(1,2,3,4), labels = c( "Typical angina","A-typical angina", "Non-Anginal pain", "Asymptomatic"))
+heart$ID <- as.factor(heart$ID)
+heart$sex <- factor(heart$sex,levels = c(0, 1), labels = c("Female", "Male"))
+heart$fbs <- factor(heart$fbs,levels = c(0, 1), labels = c("<120", ">120"))
+heart$restecg <- factor(heart$restecg,levels = c(0, 1, 2), labels = c("Normal", "ST Abnormality", "LVH"))
+heart$exang <- factor(heart$exang,levels = c(0, 1), labels = c("No", "Yes"))
+heart$slope <- factor(heart$slope,levels = c(1, 2, 3), labels = c("Up-sloping", "Flat", "Down-sloping"))
+heart$cp <- factor(heart$cp,levels = c(1, 2, 3, 4), labels = c("Typical angina", "Atypical angina", "Non-Anginal pain", "Asymptomatic"))
 ```
 
 For the class variable, we will merge the four levels of disease into a single "disease" factor, leaving us with a binary variable.
 
 
 ```r
-data$class <- as.factor(data$class)
-levels(data$class)[which(levels(data$class)=="0")] <- "No Disease"
-levels(data$class)[which(levels(data$class)%in%c("1","2","3","4"))] <- "Disease"
+heart$class <- as.factor(heart$class)
+levels(heart$class)[which(levels(heart$class) == "0")] <- "No Disease"
+levels(heart$class)[which(levels(heart$class) %in% c("1", "2", "3", "4"))] <- "Disease"
 ```
 
 Running `summary` on the data again, now with the correct types, will give us the correct description of the data (counts for categorical variables and a five number summary and mean for the numerical variables).
 
 
 ```r
-summary(data)
+summary(heart)
 ```
 
 ~~~
-##        ID          age            sex          chol         fbs    
-##  1      : 1   Min.   :37.00   Female:29   Min.   :141.0   <120:87  
-##  2      : 1   1st Qu.:48.75   Male  :71   1st Qu.:215.2   >120:13  
-##  3      : 1   Median :55.50               Median :239.0            
-##  4      : 1   Mean   :54.73               Mean   :246.5            
-##  5      : 1   3rd Qu.:60.25               3rd Qu.:270.8            
-##  6      : 1   Max.   :71.00               Max.   :417.0            
-##  (Other):94                                                        
-##     thalach         trestbps               restecg   exang       oldpeak     
-##  Min.   : 99.0   Min.   :104.0   Normal        :43   No :70   Min.   :0.000  
-##  1st Qu.:142.0   1st Qu.:120.0   ST Abnormality: 0   Yes:30   1st Qu.:0.400  
-##  Median :155.5   Median :130.0   LVH           :57            Median :1.000  
-##  Mean   :152.2   Mean   :133.2                                Mean   :1.235  
-##  3rd Qu.:165.8   3rd Qu.:140.0                                3rd Qu.:1.800  
-##  Max.   :188.0   Max.   :180.0                                Max.   :6.200  
-##                                                                              
-##           slope          ca              class                   cp    
-##  Up-sloping  :50   Min.   :0.00   No Disease:57   Typical angina  : 7  
-##  Flat        :39   1st Qu.:0.00   Disease   :43   A-typical angina:13  
-##  Down-sloping:11   Median :0.00                   Non-Anginal pain:35  
-##                    Mean   :0.59                   Asymptomatic    :45  
-##                    3rd Qu.:1.00                                        
-##                    Max.   :3.00                                        
-## 
+##        ID          age            sex          chol         fbs
+##  1      : 1   Min.   :37.00   Female:29   Min.   :141.0   <120:87
+##  2      : 1   1st Qu.:48.75   Male  :71   1st Qu.:215.2   >120:13
+##  3      : 1   Median :55.50               Median :239.0
+##  4      : 1   Mean   :54.73               Mean   :246.5
+##  5      : 1   3rd Qu.:60.25               3rd Qu.:270.8
+##  6      : 1   Max.   :71.00               Max.   :417.0
+##  (Other):94
+##     thalach         trestbps               restecg   exang       oldpeak
+##  Min.   : 99.0   Min.   :104.0   Normal        :43   No :70   Min.   :0.000
+##  1st Qu.:142.0   1st Qu.:120.0   ST Abnormality: 0   Yes:30   1st Qu.:0.400
+##  Median :155.5   Median :130.0   LVH           :57            Median :1.000
+##  Mean   :152.2   Mean   :133.2                                Mean   :1.235
+##  3rd Qu.:165.8   3rd Qu.:140.0                                3rd Qu.:1.800
+##  Max.   :188.0   Max.   :180.0                                Max.   :6.200
+##
+##           slope          ca              class                   cp
+##  Up-sloping  :50   Min.   :0.00   No Disease:57   Typical angina  : 7
+##  Flat        :39   1st Qu.:0.00   Disease   :43   Atypical angina :13
+##  Down-sloping:11   Median :0.00                   Non-Anginal pain:35
+##                    Mean   :0.59                   Asymptomatic    :45
+##                    3rd Qu.:1.00
+##                    Max.   :3.00
+##
 ~~~
 {: .output}
 

@@ -12,35 +12,38 @@ objectives:
 - "Use multiple linear regression on our dataset."
 - "Check the model diagnostics to ensure the data meets the assumptions of multiple linear regression."
 keypoints:
-- 
+-
 output: html_document
 ---
 
 <script
-  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
-  type="text/javascript">
+  src = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config = TeX-AMS-MML_HTMLorMML"
+  type = "text/javascript">
 </script>
 
 
-```{r setup, include=FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
 library(GGally)
+library(lmtest)
+library(MASS)
+library(car)
 ```
 
-```{r, echo=FALSE}
+```{r, echo = FALSE}
 setwd("~/git/LinearRegressionR/_episodes_rmd")
-data <- read.csv("data/data.csv",sep=",", header=TRUE, stringsAsFactors = TRUE)
-data$ID <-as.factor(data$ID)
-data$sex <- factor(data$sex,levels=c(0,1), labels = c( "Female","Male"))
-data$fbs <- factor(data$fbs,levels=c(0,1), labels = c("<120", ">120"))
-data$restecg <- factor(data$restecg,levels=c(0,1,2), labels = c("Normal", "ST Abnormality", "LVH"))
-data$exang <- factor(data$exang,levels=c(0,1), labels = c("No", "Yes"))
-data$slope <- factor(data$slope,levels=c(1,2,3), labels = c("Up-sloping", "Flat", "Down-sloping"))
-data$cp <- factor(data$cp,levels=c(1,2,3,4), labels = c( "Typical angina","A-typical angina", "Non-Anginal pain", "Asymptomatic"))
-data$class <- as.factor(data$class)
-levels(data$class)[which(levels(data$class)=="0")] <- "No Disease"
-levels(data$class)[which(levels(data$class)%in%c("1","2","3","4"))] <- "Disease"
+heart <- read.csv("data/heart_disease.csv", stringsAsFactors = TRUE)
+heart$ID <- as.factor(heart$ID)
+heart$sex <- factor(heart$sex, levels = c(0, 1), labels = c("Female", "Male"))
+heart$fbs <- factor(heart$fbs, levels = c(0, 1), labels = c("<120", ">120"))
+heart$restecg <- factor(heart$restecg, levels = c(0, 1, 2), labels = c("Normal", "ST Abnormality", "LVH"))
+heart$exang <- factor(heart$exang, levels = c(0, 1), labels = c("No", "Yes"))
+heart$slope <- factor(heart$slope, levels = c(1, 2, 3), labels = c("Up-sloping", "Flat", "Down-sloping"))
+heart$cp <- factor(heart$cp, levels = c(1, 2, 3, 4), labels = c("Typical angina", "Atypical angina", "Non-Anginal pain", "Asymptomatic"))
+heart$class <- as.factor(heart$class)
+levels(heart$class)[which(levels(heart$class) == "0")] <- "No Disease"
+levels(heart$class)[which(levels(heart$class)%in%c("1", "2", "3", "4"))] <- "Disease"
 ```
 
 In simple linear regression, we want to test the effect of one independent variable on one dependent variable.
@@ -50,9 +53,9 @@ Our simple linear regression model of cigarettes and coronary heart disease gave
 What about the other 50%? Maybe exercise or cholesterol?
 
 As an extension of simple linear regression, the multiple linear regression model is very similar.
-If we have $$p$$ independent variables, then our model is $$ Y = a + b_1 X_1 + b_2 X_2 + \cdots + b_p X_p + e $$ where 
+If we have $$p$$ independent variables, then our model is $$ Y = a + b_1 X_1 + b_2 X_2 + \cdots + b_p X_p + e $$ where
 
-* $$Y$$ is$ the dependent or outcome variable
+* $$Y$$ is the dependent or outcome variable
 * $$a$$ is again the estimated Y-intercept
 * $$X_i$$ is the value of the $$i$$<sup>th</sup> independent variable
 * $$b_i$$ is the estimated regression coefficient (effect size) of the $$i$$<sup>th</sup> independent variable
@@ -60,7 +63,7 @@ If we have $$p$$ independent variables, then our model is $$ Y = a + b_1 X_1 + b
 
 Here, $$Y$$ is a continuous variable and the independent variables $$X_i$$ are either continuous or a binary value.
 
-Each regression coefficient is the amount of change in the outcome variable that would be expected per one-unit change of the predictor, if all other variables in the model were held constant	
+Each regression coefficient is the amount of change in the outcome variable that would be expected per one-unit change of the predictor, if all other variables in the model were held constant
 
 Multivariable analysis can be used to control for confounder effects (e.g. to adjust for age), to test for interactions between predictors and to improve prediction.
 
@@ -119,7 +122,7 @@ Here, we will look into an example in the literature, where two predictor variab
 
 * $$n = 224$$ participants (Australian adolescent population)
 * $$Y$$: Measure of psychological distress (low scores indicated a high level of psychological distress)
-* $$X_1$$: Not Worrying (score based on items)
+* $$X_1$$: Not worrying (score based on items)
 * $$X_2$$: Ignoring problems (score based on items)
 
 Our model is:
@@ -199,7 +202,7 @@ First, we will check for correlations between our variables of interest.
 
 ```{r}
 n = c("trestbps", "age", "chol", "thalach")
-round(cor(data[,n], method = "spearman", use = "pairwise.complete.obs"), 2)
+round(cor(heart[, n], method = "spearman", use = "pairwise.complete.obs"), 2)
 ```
 
 Here we observe that age and cholesterol have the highest correlations with SBP, and there are no high correlations within the predictor variables.
@@ -213,8 +216,8 @@ The example below does so for the age variable.
 
 ```{r}
 i <- "age"
-anova(lm(data$trestbps ~ data[,i]))
-summary(lm(data$trestbps ~ data[,i]))
+anova(lm(heart$trestbps ~ heart[, i]))
+summary(lm(heart$trestbps ~ heart[, i]))
 ```
 
 A more advanced and efficient method would be to perform these checks in a loop.
@@ -223,10 +226,10 @@ A more advanced and efficient method would be to perform these checks in a loop.
 result_LM <- c()
 N <- c(2:6)
 for(i in N) {
-  res <- lm(data$trestbps~data[,i])
+  res <- lm(heart$trestbps ~ heart[, i])
   result_LM[i] <- anova(res)$`Pr(>F)`[1]
 }
-signfic_res_or_close <- colnames(data)[which(result_LM < 0.2)]
+signfic_res_or_close <- colnames(heart)[which(result_LM < 0.2)]
 
 print(signfic_res_or_close)
 ```
@@ -234,7 +237,7 @@ print(signfic_res_or_close)
 Next, we will create a new dataset containing the predictors of interest along with the SBP and ID data using the `signfic_res_or_close` vector we just created.
 
 ```{r}
-newdataset <- data[, c("ID", "trestbps", signfic_res_or_close)] # create a new dataset only containing the data we will use in the model
+newdataset <- heart[, c("ID", "trestbps", signfic_res_or_close)] # create a new dataset only containing the data we will use in the model
 rownames(newdataset) <- newdataset$ID # set the row names to be the ID of the observations
 newdataset <- newdataset[, -1] # remove the ID column from the data
 ```
@@ -283,13 +286,13 @@ However, we still need to check the assumptions of a multiple linear regression 
 ### Step 4: Checking the assumptions
 
 ```{r, eval = FALSE}
-par(mfrow = c(2,2))
+par(mfrow = c(2, 2))
 plot(finalmodel)
 ```
 ![RStudio layout](../fig/04-fig9.png)
 
 Here, we observe that the variance of the residuals seems constant and the distribution of the residuals appears to be normal.
-To measure multicolinearity, we can use the `vif` function from the `cars` package.
+To measure multicolinearity, we can use the `vif` function from the `car` package.
 VIF measures how much the variance of any one of the coefficients is inflated due to multicollinearity in the overall model.
 As a rule of thumb, any value above 5 is a cause for concern.
 
@@ -300,7 +303,7 @@ car::vif(finalmodel)
 
 There appears to be no evidence of colinearity, and so we can conclude that the assumptions of the model are met.
 
-### Another approach - a priori selection of variables.
+### Another approach - _a priori_ selection of variables.
 
 An alternative approach is to simply include all variables determined to be important.
 
@@ -309,7 +312,7 @@ First, we select all variables of interest and fit the model.
 ```{r}
 selection <- c("ID", "age", "sex", "chol", "trestbps", "fbs", "thalach")
 
-select_data <- data[, selection]
+select_data <- heart[, selection]
 rownames(select_data) <- select_data$ID
 select_data <- select_data[,-1]
 
@@ -328,7 +331,6 @@ As always, we must check the assumptions of the model.
 First, we look at multicolinearity.
 
 ```{r}
-library(car)
 car::vif(result2)
 ```
 
@@ -337,7 +339,7 @@ As there are no values above 5, there appears to be no evidence of multicolinear
 Next, we check the other assumptions.
 
 ```{r, eval = FALSE}
-par(mfrow = c(2,2))
+par(mfrow = c(2, 2))
 plot(result2)
 ```
 
@@ -356,7 +358,7 @@ Data not published yet but a related reference is:
 
 For this exercise, we will use multiple linear regression to identify determinants of plasma beta-carotene levels.
 The data we will use is from a cross-sectional study investigating the relationship between personal characteristics and dietary factors, and plasma concentrations of beta-carotene.
-This study observed 315 patients who had a surgical procedure to remove a non-cancerous lesion of the lung, colon, breast, skin, ovary or uterus.  
+This study observed 315 patients who had a surgical procedure to remove a non-cancerous lesion of the lung, colon, breast, skin, ovary or uterus.
 
 Variable    | Description
 --------    | ------------
@@ -380,7 +382,7 @@ retplasma   | Plasma retinol (ng/ml)
 First, we will import the data and use the `str` function to check its coding.
 
 ```{r}
-plasma <- read.csv("data/Plasma.csv", sep = ",", header = TRUE, stringsAsFactors = TRUE)
+plasma <- read.csv("data/plasma.csv", stringsAsFactors = TRUE)
 str(plasma)
 ```
 
@@ -396,9 +398,9 @@ plasma$vituse <- as.factor(plasma$vituse)
 To aid in interpreting the model, we will change the levels of the factors, where appropriate.
 
 ```{r}
-levels(plasma$sex)<-c("Male","Female")
-levels(plasma$smokstat)<-c("Never","Former","Current")
-levels(plasma$vituse)<-c("Often","NotOften","No")
+levels(plasma$sex) <- c("Male", "Female")
+levels(plasma$smokstat) <- c("Never", "Former", "Current")
+levels(plasma$vituse) <- c("Often", "NotOften", "No")
 ```
 
 Now we can view a summary of the data with the correct variable types.
@@ -460,7 +462,7 @@ Next, we will check for correlations between beta-carotene and the potential ind
 
 ```{r}
 n <- as.vector(which(sapply(plasma, is.numeric)))
-cor(plasma$betaplasma, plasma[,n], method="spearman", use="pairwise.complete.obs")
+cor(plasma$betaplasma, plasma[, n], method = "spearman", use = "pairwise.complete.obs")
 ```
 
 Here, we observe quetelet (-), cholesterol (-), betadiet (+) and fiber (+) have the highest correlations with betaplasma.
@@ -474,7 +476,7 @@ As we are now R experts, we will do so using the advanced option!
 result_LM <- c()
 N <- c(2:13)
 for(i in N) {
-  res <- lm(plasma$betaplasma ~ plasma[,i])
+  res <- lm(plasma$betaplasma ~ plasma[, i])
   result_LM[i] <- anova(res)$`Pr(>F)`[1]
 }
 signfic_res_or_close <- colnames(plasma)[which(result_LM < 0.2)]
@@ -493,7 +495,7 @@ newdataset <- plasma[ , c(signif, "betaplasma")]
 rownames(newdataset) <- newdataset$Patient.ID
 newdataset <- newdataset[,-1]
 
-#Conduct multiple linear regression on initially selected variables 
+#Conduct multiple linear regression on initially selected variables
 initial_result <- lm(betaplasma ~ ., data = newdataset)
 summary(initial_result)
 ```
@@ -515,7 +517,7 @@ summary(finalmodel_raw)
 Finally, as always, we will check if the model meets the assumptions of multiple linear regression.
 
 ```{r, eval = FALSE}
-par(mfrow = c(2,2))
+par(mfrow = c(2, 2))
 plot(finalmodel_raw)
 ```
 ![RStudio layout](../fig/04-fig14.png)
@@ -529,10 +531,10 @@ First, we obtain the significant variables from running seperate univariate line
 result_LM <- c()
 N <- c(2:13)
 for(i in N) {
-  res <- lm(plasma$logbetaplasma~plasma[,i])
+  res <- lm(plasma$logbetaplasma ~ plasma[, i])
   result_LM[i] <- anova(res)$`Pr(>F)`[1]
 }
-signfic_res_or_close <- colnames(data)[which(result_LM < 0.2)]
+signfic_res_or_close <- colnames(heart)[which(result_LM < 0.2)]
 ```
 
 Next, we fit an initial model using the significant variables and then perform backwards elimination to obtain the final model
@@ -540,22 +542,22 @@ Next, we fit an initial model using the significant variables and then perform b
 ```{r}
 signif <- c("Patient.ID", "age", "sex", "quetelet", "vituse", "smokstat", "fat", "fiber", "cholesterol", "betadiet")
 
-newdataset <- plasma[ , c(signif,"logbetaplasma")]
+newdataset <- plasma[ , c(signif, "logbetaplasma")]
 rownames(newdataset) <- newdataset$Patient.ID
 newdataset <- newdataset[,-1]
 
-#Conduct multiple linear regression on initially selected variables 
+#Conduct multiple linear regression on initially selected variables
 initial_result <- lm(logbetaplasma ~ ., data = newdataset)
 summary(initial_result)
 
 #Backward Elimination
-step(initial_result,direction = "backward")
+step(initial_result, direction = "backward")
 ```
 
 Notice that our final model using the log-transformation includes a different set of variables than the model with no transformation.
 
 ```{r}
-finalmodel <- lm(formula = logbetaplasma ~ age + quetelet + vituse + smokstat + 
+finalmodel <- lm(formula = logbetaplasma ~ age + quetelet + vituse + smokstat +
                  fiber + cholesterol + betadiet, data = newdataset)
 summary(finalmodel)
 ```
@@ -569,7 +571,7 @@ From reading the summary, we can see:
 Let's take a look at our diagnostic plots.
 
 ```{r, eval = FALSE}
-par(mfrow = c(2,2))
+par(mfrow = c(2, 2))
 plot(finalmodel)
 ```
 ![RStudio layout](../fig/04-fig15.png)
@@ -585,30 +587,30 @@ This observation has a plasma-beta level of 0, which is not possible in real lif
 So, we should remove this observation and refit the data.
 
 ```{r}
-data <- na.omit(plasma)
-n <- which(data$Patient.ID == "257")
-data <- data[-n,]
-data$logbetaplasma <- log(data$betaplasma) # don't need +1 anymore as the 0 value has been removed
+plasma_no_na <- na.omit(plasma)
+n <- which(plasma_no_na$Patient.ID == "257")
+plasma_no_na <- plasma_no_na[-n,]
+plasma_no_na$logbetaplasma <- log(plasma_no_na$betaplasma) # don't need +1 anymore as the 0 value has been removed
 
-finalmodel <- lm(formula = logbetaplasma ~ age + quetelet + vituse + smokstat + 
-                 fiber + cholesterol + betadiet, data = data)
+finalmodel <- lm(formula = logbetaplasma ~ age + quetelet + vituse + smokstat +
+                 fiber + cholesterol + betadiet, data = plasma_no_na)
 summary(finalmodel)
 ```
 
 ```{r}
-step(finalmodel,direction = "backward")
+step(finalmodel, direction = "backward")
 ```
 
 ```{r}
-res <- lm(formula = logbetaplasma ~ age + quetelet + vituse + smokstat + 
-          fiber + cholesterol + betadiet, data = data)
+res <- lm(formula = logbetaplasma ~ age + quetelet + vituse + smokstat +
+          fiber + cholesterol + betadiet, data = plasma_no_na)
 summary(res)
 ```
 
 Finally, checking the model plot diagnostics, we see that this model does not appear to violate any assumptions of multiple linear regression.
 
 ```{r, eval = FALSE}
-par(mfrow = c(2,2))
+par(mfrow = c(2, 2))
 plot(res)
 ```
 ![RStudio layout](../fig/04-fig16.png)

@@ -210,12 +210,12 @@ ggplot(heart, aes(x = age, y = trestbps)) +
 ```
 ![RStudio layout](../fig/02-fig7.png)
 
-Calling ggplot() initialises a ggplot object.
-We use this to declare the data frame that contains the data we want to visualise as well as a plot aesthetic (aes).
+Calling `ggplot2()` initialises a ggplot object.
+We use this to declare the data frame that contains the data we want to visualise as well as a plot aesthetic (`aes`).
 A plot aesthetic is a mapping between a visual cue and a variable.
 In our example, we specify that age is to be on the x-axis and resting SBP on the y-axis.
 The specified plot aesthetic will be used in all subsequent layers unless specifically overridden.
-We then add geom_point and geom_smooth layers to the plot, as well as a title layer.
+We then add `geom_point` and `geom_smooth` layers to the plot, as well as a title layer.
 
 ## Exploring Relationship Between SBP and Other Continuous Variables
 

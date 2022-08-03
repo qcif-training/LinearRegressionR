@@ -5,7 +5,7 @@ title: "Simple Linear Regression"
 teaching: 45
 exercises: 10
 questions:
-- "What is linear regression?"
+- "What is linear regression?" 
 - "What are the assumptions we need to meet to use linear regression?"
 - "How do I perform linear regression in R?"
 - "How do I ensure that my data meets the model assumptions?"

@@ -19,12 +19,9 @@ keypoints:
 output: html_document
 ---
 
-<script
-  src = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
-  type = "text/javascript">
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
 </script>
-
-
 
 
 Regression analysis is used to describe the relationship between a single

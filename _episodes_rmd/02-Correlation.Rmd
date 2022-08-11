@@ -222,9 +222,9 @@ We then add `geom_point` and `geom_smooth` layers to the plot, as well as a titl
 
 > ## Challenge 2
 >
-> 1. Plot the relationship between these two variables on a scatter plot.
-> 2. Test for a correlation between SBP and Cholesterol; can we be confident in this estimate?
-> 3. Does the result of the test and the plot agree?
+> 1. Plot the relationship between SBP and Cholesterol on a scatter plot.
+> 2. Test for a correlation between these two variables; can we be confident in this estimate?
+> 3. Do the results of the test and the plot agree?
 >
 > > ## Solution to Challenge 2
 > >

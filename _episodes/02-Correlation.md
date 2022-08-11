@@ -11,19 +11,24 @@ objectives:
 - "Test the correlation between a number of variables in our data set."
 - "Learn how to determine which test to use, depending on the types of the variables."
 keypoints:
--
+- There are different tests to test for correlation, depending on the type of variable.
+- Plots are useful to determine if there is a relationship, but this should be tested analytically.
+- Use helpful packages to visualise relationships.
 output: html_document
 ---
-
 
 <script type="text/javascript" id="MathJax-script" async
   src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
 </script>
 
 
+
+
+
+
 ## Introduction
 
-Correlation describes the degree of association between two variables and is most commonly used to measure the extent to which two variables are linear related.
+Correlation describes the degree of association between two variables and is most commonly used to measure the extent to which two variables are linearly related.
 
 Associations can be positive, where an **increase** in one variable is associated with an **increase** in the other, or negative, where an **increase** in one variable is associated with a **decrease** in the other.
 
@@ -51,13 +56,13 @@ There are different tests for measuring correlation, depending on the distributi
 
 Two R functions for measuring and testing the significance of association are `cor` and `cor.test`, where the correlation coefficient to be computed can be specified as an argument to the function (either "pearson" (default), "spearman", "kendall"). `cor` simply computes the correlation coefficient, while `cor.test` also computes the statistical significance of the computed correlation coefficient.
 
-### Pearson's correlation coefficient
+### Pearson's Correlation Coefficient
 
 The Pearson's correlation coefficient (_r_) is defined as
 
 $$ r = \frac{\sum_i (x_i - \bar x)(y_i - \bar y)}{\sqrt{\sum_i (x_i - \bar x)^2(y_i - \bar y)^2}} $$
 
-and varies between -1 and 1, where 1 indicates a perfect positive linear relationship and -1 indicates a perfect negative linear relationship. Here, $$\bar{x}$$ is the mean of all values of x.
+and varies between -1 and 1, where 1 indicates a perfect positive linear relationship and -1 indicates a perfect negative linear relationship. Here, $$\bar{x}$$ is the mean of all values of $$x$$.
 
 A common interpretation of the value of _r_ is described in the table below
 
@@ -69,7 +74,7 @@ A common interpretation of the value of _r_ is described in the table below
 |0.3 ≤ \|r\| ≤ 0.7  | Moderate relationship|
 |\|r\| = 0.7 | Strong relationship|
 
-### Coefficient of determination
+### Coefficient of Determination
 
 Pearson's $$r$$ can be squared to give us $$r^2$$, the coefficient of determination, which indicates the proportion of variability in one of the variables that can be accounted for by the variability in the second variable.
 
@@ -230,30 +235,34 @@ We then add `geom_point` and `geom_smooth` layers to the plot, as well as a titl
 
 > ## Challenge 2
 >
-> 1. Test for a correlation between SBP and Cholesterol; can we be confident in this estimate?
-> 2. Plot the relationship between these two variables on a scatter plot.
-> 3. Does the resulting plot match the results of our
+> 1. Plot the relationship between SBP and Cholesterol on a scatter plot.
+> 2. Test for a correlation between these two variables; can we be confident in this estimate?
+> 3. Do the results of the test and the plot agree?
 >
 > > ## Solution to Challenge 2
 > >
-> > As we are confident SBP is not normally distributed, we will again use Spearman's rank to determine the correlation.
+> > To plot the data, we use the plot function.
+> >
+> >
+> > ```r
+> > plot(heart$trestbps ~ heart$chol, main = "Cholesterol vs. Resting SBP", cex.main = 1)
+> > ```
+> >
+> > The plot appears to show a positive correlation, although very weak.
+> > A test should be performed to confirm this finding.
+> > As we are confident SBP is not normally distributed, we will use Spearman's rank to determine the correlation.
 > >
 > >
 > > ```r
 > > cor.test(heart$trestbps, heart$chol, method = "spearman")
 > > ```
 > >
-> > This shows we have a weak correlation, and the p-value suggests we are confident in this statement.
-> > Plotting the data shows
-> >
-> >
-> > ```r
-> > plot(heart$trestbps ~ heart$chol, main = "Cholesterol vs. Resting SBP", cex.main = 1)
-> > ```
+> > This shows we have a weak positive correlation, and the p-value suggests we are confident in this statement.
 > {: .solution}
 {: .challenge}
 
-Instead of running an individual test for each variable, we can test for multiple at a time by indexing the relevant columns of the `heart` data frame.
+Instead of running an individual test for each variable, we can test for multiple at a time by indexing the relevant columns of
+the `heart` data frame.
 
 However, we will first separately analyse the 'ca' variable, the number of major vessels coloured by fluoroscopy, as this is an
 ordinal variable, which requires we use Kendall's Tau to measure correlation.

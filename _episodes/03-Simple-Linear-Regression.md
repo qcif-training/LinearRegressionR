@@ -5,17 +5,18 @@ title: "Simple Linear Regression"
 teaching: 45
 exercises: 10
 questions:
-- "What is linear regression?" 
+- "What is linear regression?"
 - "What are the assumptions we need to meet to use linear regression?"
 - "How do I perform linear regression in R?"
 - "How do I ensure that my data meets the model assumptions?"
 objectives:
 - "Understand theory of linear regression."
 - "Use linear regression on our dataset."
-- "Check the model diagnostics to ensure the data meets the assumptions of
-linear regression."
+- "Check the model diagnostics to ensure the data meets the assumptions of linear regression."
 keypoints:
--
+- Simple linear regression is for predicting the dependent variable Y based on one independent variable X.
+- R offers a large number of useful functions for performing linear regression.
+- Always check the model diagnostic plots and run the model diagnostic plots to check that the assumptions of linear regression are met.
 output: html_document
 ---
 
@@ -23,6 +24,8 @@ output: html_document
 <script type="text/javascript" id="MathJax-script" async
   src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
 </script>
+
+
 
 
 Regression analysis is used to describe the relationship between a single
@@ -107,10 +110,10 @@ Each observed residual can be thought of as an estimate of the actual unknown
 
 There are four assumptions associated with using linear models:
 
-* the relationship between the independent and dependent variables is linear;
-* the observations are independent;
-* the variance of the residuals is constant across the observations (homoscedasticity);
-* the residuals are normally distributed with mean 0.
+* The relationship between the independent and dependent variables is linear.
+* The observations are independent.
+* The variance of the residuals is constant across the observations (homoscedasticity).
+* The residuals are normally distributed with mean 0.
 
 These assumptions can be considered criteria that should be met before drawing inferences from the fitted model or using it to make predictions.
 
@@ -120,16 +123,16 @@ The residual $$e_i$$ of the $$i$$<sup>th</sup> observation is the difference bet
 
 The coefficient of determination $$R^2$$ represents the proportion of the total sample variability (sum of squares) explained by the regression model.
 This can also be interpreted as the proportion of the variance of the dependent variable that is explained by the independent variable(s).
-The most general definition of the coefficient of determination is $$ R^2 = 1 - \frac{SS_{res}}{SS_{tot}} $$ where $$SS_{res}$$ is the sum of the squares of the residuals as defined above and $$SS_{tot}$$ is the total sum of squares $$ SS_{tot} = \sum_i (Y_i - \bar Y)^2 $$ which is proportional to the variance of the dependent variable.
+The most general definition of the coefficient of determination is $$ R^2 = 1 - \frac{SS_{res}}{SS_{tot}} $$ where $$SS_{res}$$ is the sum of the squares of the residuals as defined above and $$SS_{tot}$$ is the total sum of squares $$ SS_{tot} = \sum_i (Y_i - \bar Y)^2, $$ which is proportional to the variance of the dependent variable.
 
 ## Example - Cigarettes and Coronary Heart Disease
 
-*Example from Landwehr & Watkins (1987) and cited in Howell (2004)*
+*Example from Landwehr & Watkins (1987) and cited in Howell (2004).*
 
 Let us consider the following research question: How fast does CHD mortality rise depending on smoking?
 
 This can be framed as a linear regression problem, where each observation is a particular country and the independent variable is the average number of cigarettes smoked per adult per day and the dependent variable is the CHD mortality rate (deaths per 10,000 per year due to CHD).
-The data we will use in this example is given in the table and visualised in the scatter plot, with a line of best fit, below:
+The data we will use in this example is given in the table below and visualised in the scatter plot, with a line of best fit, below:
 
 Cig. | CHD
 ---- | ---
@@ -157,9 +160,9 @@ Cig. | CHD
 
 ![RStudio layout](../fig/03-fig4.png)
 
-As a reminder, the linear regression equation is $$ \hat Y = a + bX  $$
+As a reminder, the linear regression equation is $$ \hat Y = a + bX.  $$
 
-In this example, $$Y$$ is the CHD mortality rate (CHD) and $$X$$ is the average number of cigarettes smoked per adult per day (CigCons), so the equation is $$ \text{CHD}_{\text{pred}} = a + b \times \text{CigsCons} + e $$
+In this example, $$Y$$ is the CHD mortality rate (CHD) and $$X$$ is the average number of cigarettes smoked per adult per day (CigCons), so the equation is $$ \text{CHD}_{\text{pred}} = a + b \times \text{CigsCons} + e. $$
 
 The intercept $$a$$ represents the predicted CHD mortality rate in a nation where the average number of cigarettes smoked per adult per day is zero.
 The slope $$b$$ represents the rate of increase of CHD mortality rate for each unit increase in the average number of cigarettes smoked per adult per day.
@@ -598,10 +601,10 @@ outlierTest(model1)
 ```
 
 ~~~
-No Studentized residuals with Bonferroni p < 0.05
-Largest |rstudent|:
-   rstudent unadjusted p-value Bonferroni p
-15  2.84362          0.0054398      0.54398
+## No Studentized residuals with Bonferroni p < 0.05
+## Largest |rstudent|:
+##    rstudent unadjusted p-value Bonferroni p
+## 15  2.84362          0.0054398      0.54398
 ~~~
 {: .output}
 

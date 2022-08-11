@@ -11,19 +11,21 @@ objectives:
 - "Introduction to RStudio"
 - "Loading the data"
 keypoints:
--
+- Make sure you set your working directory.
+- View a summary of your data to ensure your variables are of the right type.
 output: html_document
 ---
-
 
 <script type="text/javascript" id="MathJax-script" async
   src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
 </script>
 
 
+
+
 # Introduction to RStudio
 
-We will be using RStudio throughout this workshop and so the first prerequisite is installing [R](https://www.r-project.org/) and [RStudio](https://www.rstudio.com/products/rstudio/).
+We will be using RStudio throughout this workshop, and so the first prerequisite is installing [R](https://www.r-project.org/) and [RStudio](https://www.rstudio.com/products/rstudio/).
 Upon installing and opening RStudio, you will be greeted by three panels:
 
 * The interactive R console/Terminal (entire left)
@@ -39,11 +41,11 @@ Opening a text file (such as an R or Rmd file) in RStudio will open the file in 
 There are two main ways that you can run R commands or scripts within RStudio:
 
 1. The interactive R console
-  * This works well when running individual lines to test code and when starting your analysis
+  * This works well when running individual lines to test code and when starting your analysis.
   * It can become laborious and inefficient and is not suitable when running many commands at once.
-2. Writing in a .R file
-  * All of your code is saved for editing and later use
-  * You can run as many lines as you wish at once
+2. Writing in a .R / .Rmd file
+  * All of your code is saved for editing and later use.
+  * You can run as many lines as you wish at once.
 
 The hash symbol (#) can be used to signal text in our script file that should not be run, which are called comments.
 An example of using comments to describe code is shown below.
@@ -59,19 +61,19 @@ An example of using comments to describe code is shown below.
 > ## Tip: Running segments of code
 >
 > There are a few ways you can run lines of code from a .R file.
-> If you want to run a single line, place your cursor at the end of the line, or if you want to run multiple lines, select the lines you would like to run.
+> If you want to run a single line, place your cursor at the end of the line. If you want to run multiple lines, select the lines you would like to run.
 > We have a few options for running the code:
 >
 > * click on the Run button above the editor panel, or
 > * hit Ctrl+Return (⌘+Return also works if you are using OS X)
 >
-> If you edit a segment of code after running it and want to quickly re-run the segment, you can press the button to the right of the Run button above the editor panel to re-run the previous code region.
+> If you are using a .R file and edit a segment of code after running it and want to quickly re-run the segment, you can press the button to the right of the Run button above the editor panel to re-run the previous code region.
 {: .callout}
 
 > ## Tip: Getting help in R
 >
-> For help with any function in R, put a question mark before the function name to determine what arguments to use, examples and other background information.
-For example, running `? hist` will you a description for base R's function to generate a histogram.
+> For help with any function in R, put a question mark before the function name to determine what arguments to use, some examples and other background information.
+For example, running `? hist` will give you a description for base R's function to generate a histogram.
 >
 > If you don't know the name of the function you want, you can use two question marks (??) to search for functions relating to a keyword (e.g. `?? histogram`)
 >
@@ -103,7 +105,12 @@ restecg     | Resting ECG abnormalities; 0=Normal, 1=ST Abnormality, 2=LVH
 
 # Working Directory
 
-Above, we saw that we can set the working directory using the Files pane in RStudio.
+The working directory is a file path on your computer that is the default location of any files you read or save in R.
+You can set this directory Files pane in RStudio, as shown below.
+
+[!RStudio Layout](../fig/01-fig3.png)
+
+You can also set the working directory in the menu bar, under `Session -> Set Working Directory`.
 Alternatively, you can do this through the RStudio console using the command `setwd` by entering the absolute filepath as a string.
 Use `getwd` to get the current working directory.
 
@@ -117,7 +124,7 @@ setwd("C:\Users\YourUserName\Downloads") # for Windows
 
 # Importing and Preparing the Data
 
-First, import the data into our R environment as a data frame and display its dimensions.
+First, import the data into your R environment as a data frame and display its dimensions.
 
 
 ```r
@@ -135,7 +142,7 @@ From this we know that we have 100 rows (observations) and 14 columns (variables
 
 > ## Tip: stringsAsFactors
 >
-> When importing data with columns containing character strings to be used as categories (e.g. male/female low/medium/high), we can set the `stringsAsFactors` argument as `TRUE` to automatically set these columns to factors.
+> When importing data with columns containing character strings to be used as categories (e.g. male/female or low/medium/high), we can set the `stringsAsFactors` argument as `TRUE` to automatically set these columns to factors.
 {: .callout}
 
 We can use the `str` function to look at the first few observations for each variable.

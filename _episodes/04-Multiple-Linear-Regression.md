@@ -14,7 +14,9 @@ objectives:
 - "Use multiple linear regression on our dataset."
 - "Check the model diagnostics to ensure the data meets the assumptions of multiple linear regression."
 keypoints:
--
+- Multiple linear regression is an intuitive extension of simple linear regression.
+- Transforming your data can give you a better fit.
+- Check for outliers, but ensure you take the correct course of action upon finding one.
 output: html_document
 ---
 
@@ -24,6 +26,10 @@ output: html_document
 </script>
 
 
+
+
+
+
 In simple linear regression, we want to test the effect of one independent variable on one dependent variable.
 Multiple linear regression is an extension of simple linear regression and allows for multiple independent variables to predict the dependent variable.
 
@@ -31,7 +37,7 @@ Our simple linear regression model of cigarettes and coronary heart disease gave
 What about the other 50%? Maybe exercise or cholesterol?
 
 As an extension of simple linear regression, the multiple linear regression model is very similar.
-If we have $$p$$ independent variables, then our model is $$ Y = a + b_1 X_1 + b_2 X_2 + \cdots + b_p X_p + e $$ where
+If we have $$p$$ independent variables, then our model is $$ Y = a + b_1 X_1 + b_2 X_2 + \cdots + b_p X_p + e, $$ where
 
 * $$Y$$ is the dependent or outcome variable
 * $$a$$ is again the estimated Y-intercept
@@ -65,7 +71,7 @@ Related to our sample size assumption, in multivariable modeling, you can get hi
 This is known as overfitting, where the model is fit perfectly to the quirks of your particular sample, but has no predictive ability in a new sample.
 A common approach that controls over fitting by keeping the number of predictors to a minimum is step-wise multiple regression:
 
-We start with the one predictor that explains the most predicted variance (i.e. has the highest correlation coefficient with the outcome). Next, the most statistically significant predictors is to the model. The process is repeated until no remaining predictor has a statistically significant correlation with the outcome.
+We start with the one predictor that explains the most predicted variance (i.e. has the highest correlation coefficient with the outcome). Next, the most statistically significant predictors is added to the model. The process is repeated until no remaining predictor has a statistically significant correlation with the outcome.
 
 Similarly to simple linear regression, the coefficient of determination ($$R^2$$) indicates the percent of variance in the dependant variable explained by combined effects of the independent variables.
 The adjusted $$R^2$$ is used for estimating explained variance in a population (not just the sample) when the sample size is small.
@@ -92,20 +98,20 @@ Outliers can result from:
 
 If you see no reason why your outliers are erroneous measurements, then there is no truly objective way to remove them.
 
-## Example - Does ignoring problems and not worrying predict psychological distress?
+## Example - Does ignoring problems and worrying predict psychological distress?
 
 *Neill (2001)*
 
-Here, we will look into an example in the literature, where two predictor variables: "ignoring problems" and "not worrying" were used in a multiple linear regression model to predict psychological distress. The study design is:
+Here, we will look into an example in the literature, where two predictor variables: "ignoring problems" and "worrying" were used in a multiple linear regression model to predict psychological distress. The study design is:
 
 * $$n = 224$$ participants (Australian adolescent population)
 * $$Y$$: Measure of psychological distress (low scores indicated a high level of psychological distress)
-* $$X_1$$: Not worrying (score based on items)
+* $$X_1$$: Worrying (score based on items)
 * $$X_2$$: Ignoring problems (score based on items)
 
 Our model is:
 
-$$ \text{PsychDistress} = a + b_1 \times (\text{NotWorrying}) + b_2 \times (\text{IgnoringProblems}) $$
+$$ \text{PsychDistress} = a + b_1 \times (\text{Worrying}) + b_2 \times (\text{IgnoringProblems}) $$
 
 ### Correlations
 
@@ -118,7 +124,7 @@ The correlations between the independent and dependent variables are negative (-
 ### Model Summary and Coefficients
 
 The figure below shows the $$R$$, $$R^2$$ and Adjusted $$R^2$$ values after fitting the model.
-We have $$R^2 = 0.295$$, which indicates that, under our model, approximately 30% of the variance in psychological distress can be attributed to the combined effects of ignoring the problem and not worrying.
+We have $$R^2 = 0.295$$, which indicates that, under our model, approximately 30% of the variance in psychological distress can be attributed to the combined effects of ignoring the problem and worrying.
 
 ![RStudio layout](../fig/04-fig4.png)
 
@@ -138,16 +144,16 @@ We can see from the coefficients table that all estimates are highly significant
 
 The unstandardised coefficients give us our values of $$a = 138.93$$, $$b_1 = -11.51$$ and $$b_2 = -4.74$$, and so our model is
 
-$$ \text{PsychDistress} = 138.93 - 11.51 \times (\text{NotWorrying}) - 4.74 \times (\text{IgnoringProblems}) $$
+$$ \text{PsychDistress} = 138.93 - 11.51 \times (\text{Worrying}) - 4.74 \times (\text{IgnoringProblems}) $$
 
 We can make some interpretations of the model using these estimates:
 
-* When the score of not worrying and ignoring problems are both zero, then the psychological distress score is 138.93.
+* When the score of worrying and ignoring problems are both zero, then the psychological distress score is 138.93.
 * When the score of ignoring problems is held constant, each unit increase in the score of not worrying decreases the psychological distress score by 11.51 units.
-* When the score of not worring is held constant, each unit increase in the score of ignoring problems decreases the psychological distress score by 4.71 units.
+* When the score of worrying is held constant, each unit increase in the score of ignoring problems decreases the psychological distress score by 4.71 units.
 
 The standardised coefficients (Beta) are calculated using the unstandardised coefficients and their respective standard error.
-These values allow us to compare the relative effect size of the predictor variables; here, we see that not worrying has a relatively larger (negative) effect size.
+These values allow us to compare the relative effect size of the predictor variables; here, we see that worrying has a relatively larger (negative) effect size.
 
 The figure below gives 95% confidence intervals for the intercept term and the standardised coefficients.
 We can interpret these intervals as: we can be 95% confident that the interval captures the true value of the estimate.
@@ -180,7 +186,7 @@ First, we will check for correlations between our variables of interest.
 
 
 ```r
-n = c("trestbps", "age", "chol", "thalach")
+n <- c("trestbps", "age", "chol", "thalach")
 round(cor(heart[, n], method = "spearman", use = "pairwise.complete.obs"), 2)
 ```
 
@@ -191,6 +197,7 @@ round(cor(heart[, n], method = "spearman", use = "pairwise.complete.obs"), 2)
 ## chol         0.21  0.29  1.00   -0.01
 ## thalach     -0.07 -0.37 -0.01    1.00
 ~~~
+{: .output}
 
 Here we observe that age and cholesterol have the highest correlations with SBP, and there are no high correlations within the predictor variables.
 
@@ -217,6 +224,7 @@ anova(lm(heart$trestbps ~ heart[, i]))
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ~~~
+{: .output}
 
 ```r
 summary(lm(heart$trestbps ~ heart[, i]))
@@ -242,6 +250,7 @@ summary(lm(heart$trestbps ~ heart[, i]))
 ## Multiple R-squared:  0.09951,	Adjusted R-squared:  0.09033
 ## F-statistic: 10.83 on 1 and 98 DF,  p-value: 0.001389
 ~~~
+{: .output}
 
 A more advanced and efficient method would be to perform these checks in a loop.
 
@@ -261,6 +270,7 @@ print(signfic_res_or_close)
 ~~~
 ## [1] "age"  "sex"  "chol" "fbs"
 ~~~
+{: .output}
 
 Next, we will create a new dataset containing the predictors of interest along with the SBP and ID data using the `signfic_res_or_close` vector we just created.
 
@@ -294,6 +304,7 @@ anova(result)
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ~~~
+{: .output}
 
 ```r
 summary(result)
@@ -322,6 +333,7 @@ summary(result)
 ## Multiple R-squared:  0.1622,	Adjusted R-squared:  0.1269
 ## F-statistic: 4.599 on 4 and 95 DF,  p-value: 0.001943
 ~~~
+{: .output}
 
 The adjusted $$R^2$$ is approximately 0.13, indicating that 13% of the variability in SBP is explained by the combination of all the independent variables included in the model.
 However, we can see that sex and cholesterol are not significant.
@@ -369,6 +381,7 @@ step(result, direction = "backward") #Base R
 ## (Intercept)          age      fbs>120
 ##    103.3074       0.5239       9.0886
 ~~~
+{: .output}
 
 Alternatively, we can use the `MASS` library's `stepAIC` function.
 
@@ -413,6 +426,7 @@ stepAIC(result, direction = "backward") #library MASS
 ## (Intercept)          age      fbs>120
 ##    103.3074       0.5239       9.0886
 ~~~
+{: .output}
 
 In both functions, the call of the final model is outputted. Let's have a look at the summary.
 
@@ -443,6 +457,7 @@ summary(finalmodel)
 ## Multiple R-squared:  0.1368,	Adjusted R-squared:  0.119
 ## F-statistic: 7.687 on 2 and 97 DF,  p-value: 0.0007963
 ~~~
+{: .output}
 
 Now, with all estimates significant, we can make some interpretations:
 
@@ -475,6 +490,7 @@ car::vif(finalmodel)
 ##    age    fbs
 ## 1.0469 1.0469
 ~~~
+{: .output}
 
 There appears to be no evidence of colinearity, and so we can conclude that the assumptions of the model are met.
 
@@ -510,6 +526,7 @@ anova(result2)
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ~~~
+{: .output}
 
 ```r
 summary(result2)
@@ -539,6 +556,7 @@ summary(result2)
 ## Multiple R-squared:  0.1625,	Adjusted R-squared:  0.1179
 ## F-statistic: 3.647 on 5 and 94 DF,  p-value: 0.004644
 ~~~
+{: .output}
 
 The interpretation of the model estimates are:
 
@@ -558,6 +576,7 @@ car::vif(result2)
 ##      age      sex     chol      fbs  thalach
 ## 1.377895 1.080196 1.175630 1.078965 1.196628
 ~~~
+{: .output}
 
 As there are no values above 5, there appears to be no evidence of multicolinearity.
 
@@ -631,6 +650,7 @@ str(plasma)
 ##  $ betaplasma : int  200 124 328 153 92 148 258 64 218 81 ...
 ##  $ retplasma  : int  915 727 721 615 799 654 834 825 517 562 ...
 ~~~
+{: .output}
 
 As with our systolic blood pressure example, we have categorical variables being coded as numerical values, and so we will change them to factors.
 
@@ -692,6 +712,7 @@ summary(plasma)
 ##  Max.   :1415.0   Max.   :1727.0
 ##
 ~~~
+{: .output}
 
 Let's view a histogram of the plasma beta-carotene variable.
 
@@ -716,6 +737,7 @@ shapiro.test(plasma$betaplasma)
 ## data:  plasma$betaplasma
 ## W = 0.66071, p-value < 2.2e-16
 ~~~
+{: .output}
 
 This tiny p-value suggests it is incredibly unlikely that the data is normally distributed.
 However, the data is right-skewed, as shown below, which could mean that the data is log-normally distributed.
@@ -765,6 +787,7 @@ cor(plasma$betaplasma, plasma[, n], method = "spearman", use = "pairwise.complet
 ##      cholesterol  betadiet    retdiet betaplasma retplasma logbetaplasma
 ## [1,]   -0.142528 0.1786116 0.02242424          1 0.1306213             1
 ~~~
+{: .output}
 
 Here, we observe quetelet (-), cholesterol (-), betadiet (+) and fiber (+) have the highest correlations with betaplasma.
 
@@ -790,6 +813,7 @@ print(signfic_res_or_close)
 ## [1] "age"         "sex"         "smokstat"    "quetelet"    "vituse"
 ## [6] "fat"         "fiber"       "cholesterol" "betadiet"
 ~~~
+{: .output}
 
 ### Fitting the model
 
@@ -838,6 +862,7 @@ summary(initial_result)
 ## Multiple R-squared:  0.1924,	Adjusted R-squared:  0.163
 ## F-statistic: 6.561 on 11 and 303 DF,  p-value: 8.048e-10
 ~~~
+{: .output}
 
 We can see that there are many insignificant predictor variables.
 To find a better model, we will use backward elimination.
@@ -927,6 +952,7 @@ step(initial_result, direction = "backward")
 ##    cholesterol        betadiet
 ##       -0.19938         0.01825
 ~~~
+{: .output}
 
 So, our final model uses quetelet, vitamin use, fiber, cholesterol and dietary beta-carotene as the predictor variables.
 
@@ -962,6 +988,7 @@ summary(finalmodel_raw)
 ## Multiple R-squared:  0.1776,	Adjusted R-squared:  0.1616
 ## F-statistic: 11.09 on 6 and 308 DF,  p-value: 3.37e-11
 ~~~
+{: .output}
 
 Finally, as always, we will check if the model meets the assumptions of multiple linear regression.
 
@@ -1033,6 +1060,7 @@ summary(initial_result)
 ## Multiple R-squared:  0.2468,	Adjusted R-squared:  0.2195
 ## F-statistic: 9.026 on 11 and 303 DF,  p-value: 6.109e-14
 ~~~
+{: .output}
 
 ```r
 #Backward Elimination
@@ -1097,6 +1125,7 @@ step(initial_result, direction = "backward")
 ##     cholesterol         betadiet
 ##      -1.344e-03        6.783e-05
 ~~~
+{: .output}
 
 Notice that our final model using the log-transformation includes a different set of variables than the model with no transformation.
 
@@ -1136,6 +1165,7 @@ summary(finalmodel)
 ## Multiple R-squared:  0.2428,	Adjusted R-squared:  0.2204
 ## F-statistic: 10.87 on 9 and 305 DF,  p-value: 1.144e-14
 ~~~
+{: .output}
 
 From reading the summary, we can see:
 
@@ -1166,6 +1196,7 @@ plasma[257,]
 ##     cholesterol betadiet retdiet betaplasma retplasma logbetaplasma
 ## 257       900.7     1028    3061          0       254             0
 ~~~
+{: .output}
 
 This observation has a plasma-beta level of 0, which is not possible in real life.
 So, we should remove this observation and refit the data.
@@ -1211,6 +1242,7 @@ summary(finalmodel)
 ## Multiple R-squared:  0.2345,	Adjusted R-squared:  0.2118
 ## F-statistic: 10.31 on 9 and 303 DF,  p-value: 6.794e-14
 ~~~
+{: .output}
 
 
 ```r
@@ -1244,6 +1276,7 @@ step(finalmodel, direction = "backward")
 ##     cholesterol         betadiet
 ##      -7.940e-04        5.264e-05
 ~~~
+{: .output}
 
 
 ```r
@@ -1281,6 +1314,7 @@ summary(res)
 ## Multiple R-squared:  0.2345,	Adjusted R-squared:  0.2118
 ## F-statistic: 10.31 on 9 and 303 DF,  p-value: 6.794e-14
 ~~~
+{: .output}
 
 Finally, checking the model plot diagnostics, we see that this model does not appear to violate any assumptions of multiple linear regression.
 

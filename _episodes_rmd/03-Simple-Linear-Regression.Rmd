@@ -484,7 +484,7 @@ The main difference between this exercise and the last is that age is a numerica
 Comparing boxplots can give us a good indication if the distributions of SBP is different between males and females.
 
 ```{r, eval = FALSE}
-ggplot(data = heart, aes(x = sex, y = trestbps, fill = "blues")) +
+ggplot(data = heart, aes(x = sex, y = trestbps, fill = sex)) +
   geom_boxplot()
 ```
 ![RStudio layout](../fig/03-fig18.png)

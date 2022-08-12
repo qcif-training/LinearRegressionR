@@ -619,7 +619,7 @@ Comparing boxplots can give us a good indication if the distributions of SBP is 
 
 
 ```r
-ggplot(data = heart, aes(x = sex, y = trestbps, fill = "blues")) +
+ggplot(data = heart, aes(x = sex, y = trestbps, fill = sex)) +
   geom_boxplot()
 ```
 ![RStudio layout](../fig/03-fig18.png)

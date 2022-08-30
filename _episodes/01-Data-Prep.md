@@ -3,7 +3,7 @@
 # Instead, please edit 01-Data-Prep.md in _episodes_rmd/
 title: "Data Preparation"
 teaching: 45
-exercises: 10
+exercises: 30
 questions:
 - "What data will we be using?"
 - "How do I load the data?"

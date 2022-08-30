@@ -3,7 +3,7 @@
 # Instead, please edit 02-Correlation.md in _episodes_rmd/
 title: "Correlation"
 teaching: 45
-exercises: 10
+exercises: 45
 questions:
 - "How can we tell if two variables are correlated?"
 - "What test(s) do we use to test for correlation?"

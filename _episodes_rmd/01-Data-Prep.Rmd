@@ -1,7 +1,7 @@
 ---
 title: "Data Preparation"
 teaching: 45
-exercises: 10
+exercises: 25
 questions:
 - "What data will we be using?"
 - "How do I load the data?"

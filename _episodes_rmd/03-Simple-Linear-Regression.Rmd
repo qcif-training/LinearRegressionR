@@ -1,7 +1,7 @@
 ---
 title: "Simple Linear Regression"
-teaching: 45
-exercises: 10
+teaching: 60
+exercises: 60
 questions:
 - "What is linear regression?"
 - "What are the assumptions we need to meet to use linear regression?"

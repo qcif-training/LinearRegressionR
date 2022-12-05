@@ -108,7 +108,7 @@ restecg     | Resting ECG abnormalities; 0=Normal, 1=ST Abnormality, 2=LVH
 The working directory is a file path on your computer that is the default location of any files you read or save in R.
 You can set this directory Files pane in RStudio, as shown below.
 
-[!RStudio Layout](../fig/01-fig3.png)
+![RStudio Layout](../fig/01-fig3.png)
 
 You can also set the working directory in the menu bar, under `Session -> Set Working Directory`.
 Alternatively, you can do this through the RStudio console using the command `setwd` by entering the absolute filepath as a string.

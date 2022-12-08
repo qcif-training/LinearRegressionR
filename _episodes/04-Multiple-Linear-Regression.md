@@ -1012,7 +1012,7 @@ for(i in N) {
   res <- lm(plasma$logbetaplasma ~ plasma[, i])
   result_LM[i] <- anova(res)$`Pr(>F)`[1]
 }
-signfic_res_or_close <- colnames(heart)[which(result_LM < 0.2)]
+signfic_res_or_close <- colnames(plasma)[which(result_LM < 0.2)]
 ```
 
 Next, we fit an initial model using the significant variables and then perform backwards elimination to obtain the final model

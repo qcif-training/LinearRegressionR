@@ -5,7 +5,7 @@ title: Setup
 __Workshop data files__  
 Prior to the workshop, you must download the example datafiles and test importing them into R. To do this:
 
-1) Download the example datasets from [here](https://cloudstor.aarnet.edu.au/plus/s/v8mgCgNGdQoUJIg).   
+1) Download the example datasets from [here](https://drive.google.com/uc?export=download&id=1URnPkGBwcguRE89vYlvF3JOqNWqFc-Op).   
 
 2) Save the downloaded file to Downloads, Desktop or another convenient location on your computer, and double-click to expand it - it will create a 
 directory called 'data'.  

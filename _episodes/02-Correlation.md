@@ -8,7 +8,7 @@ questions:
 - "How can we tell if two variables are correlated?"
 - "What test(s) do we use to test for correlation?"
 objectives:
-- "Test the correlation between a number of variables in our data set."
+- "Test the correlation between a number of variables in our dataset."
 - "Learn how to determine which test to use, depending on the types of the variables."
 keypoints:
 - There are different tests to test for correlation, depending on the type of variable.
@@ -36,7 +36,7 @@ Associations can be positive, where an **increase** in one variable is associate
 >
 > Label the following three scatter plots as showing no correlation or a positive or negative correlation
 >
-> ![RStudio layout](../fig/02-fig1.png)
+> ![Scatter plot challenge](../fig/02-fig1.png)
 >
 > > ## Solution to Challenge 1
 > >
@@ -87,7 +87,7 @@ This is useful in the exploratory phase of data analysis to visually determine i
 
 The figure below shows a scatter plot of variables with different levels of correlation.
 
-![RStudio layout](../fig/02-fig3.png)
+![Scatter plot correlation examples](../fig/02-fig3.png)
 
 ## Exercise - Correlation Analysis
 
@@ -105,30 +105,38 @@ Normality can be tested by:
 * Visualising the data through a histogram, and
 * Conducting Shapiro-Wilk's test.
 
-We can produce a histogram for a numerical variable using the `hist` function.
+We can produce a histogram for a numerical variable using `ggplot2`'s `geom_histogram` function.
 
 
-```r
-hist(heart$trestbps)
+``` r
+library(ggplot2)
+ggplot(heart, aes(x = trestbps)) +
+  geom_histogram(binwidth = 10, fill = "grey", colour = "black")
 ```
-![RStudio layout](../fig/02-fig4.png)
+
+![Histogram of resting systolic blood pressure](../fig/02-fig4.png)
+
+Calling `ggplot()` initialises a ggplot object.
+We use this to declare the data frame that contains the data we want to visualise, as well as a plot aesthetic (`aes`) — a mapping between a visual cue, such as the x or y axis, and a variable in the data.
+Here, we map `trestbps` to the x-axis.
+The specified plot aesthetic will be used in all subsequent layers unless specifically overridden.
+We then add a `geom_histogram` layer to plot the data as a histogram.
 
 It appears that the variable could potentially be normally distributed, although slightly skewed, but we should analytically test this assumption.
 We can perform a Shapiro-Wilk normality test for this variable using the `shapiro.test` function.
 
 
-```r
+``` r
 shapiro.test(heart$trestbps)
 ```
 
-~~~
-##
+```
+## 
 ## 	Shapiro-Wilk normality test
-##
+## 
 ## data:  heart$trestbps
 ## W = 0.96928, p-value = 0.01947
-~~~
-{: .output}
+```
 
 The null hypothesis of the Shapiro-Wilk normality test is that the data comes from a normal distribution.
 The p-value resulting from this test is significant and so we can reject the null hypothesis that the data is normally distributed
@@ -141,29 +149,28 @@ non-parametric test: Spearman's rank test. The correlation between SBP and age c
 we round the result to 2 decimal places and assign it to the `correlation` variable to be used later.
 
 
-```r
+``` r
 correlation <- round(cor(heart$trestbps, heart$age, method = "spearman"), 2)
 ```
 
 Further, we can test the significance of this finding using the `cor.test` function.
 
 
-```r
+``` r
 cor.test(heart$trestbps, heart$age, method = "spearman")
 ```
 
-~~~
-##
+```
+## 
 ## 	Spearman's rank correlation rho
-##
+## 
 ## data:  heart$trestbps and heart$age
 ## S = 121895, p-value = 0.0069
 ## alternative hypothesis: true rho is not equal to 0
 ## sample estimates:
-##       rho
+##       rho 
 ## 0.2685589
-~~~
-{: .output}
+```
 
 ### Interpreting the Analysis Results
 
@@ -174,62 +181,55 @@ evidence that there is moderate correlation between Age and resting SBP level.
 Plotting age and resting SBP on a scatter plot can help us visually understand the association.
 
 
-```r
-plot(heart$trestbps ~ heart$age, main = "Age vs. Resting SBP", cex.main = 1)
-```
-![RStudio layout](../fig/02-fig5.png)
-
-
-Additional arguments can be given to the plot function to customise the look and labels of the plot.
-
-
-```r
-plot(heart$trestbps ~ heart$age,
-     main = "Age vs. Resting SBP",
-     cex.main = 1,
-     cex.lab = 1,
-     xlab = "Age",
-     ylab = "BP",
-     cex = 1,
-     pch = 1)
-
-text(x = 65,
-     y = 170,
-     label = paste("cor = ", correlation))
-```
-![RStudio layout](../fig/02-fig6.png)
-
-The arguments we supplied to the `plot` function are
-
-* main: Main title
-* xlab: X axis label
-* ylab: Y axis label
-* cex: How much the text (titles, axis labels etc.) should be scaled relative to the default (1).
-* cex.main: Scaling factor of the main title relative to cex
-* cex.lab: Scaling factor of the axis labels relative to cex
-* pch: Number representing the symbol to be used (list symbols available in the R docs).
-
-We also used the `text` function to insert the correlation value we computed earlier into the image.
-
-ggplot2 is a popular data visualisation package that offers an elegant framework for creating plots.
-We can use geom_point to create a scatter plot and geom_smooth to add a linear least squares regression line to the data.
-
-
-```r
-library(ggplot2)
+``` r
 ggplot(heart, aes(x = age, y = trestbps)) +
-  geom_point(shape = 1) +
-  geom_smooth(method = lm, se = F)+
-  ggtitle("Age vs.Resting BP")
+  geom_point() +
+  ggtitle("Age vs. Resting SBP")
 ```
-![RStudio layout](../fig/02-fig7.png)
 
-Calling `ggplot2()` initialises a ggplot object.
-We use this to declare the data frame that contains the data we want to visualise as well as a plot aesthetic (`aes`).
-A plot aesthetic is a mapping between a visual cue and a variable.
-In our example, we specify that age is to be on the x-axis and resting SBP on the y-axis.
-The specified plot aesthetic will be used in all subsequent layers unless specifically overridden.
-We then add `geom_point` and `geom_smooth` layers to the plot, as well as a title layer.
+![Scatter plot of age and BP](../fig/02-fig5.png)
+
+
+Additional arguments can be given to `geom_point` and other layers to customise the look and labels of the plot.
+
+
+``` r
+ggplot(heart, aes(x = age, y = trestbps)) +
+  geom_point(shape = 18, size = 3) +
+  ggtitle("Age vs. Resting SBP") +
+  xlab("Age") +
+  ylab("BP") +
+  annotate("text", x = 65, y = 170, label = paste("cor =", correlation)) +
+  theme(plot.title = element_text(size = 12),
+        axis.title = element_text(size = 10))
+```
+
+![Scatter plot of age and BP with additional arguments](../fig/02-fig6.png)
+
+The arguments we supplied are:
+
+* shape: Number representing the point symbol to use (list of shapes available in the R docs)
+* size: The size of the plotted points
+* xlab / ylab: X and Y axis labels
+* annotate("text", ...): Adds text at a specified x/y position on the plot — here we use it to display the correlation value we computed earlier
+* theme(plot.title = ..., axis.title = ...): Adjusts the font size of the title and axis labels
+
+We can extend our plot further by adding `geom_smooth` to overlay a linear least squares regression line on the data.
+
+
+``` r
+ggplot(heart, aes(x = age, y = trestbps)) +
+  geom_point(shape = 18, size = 3) +
+  geom_smooth(method = lm, se = F) +
+  ggtitle("Age vs. Resting SBP") +
+  xlab("Age") +
+  ylab("BP") +
+  annotate("text", x = 65, y = 170, label = paste("cor =", correlation)) +
+  theme(plot.title = element_text(size = 12),
+        axis.title = element_text(size = 10))
+```
+
+![Scatter plot of age and BP with geom_smooth line](../fig/02-fig7.png)
 
 ## Exploring Relationship Between SBP and Other Continuous Variables
 
@@ -241,19 +241,21 @@ We then add `geom_point` and `geom_smooth` layers to the plot, as well as a titl
 >
 > > ## Solution to Challenge 2
 > >
-> > To plot the data, we use the plot function.
+> > To plot the data, we use `ggplot`.
 > >
-> >
-> > ```r
-> > plot(heart$trestbps ~ heart$chol, main = "Cholesterol vs. Resting SBP", cex.main = 1)
+> > 
+> > ``` r
+> > ggplot(heart, aes(x = chol, y = trestbps)) +
+> >   geom_point() +
+> >   ggtitle("Cholesterol vs. Resting SBP")
 > > ```
 > >
 > > The plot appears to show a positive correlation, although very weak.
 > > A test should be performed to confirm this finding.
 > > As we are confident SBP is not normally distributed, we will use Spearman's rank to determine the correlation.
 > >
-> >
-> > ```r
+> > 
+> > ``` r
 > > cor.test(heart$trestbps, heart$chol, method = "spearman")
 > > ```
 > >
@@ -268,37 +270,35 @@ However, we will first separately analyse the 'ca' variable, the number of major
 ordinal variable, which requires we use Kendall's Tau to measure correlation.
 
 
-```r
+``` r
 round(cor(heart$trestbps, heart$ca, method = "kendall"), 2)
 ```
 
-~~~
+```
 ## [1] -0.05
-~~~
-{: .output}
+```
 
-```r
+``` r
 cor.test(heart$trestbps, heart$ca, method = "kendall")
 ```
 
-~~~
-##
+```
+## 
 ## 	Kendall's rank correlation tau
-##
+## 
 ## data:  heart$trestbps and heart$ca
 ## z = -0.5971, p-value = 0.5504
 ## alternative hypothesis: true tau is not equal to 0
 ## sample estimates:
-##         tau
+##         tau 
 ## -0.04876231
-~~~
-{: .output}
+```
 
 We can obtain a vector indexing the numeric variables in our dataset using a combination of functions in a single line.
 We will exclude the 12th column as this is the 'ca' column.
 
 
-```r
+``` r
 mydata <- heart[-c(12)]
 
 cont <- as.vector(which(sapply(mydata, is.numeric)))
@@ -311,46 +311,45 @@ Let's break this one-liner down:
 So, `sapply(heart, is.numeric)` will return a list of `TRUE` or `FALSE` denoting whether each column (or variable) of our data is numeric.
 `which(x)` returns a list of the `TRUE` indices in a logical vector (a vector of only `TRUE` or `FALSE`).
 
-So the result of our one-liner above will be a vector containing the column numbers of the variables that our numerical in our data set.
+So the result of our one-liner above will be a vector containing the column numbers of the variables that are numerical in our dataset.
 
-We can grab the data under each of these variables using our `cont` vector and test the correlation of each our numeric variables with BPS using Pearson’s correlation coefficient.
+We can grab the data under each of these variables using our `cont` vector and test the correlation of each of our numeric variables with SBP using Spearman’s rank correlation coefficient.
 
 
-```r
+``` r
 round(cor(mydata$trestbps, mydata[, cont], method = "spearman", use = "pairwise.complete.obs"), 2)
 ```
 
-~~~
+```
 ##       age chol thalach trestbps oldpeak
 ## [1,] 0.27 0.21   -0.07        1     0.2
-~~~
-{: .output}
+```
 
-The correlation between BPS and BPS is 1, as this "relationship" is completely linear.
+The correlation between SBP and SBP is 1, as this "relationship" is completely linear.
 
 We can visualise the correlation between each pair of variables using `ggcor`, from the `GGally` package.
 
 
-```r
+``` r
 myvars <- c("trestbps", "age", "chol", "thalach", "oldpeak")
 newdata <- heart[myvars]
 ```
 
-```r
+``` r
 library(GGally)
 ggcorr(newdata, palette = "RdBu", label = TRUE)
 ```
-![RStudio layout](../fig/02-fig9.png)
+![ggcorr plot](../fig/02-fig9.png)
 
 `ggpairs` plots a scatter plot with the correlation for each pair of variables; it also plots an estimated distribution for each variable.
 
 
-```r
-ggpairs(newdata, columns = 1:5, columnLabels = c("BP", "Age", "Cholestrol", "HR", "ST_dep"),
+``` r
+ggpairs(newdata, columns = 1:5, columnLabels = c("BP", "Age", "Cholesterol", "HR", "ST_dep"),
         lower = list(continuous = wrap( "smooth", colour = "blue")), upper = list(continuous = wrap("cor", method = "spearman", size = 2.5))) +
   ggtitle("Scatter Plot matrix") +
   theme(axis.text = element_text(size = 5),
         axis.title = element_text(size = 5),
         plot.title = element_text(size = 10, face = "bold", hjust = 0.5))
 ```
-![RStudio layout](../fig/02-fig10.png)
+![ggpairs plot](../fig/02-fig10.png)

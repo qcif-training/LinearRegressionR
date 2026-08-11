@@ -5,8 +5,8 @@ exercises: 90
 questions:
 - "What is multiple linear regression?"
 - "What are the additional assumptions we need to meet to use multiple linear regression?"
-- "How do I perform multiple linear regression in R?"
-- "How do I ensure that my data meets the model assumptions?"
+- "How do we perform multiple linear regression in R?"
+- "How do we ensure that our data meets the model assumptions?"
 objectives:
 - "Extend our theory of simple linear regression to multiple linear regression."
 - "Use multiple linear regression on our dataset."
@@ -34,18 +34,18 @@ library(car)
 ```
 
 ```{r, echo = FALSE}
-setwd("~/git/LinearRegressionR/_episodes_rmd")
+# setwd("~/git/LinearRegressionR/_episodes_rmd")
 heart <- read.csv("data/heart_disease.csv", stringsAsFactors = TRUE)
 heart$ID <- as.factor(heart$ID)
 heart$sex <- factor(heart$sex, levels = c(0, 1), labels = c("Female", "Male"))
 heart$fbs <- factor(heart$fbs, levels = c(0, 1), labels = c("<120", ">120"))
-heart$restecg <- factor(heart$restecg, levels = c(0, 1, 2), labels = c("Normal", "ST Abnormality", "LVH"))
+heart$restecg <- factor(heart$restecg, levels = c(0, 1, 2), labels = c("Normal", "ST abnormality", "LVH"))
 heart$exang <- factor(heart$exang, levels = c(0, 1), labels = c("No", "Yes"))
 heart$slope <- factor(heart$slope, levels = c(1, 2, 3), labels = c("Up-sloping", "Flat", "Down-sloping"))
-heart$cp <- factor(heart$cp, levels = c(1, 2, 3, 4), labels = c("Typical angina", "Atypical angina", "Non-Anginal pain", "Asymptomatic"))
 heart$class <- as.factor(heart$class)
-levels(heart$class)[which(levels(heart$class) == "0")] <- "No Disease"
+levels(heart$class)[which(levels(heart$class) == "0")] <- "No disease"
 levels(heart$class)[which(levels(heart$class)%in%c("1", "2", "3", "4"))] <- "Disease"
+heart$cp <- factor(heart$cp, levels = c(1, 2, 3, 4), labels = c("Typical angina", "Atypical angina", "Non-anginal pain", "Asymptomatic"))
 ```
 
 In simple linear regression, we want to test the effect of one independent variable on one dependent variable.
@@ -87,11 +87,11 @@ The solution to this problem is to exclude one of the highly correlated variable
 
 Related to our sample size assumption, in multivariable modeling, you can get highly significant but meaningless results if you put too many predictors in the model compared to the number of samples.
 This is known as overfitting, where the model is fit perfectly to the quirks of your particular sample, but has no predictive ability in a new sample.
-A common approach that controls over fitting by keeping the number of predictors to a minimum is step-wise multiple regression:
+A common approach that controls overfitting by keeping the number of predictors to a minimum is step-wise multiple regression:
 
 We start with the one predictor that explains the most predicted variance (i.e. has the highest correlation coefficient with the outcome). Next, the most statistically significant predictors is added to the model. The process is repeated until no remaining predictor has a statistically significant correlation with the outcome.
 
-Similarly to simple linear regression, the coefficient of determination ($$R^2$$) indicates the percent of variance in the dependant variable explained by combined effects of the independent variables.
+Similarly to simple linear regression, the coefficient of determination ($$R^2$$) indicates the percent of variance in the dependent variable explained by combined effects of the independent variables.
 The adjusted $$R^2$$ is used for estimating explained variance in a population (not just the sample) when the sample size is small.
 
 ### Outliers
@@ -102,11 +102,11 @@ Even a few outliers can dramatically change estimates of the slope, $$b$$.
 
 The figure below shows an example dataset with an outlier.
 
-![RStudio layout](../fig/04-fig1.png)
+![Scatter plot with an outlier pulling the regression line](../fig/04-fig1.png)
 
 After removing the outlier from the sample, the regression line better fits the rest of the data.
 
-![RStudio layout](../fig/04-fig2.png)
+![Scatter plot with the outlier removed and regression line refitted](../fig/04-fig2.png)
 
 Outliers can result from:
 
@@ -116,7 +116,7 @@ Outliers can result from:
 
 If you see no reason why your outliers are erroneous measurements, then there is no truly objective way to remove them.
 
-## Example - Does ignoring problems and worrying predict psychological distress?
+## Example - Does Ignoring Problems and Worrying Predict Psychological Distress?
 
 *Neill (2001)*
 
@@ -134,21 +134,21 @@ $$ \text{PsychDistress} = a + b_1 \times (\text{Worrying}) + b_2 \times (\text{I
 ### Correlations
 
 The figure below shows the correlations between the three variables being assessed.
-We can see that the correlation between the independent variables is low (0.352), suggesting that multicollinearity may not be present in this data set.
+We can see that the correlation between the independent variables is low (0.352), suggesting that multicollinearity may not be present in this dataset.
 The correlations between the independent and dependent variables are negative (-0.521 and -0.325).
 
-![RStudio layout](../fig/04-fig3.png)
+![Correlation matrix for psychological distress, worry and ignoring problems](../fig/04-fig3.png)
 
 ### Model Summary and Coefficients
 
 The figure below shows the $$R$$, $$R^2$$ and Adjusted $$R^2$$ values after fitting the model.
 We have $$R^2 = 0.295$$, which indicates that, under our model, approximately 30% of the variance in psychological distress can be attributed to the combined effects of ignoring the problem and worrying.
 
-![RStudio layout](../fig/04-fig4.png)
+![Model summary showing R, R-squared and adjusted R-squared](../fig/04-fig4.png)
 
 The estimated coefficients of the model is shown in the figure below.
 
-![RStudio layout](../fig/04-fig5.png)
+![Table of unstandardised and standardised model coefficients](../fig/04-fig5.png)
 
 On the right hand side of the table we can see the p-value of each estimate
 
@@ -168,7 +168,7 @@ We can make some interpretations of the model using these estimates:
 
 * When the score of worrying and ignoring problems are both zero, then the psychological distress score is 138.93.
 * When the score of ignoring problems is held constant, each unit increase in the score of not worrying decreases the psychological distress score by 11.51 units.
-* When the score of worrying is held constant, each unit increase in the score of ignoring problems decreases the psychological distress score by 4.71 units.
+* When the score of worrying is held constant, each unit increase in the score of ignoring problems decreases the psychological distress score by 4.74 units.
 
 The standardised coefficients (Beta) are calculated using the unstandardised coefficients and their respective standard error.
 These values allow us to compare the relative effect size of the predictor variables; here, we see that worrying has a relatively larger (negative) effect size.
@@ -176,29 +176,29 @@ These values allow us to compare the relative effect size of the predictor varia
 The figure below gives 95% confidence intervals for the intercept term and the standardised coefficients.
 We can interpret these intervals as: we can be 95% confident that the interval captures the true value of the estimate.
 
-![RStudio layout](../fig/04-fig6.png)
+![95% confidence intervals for the model coefficients](../fig/04-fig6.png)
 
 
-## Non-linear Models
+## Non-Linear Models
 
 Linear Regression fits a straight line to your data, but in some cases a non-linear model may be more appropriate, such as logistic or cox regression.
 Non-linear models are usually used when non-linear relationships have some biological explanation.
 
-### Examples of Non-linear Models
+### Examples of Non-Linear Models
 
 Examples of different multivariate regression models are shown in the table below.
 
-![RStudio layout](../fig/04-fig7.png)
+![Table comparing linear, logistic and Cox regression models](../fig/04-fig7.png)
 
 ## Summary
 
 In summary, choose simple linear regression when you are predicting a continuous variable with one predictor variable, and choose multiple linear regression when predicting with more than one predictor variable.
 
-![RStudio layout](../fig/04-fig8.png)
+![Flowchart for choosing between simple and multiple regression](../fig/04-fig8.png)
 
-## Exercise 1 - Identify potential predictors of Systolic Blood Pressure
+## Exercise 1 - Identify Potential Predictors of Systolic Blood Pressure
 
-### Step 1: Checking for correlations
+### Step 1: Checking for Correlations
 
 First, we will check for correlations between our variables of interest.
 
@@ -209,7 +209,7 @@ round(cor(heart[, n], method = "spearman", use = "pairwise.complete.obs"), 2)
 
 Here we observe that age and cholesterol have the highest correlations with SBP, and there are no high correlations within the predictor variables.
 
-### Step 2: Identifying potential predictors
+### Step 2: Identifying Potential Predictors
 
 Next, we will identify potential predictors of SBP in univariable linear regressions (i.e, SBP vs. each predictor). We can check this manually one-by-one, or in a loop.
 
@@ -244,12 +244,12 @@ rownames(newdataset) <- newdataset$ID # set the row names to be the ID of the ob
 newdataset <- newdataset[, -1] # remove the ID column from the data
 ```
 
-### Step 3: Fitting the model
+### Step 3: Fitting the Model
 
 Now we will fit the multiple linear regression model on the data of interest, using the same `lm` function from simple linear regression, and print the summary of the model.
 
 ```{r}
-result <- lm(trestbps ~ ., data = newdataset)
+result <- lm(trestbps ~ ., data = newdataset) # . means add all variables except for the specified dependent variable
 anova(result)
 summary(result)
 ```
@@ -285,13 +285,13 @@ Now, with all estimates significant, we can make some interpretations:
 
 However, we still need to check the assumptions of a multiple linear regression model are met before using the model.
 
-### Step 4: Checking the assumptions
+### Step 4: Checking the Assumptions
 
 ```{r, eval = FALSE}
 par(mfrow = c(2, 2))
 plot(finalmodel)
 ```
-![RStudio layout](../fig/04-fig9.png)
+![Diagnostic plots for the SBP model using age and fbs](../fig/04-fig9.png)
 
 Here, we observe that the variance of the residuals seems constant and the distribution of the residuals appears to be normal.
 To measure multicolinearity, we can use the `vif` function from the `car` package.
@@ -305,7 +305,7 @@ car::vif(finalmodel)
 
 There appears to be no evidence of colinearity, and so we can conclude that the assumptions of the model are met.
 
-### Another approach - _a priori_ selection of variables.
+### Another Approach - _A Priori_ Selection of Variables
 
 An alternative approach is to simply include all variables determined to be important.
 
@@ -318,7 +318,7 @@ select_data <- heart[, selection]
 rownames(select_data) <- select_data$ID
 select_data <- select_data[,-1]
 
-result2 <- lm(trestbps ~ ., data = select_data) # . means add all variables except for the specified dependent variable
+result2 <- lm(trestbps ~ age + sex + chol + fbs + thalach, data = select_data)
 anova(result2)
 summary(result2)
 ```
@@ -345,7 +345,7 @@ par(mfrow = c(2, 2))
 plot(result2)
 ```
 
-![RStudio layout](../fig/04-fig10.png)
+![Diagnostic plots for the SBP model using age, sex, cholesterol, fbs and heart rate](../fig/04-fig10.png)
 
 The variance of the residuals appears constant and the distribution of the residuals appear normal.
 However, despite adding more variables, this model explains 12% variability ($$R^2 = 0.117$$) in the outcome as compared to 13% from the other model.
@@ -353,7 +353,7 @@ Some variables that had significant effect in the other model are now insignific
 
 A more robust approach, such as stepwise or lasso regression, could be used to select the final model.
 
-## Exercise 2 - Identifying potential predictors of plasma beta-carotene level
+## Exercise 2 - Identifying Potential Predictors of Plasma Beta-Carotene Level
 
 Data not published yet but a related reference is:
 *Nierenberg DW, Stukel TA, Baron JA, Dain BJ, Greenberg ER. Determinants of plasma levels of beta-carotene and retinol. American Journal of Epidemiology 1989;130:511-521*
@@ -365,21 +365,21 @@ This study observed 315 patients who had a surgical procedure to remove a non-ca
 Variable    | Description
 --------    | ------------
 age         | Age (years)
-sex         | Sex (1 = male, 2 = female)
-smokstat    | Smoking status (1 = never, 2 = former, 3 = current Smoker)
+sex         | Sex (1=male, 2=female)
+smokstat    | Smoking status (1=never, 2=former, 3=current smoker)
 quetelet    | Quetelet (weight/height<sup>2</sup>)
-vituse      | Vitamin use (1 = yes, fairly often, 2 = yes, not often, 3 = no)
+vituse      | Vitamin use (1=yes, fairly often, 2=yes, not often, 3=no)
 calories    | Number of calories consumed per day
 fat         | Grams of fat consumed per day
 fiber       | Grams of fiber consumed per day
 alcohol     | Number of alcoholic drinks consumed per week
-cholesterol | Cholestoral consumed (mg per day)
+cholesterol | Cholesterol consumed (mg per day)
 betadiet    | Dietary beta-carotene consumed (µg per day)
 retdiet     | Dietary retinol consumed (µg per day)
 betaplasma  | Plasma beta-carotene (ng/ml)
 retplasma   | Plasma retinol (ng/ml)
 
-### Importing and cleaning the data
+### Importing and Cleaning the Data
 
 First, we will import the data and use the `str` function to check its coding.
 
@@ -402,7 +402,7 @@ To aid in interpreting the model, we will change the levels of the factors, wher
 ```{r}
 levels(plasma$sex) <- c("Male", "Female")
 levels(plasma$smokstat) <- c("Never", "Former", "Current")
-levels(plasma$vituse) <- c("Often", "NotOften", "No")
+levels(plasma$vituse) <- c("Often", "Not often", "No")
 ```
 
 Now we can view a summary of the data with the correct variable types.
@@ -414,9 +414,12 @@ summary(plasma)
 Let's view a histogram of the plasma beta-carotene variable.
 
 ```{r, eval = FALSE}
-hist(plasma$betaplasma)
+library(ggplot2)
+ggplot(plasma, aes(x = betaplasma)) +
+  geom_histogram(bins = 8, fill = "grey", colour = "black")
 ```
-![RStudio layout](../fig/04-fig11.png)
+
+![Histogram of plasma beta-carotene](../fig/04-fig11.png)
 
 This doesn't appear to be normally distributed, which may affect the performance of our model.
 We can check this using the Shapiro-Wilk normality test.
@@ -428,7 +431,7 @@ shapiro.test(plasma$betaplasma)
 This tiny p-value suggests it is incredibly unlikely that the data is normally distributed.
 However, the data is right-skewed, as shown below, which could mean that the data is log-normally distributed.
 
-![RStudio layout](../fig/04-fig12.png)
+![Illustration of a positively skewed distribution](../fig/04-fig12.png)
 
 Under this distribution, the logarithm of the data is normally distributed.
 
@@ -450,15 +453,17 @@ Using the `log` function, we will create a new variable for plasma beta-carotene
 
 ```{r, eval = FALSE}
 plasma$logbetaplasma <- log(plasma$betaplasma + 1)
-hist(plasma$logbetaplasma)
+ggplot(plasma, aes(x = logbetaplasma)) +
+  geom_histogram(bins = 8, fill = "grey", colour = "black")
 ```
-![RStudio layout](../fig/04-fig13.png)
+
+![Histogram of log of plasma beta-carotene](../fig/04-fig13.png)
 
 ```{r, include = FALSE}
 plasma$logbetaplasma <- log(plasma$betaplasma + 1)
 ```
 
-### Checking for correlations
+### Checking for Correlations
 
 Next, we will check for correlations between beta-carotene and the potential independent variables.
 
@@ -469,7 +474,7 @@ cor(plasma$betaplasma, plasma[, n], method = "spearman", use = "pairwise.complet
 
 Here, we observe quetelet (-), cholesterol (-), betadiet (+) and fiber (+) have the highest correlations with betaplasma.
 
-### Regression with untransformed beta-carotene
+### Regression with Untransformed Beta-Carotene
 
 As in our previous example, we will identify potential predictors of beta-carotene in univariate linear regression.
 As we are now R experts, we will do so using the advanced option!
@@ -486,7 +491,7 @@ signfic_res_or_close <- colnames(plasma)[which(result_LM < 0.2)]
 print(signfic_res_or_close)
 ```
 
-### Fitting the model
+### Fitting the Model
 
 Now that we have the predictor variables of interest, we can fit our initial model.
 
@@ -498,7 +503,7 @@ rownames(newdataset) <- newdataset$Patient.ID
 newdataset <- newdataset[,-1]
 
 #Conduct multiple linear regression on initially selected variables
-initial_result <- lm(betaplasma ~ ., data = newdataset)
+initial_result <- lm(betaplasma ~ age + sex + smokstat + quetelet + vituse + fat + fiber + cholesterol + betadiet, data = newdataset)
 summary(initial_result)
 ```
 
@@ -522,12 +527,12 @@ Finally, as always, we will check if the model meets the assumptions of multiple
 par(mfrow = c(2, 2))
 plot(finalmodel_raw)
 ```
-![RStudio layout](../fig/04-fig14.png)
+![Diagnostic plots for the untransformed beta-carotene model](../fig/04-fig14.png)
 
 Here, we observe non-constant residual variance and deviation of residuals from normality.
 Let's refit a model using the log-transformed plasma beta-carotene.
 
-First, we obtain the significant variables from running seperate univariate linear regression models on each candidate predictor variable.
+First, we obtain the significant variables from running separate univariate linear regression models on each candidate predictor variable.
 
 ```{r}
 result_LM <- c()
@@ -549,7 +554,7 @@ rownames(newdataset) <- newdataset$Patient.ID
 newdataset <- newdataset[,-1]
 
 #Conduct multiple linear regression on initially selected variables
-initial_result <- lm(logbetaplasma ~ ., data = newdataset)
+initial_result <- lm(logbetaplasma ~ age + sex + quetelet + vituse + smokstat + fat + fiber + cholesterol + betadiet, data = newdataset)
 summary(initial_result)
 
 #Backward Elimination
@@ -576,7 +581,7 @@ Let's take a look at our diagnostic plots.
 par(mfrow = c(2, 2))
 plot(finalmodel)
 ```
-![RStudio layout](../fig/04-fig15.png)
+![Diagnostic plots for the log-transformed beta-carotene model](../fig/04-fig15.png)
 
 The residuals look much better with the transformation, however, observation 257 appears to be an outlier.
 Let's look at the data to see if there's anything strange.
@@ -615,4 +620,4 @@ Finally, checking the model plot diagnostics, we see that this model does not ap
 par(mfrow = c(2, 2))
 plot(res)
 ```
-![RStudio layout](../fig/04-fig16.png)
+![Diagnostic plots for the log-transformed beta-carotene model with outlier removed](../fig/04-fig16.png)

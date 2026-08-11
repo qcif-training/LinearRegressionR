@@ -5,8 +5,8 @@ exercises: 60
 questions:
 - "What is linear regression?"
 - "What are the assumptions we need to meet to use linear regression?"
-- "How do I perform linear regression in R?"
-- "How do I ensure that my data meets the model assumptions?"
+- "How do we perform linear regression in R?"
+- "How do we ensure that our data meets the model assumptions?"
 objectives:
 - "Understand theory of linear regression."
 - "Use linear regression on our dataset."
@@ -50,7 +50,7 @@ knit_hooks$set(output = function(x, options) {
   hook_output(x, options)
 })
 
-setwd("~/git/LinearRegressionR/_episodes_rmd")
+# setwd("~/git/LinearRegressionR/_episodes_rmd")
 library(ggplot2)
 library(GGally)
 library(car)
@@ -58,13 +58,13 @@ heart <- read.csv("data/heart_disease.csv", stringsAsFactors = TRUE)
 heart$ID <- as.factor(heart$ID)
 heart$sex <- factor(heart$sex, levels = c(0, 1), labels = c( "Female","Male"))
 heart$fbs <- factor(heart$fbs, levels = c(0, 1), labels = c("<120", ">120"))
-heart$restecg <- factor(heart$restecg, levels = c(0, 1, 2), labels = c("Normal", "ST Abnormality", "LVH"))
+heart$restecg <- factor(heart$restecg, levels = c(0, 1, 2), labels = c("Normal", "ST abnormality", "LVH"))
 heart$exang <- factor(heart$exang, levels = c(0, 1), labels = c("No", "Yes"))
 heart$slope <- factor(heart$slope, levels = c(1, 2, 3), labels = c("Up-sloping", "Flat", "Down-sloping"))
-heart$cp <- factor(heart$cp, levels = c(1, 2, 3, 4), labels = c( "Typical angina", "Atypical angina", "Non-Anginal pain", "Asymptomatic"))
 heart$class <- as.factor(heart$class)
-levels(heart$class)[which(levels(heart$class) == "0")] <- "No Disease"
+levels(heart$class)[which(levels(heart$class) == "0")] <- "No disease"
 levels(heart$class)[which(levels(heart$class) %in% c("1", "2", "3", "4"))] <- "Disease"
+heart$cp <- factor(heart$cp, levels = c(1, 2, 3, 4), labels = c( "Typical angina", "Atypical angina", "Non-anginal pain", "Asymptomatic"))
 ```
 
 Regression analysis is used to describe the relationship between a single
@@ -91,9 +91,9 @@ In simple linear regression, we wish to find the values of _a_ and _b_ that best
 describe the relationship given by the data.
 
 This objective can be thought of as drawing a straight line that best fits the
-plotted data points.The line can then be used to predict Y from X.
+plotted data points. The line can then be used to predict Y from X.
 
-![RStudio layout](../fig/03-fig1.png)
+![Examples of a good and bad linear regression line](../fig/03-fig1.png)
 
 ## Least Squares Estimation
 
@@ -106,7 +106,7 @@ Solving through calculus, the solution to this problem is $$ \hat{b} = \frac{\su
 In the figure below, we have four observations and two lines attempting to fit
 the data.
 
-![RStudio layout](../fig/03-fig2.png)
+![Least squares estimation](../fig/03-fig2.png)
 
 The sum of squares for the red sloped line is $$ (2 - 1)^2 + (4 - 2)^2 + (1.5 - 3)^2 + (3.2 - 4)^2 = 7.89 $$ 
 and the sum of squares for the green flat line is $$ (2 - 2.5)^2 + (4 - 2.5)^2 + (1.5 - 2.5)^2 + (3.2 - 2.5)^2 = 3.99 $$
@@ -142,7 +142,7 @@ line at any given value of X. It is assumed to be equal at all values of X.
 Each observed residual can be thought of as an estimate of the actual unknown
 "true error" term.
 
-![RStudio layout](../fig/03-fig3.png)
+![Standard error](../fig/03-fig3.png)
 
 
 ## Assumptions of Linear Regression
@@ -197,7 +197,7 @@ Cig. | CHD
 3    | 4
 3    | 14
 
-![RStudio layout](../fig/03-fig4.png)
+![Scatter plot of average cigarettes and CHD mortality](../fig/03-fig4.png)
 
 As a reminder, the linear regression equation is $$ \hat Y = a + bX.  $$
 
@@ -210,7 +210,7 @@ The slope $$b$$ represents the rate of increase of CHD mortality rate for each u
 
 The results of fitting a linear model to the data is shown below.
 
-![RStudio layout](../fig/03-fig5.png)
+![Regression results for CHD based on average cigarettes](../fig/03-fig5.png)
 
 The p-value associated with the prediction of the slope is less than 0.05, indicating there is significant evidence that the slope is different from zero, and therefore there is a significant relationship between cigarette consumption and CHD mortality.
 
@@ -236,7 +236,7 @@ and so we predict that on average 14.61/10,000 people will die of CHD _per annum
 Now that we have a fitted model, we can check the residuals between our model and the data we used to fit the model.
 In simple regression, the residuals is the vertical distance between the actual and predicted values for each observation; an example of the residual for a particular observation is shown in the figure below.
 
-![RStudio layout](../fig/03-fig6.png)
+![Residuals plot](../fig/03-fig6.png)
 
 For one observation, there was a CHD mortality of 23 deaths per 10,000 with the average number of cigarettes smoked per adult per day is 6.
 Our prediction for the same cigarette consumption level was 14.61 deaths per 10,000, and so the residual for this observation is 23 - 14.61 = 8.39.
@@ -259,9 +259,12 @@ In this exercise we will be exploring the relationship between systolic blood pr
 First, we will use a scatter plot to visually check that there is a linear relationship.
 
 ```{r, eval = FALSE}
-plot(heart$trestbps ~ heart$age)
+library(ggplot2)
+ggplot(heart, aes(x = age, y = trestbps)) +
+  geom_point()
 ```
-![RStudio layout](../fig/03-fig7.png)
+
+![Scatter plot of age and resting systolic BP](../fig/03-fig7.png)
 
 The `lm` function is used to fit a linear model and obtain the estimated values of $a$ and $b$, and we can use the `summary` function to view a summary of the results.
 
@@ -288,41 +291,33 @@ The `coefficients` function gives us the model coefficients, as outputted by `su
 coefficients(model1)
 ```
 
-`fitted` gives us the predicted SBP values for each value of age in our data set.
+`fitted` gives us the predicted SBP values for each value of age in our dataset.
 
 ```{r}
 fitted(model1)
 ```
 
-`resid` gives the residuals for each observation in our data set.
+`resid` gives the residuals for each observation in our dataset.
 
 ```{r}
 resid(model1)
 ```
 
-By using `abline` with our model after plotting a scatter plot, we can plot the estimated regression line over our data.
+We can plot the estimated regression line over our data by adding a `geom_smooth` layer to our scatter plot.
 
 ```{r, eval = FALSE}
-plot(trestbps ~ age, data = heart)
-abline(model1, col = "red")
-```
-![RStudio layout](../fig/03-fig8.png)
-
-We can do the same with ggplot2.
-
-```{r, eval = FALSE}
-library(ggplot2)
 ggplot(heart, aes(x = age, y = trestbps)) +
   geom_point(shape = 16, size = 2) +
-  geom_smooth(method = lm, se = F)+
+  geom_smooth(method = lm, se = F) +
   theme(axis.text = element_text(size = 12),
         axis.title = element_text(size = 14, face = "bold"))
 ```
-![RStudio layout](../fig/03-fig9.png)
+
+![Scatter plot of age and resting systolic BP with regression line](../fig/03-fig9.png)
 
 ### Confidence and Prediction
 
-We can use the `predict` function to predict SBP for each value of age in our data set and also get confidence or prediction intervals for each observation.
+We can use the `predict` function to predict SBP for each value of age in our dataset and also get confidence or prediction intervals for each observation.
 The type of interval is specified using the `int` argument to the function, with `int = "c"` for confidence intervals and `int = "p"` for prediction intervals.
 
 Confidence intervals tell us how well we have determined the estimate parameters.
@@ -331,7 +326,7 @@ The standard error for a CI takes into account the uncertainty due to sampling.
 Prediction intervals tell us in what range a future individual observation will fall.
 The standard error for a PI takes into account the uncertainty due to sampling as well as the variability of the individuals around the predicted mean.
 
-Both intervals will be centered around the same value but the standard errors will be different.
+Both intervals will be centred around the same value but the standard errors will be different.
 A prediction interval is always wider than a confidence interval.
 
 For example, here we obtain the confidence intervals for each prediction.
@@ -342,7 +337,7 @@ predict(model1, int = "c")
 
 Note that when we have a model fitted using `lm`, the `predict` and `fitted` functions give the same predicted values.
 
-## What can go wrong?
+## What Can Go Wrong?
 
 As discussed, there are some assumptions that need to be met to use a linear model and we must check if they are being violated before using our model to draw inferences or make predictions.
 Such violations are:
@@ -373,21 +368,21 @@ We can make the above checks manually by creating the necessary plots.
 ```{r, eval = FALSE}
 plot(resid(model1) ~ age, data = heart)
 ```
-![RStudio layout](../fig/03-fig10.png)
+![Linearity assumption](../fig/03-fig10.png)
 
 **Constant variance of residuals**: Residuals vs fitted values
 
 ```{r, eval = FALSE}
 plot(resid(model1) ~ fitted(model1))
 ```
-![RStudio layout](../fig/03-fig11.png)
+![Constant variance assumption](../fig/03-fig11.png)
 
 **Normality of residuals**: Q-Q plot of residuals
 
 ```{r, eval = FALSE}
 qqnorm(resid(model1))
 ```
-![RStudio layout](../fig/03-fig12.png)
+![Normality of residuals assumption](../fig/03-fig12.png)
 
 Or, we can use R's built-in diagnostic plotting with the `plot` function.
 
@@ -395,18 +390,18 @@ Or, we can use R's built-in diagnostic plotting with the `plot` function.
 par(mfrow = c(2, 2))
 plot(model1)
 ```
-![RStudio layout](../fig/03-fig13.png)
+![Built-in diagnostics plots](../fig/03-fig13.png)
 
 Let's break down each of these plots.
 
 For the *Residuals vs Fitted* plot, the residuals should be randomly distributed around the horizontal line representing a residual error of zero; that is, there should not be a distinct trend in the distribution of points.
 Good and bad examples of these plots are shown in the figures below.
 
-![RStudio layout](../fig/03-fig14.png)
+![Constant variance examples](../fig/03-fig14.png)
 
-![RStudio layout](../fig/03-fig15.png)
+![Linearity examples](../fig/03-fig15.png)
 
-![RStudio layout](../fig/03-fig16.png)
+![Independence examples](../fig/03-fig16.png)
 
 *Normal Q-Q* plots the ordered standardised residuals against their theoretical expectations.
 We expect these points to lie on a straight line, with significant deviation from a straight line indicating non-normality.
@@ -420,7 +415,7 @@ If any point in this plot falls outside of a Cook’s distance of 1 (indicated b
 ## Leverage Points
 
 * Leverage points are observations which have an $$x$$-value that is distant from other $$x$$-values.
-* These points have great influence on the fitted model, in that if they were to be removed from the data set and the model refitted, the resulting model would be significantly different from the original.
+* These points have great influence on the fitted model, in that if they were to be removed from the dataset and the model refitted, the resulting model would be significantly different from the original.
 * Leverage points are bad if it is also an outlier (the $$y$$-value does not follow the pattern set by the other data points).
 * Never remove data points unless we are certain that the data point is invalid and could not occur in real life.
 * Otherwise, we should fit a different regression model if we are not confident that the basic linear model is suitable.
@@ -460,13 +455,13 @@ gqtest(model1, point = 0.5, fraction = 0, alternative = c("greater", "two.sided"
 Each of these tests show that the models assumptions are met.
 
 There are other packages you can use to test the assumptions of the model, such as the `car` library.
-``qqPlot` gives us a QQ plot with 95% confidence intervals.
+`qqPlot` gives us a QQ plot with 95% confidence intervals.
 
 ```{r, message = FALSE, eval = FALSE}
 library(car)
 qqPlot(model1, main = "QQ Plot")
 ```
-![RStudio layout](../fig/03-fig17.png)
+![QQ plot](../fig/03-fig17.png)
 
 `outlierTest` tests for outliers and prints a p-value for the most extreme outlier.
 
@@ -487,7 +482,7 @@ Comparing boxplots can give us a good indication if the distributions of SBP is 
 ggplot(data = heart, aes(x = sex, y = trestbps, fill = sex)) +
   geom_boxplot()
 ```
-![RStudio layout](../fig/03-fig18.png)
+![Box plots of BP by patient sex](../fig/03-fig18.png)
 
 Visually, it seems that females on average have a higher systolic blood pressure than males.
 The male distribution seems to be right-skewed.
@@ -504,7 +499,7 @@ The Wilcoxon rank sum test, given by `wilcox.test` in R, is a non-parametric alt
 wilcox.test(heart$trestbps ~ heart$sex)
 ```
 
-The p-value of approximately 0.08 indicates that male's and female's systolic blood pressure are not significantly different.
+The p-value of approximately 0.08 indicates that males' and females' systolic blood pressure are not significantly different.
 
 Now, let’s run a regression model to test the relationship between SBP and sex when SBP is considered as the outcome variable.
 
@@ -530,9 +525,9 @@ And we can check the assumptions of the model by plotting the model diagnostics.
 par(mfrow = c(2, 2))
 plot(model_sex)
 ```
-![RStudio layout](../fig/03-fig19.png)
+![Diagnostic plots for age and SBP](../fig/03-fig19.png)
 
-Intepreting these model diagnostics is a bit harder, as we are using a binary predictor and thus only fitted values for the entire dataset.
+Interpreting these model diagnostics is a bit harder, as we are using a binary predictor and thus only fitted values for the entire dataset.
 
 * The variance of the residuals appears to be similar between the sexes.
 * Our normal Q-Q plot shows little deviation from a straight line.

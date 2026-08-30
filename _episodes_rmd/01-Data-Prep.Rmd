@@ -4,12 +4,12 @@ teaching: 45
 exercises: 30
 questions:
 - "What data will we be using?"
-- "How do I load the data?"
+- "How do we load the data?"
 objectives:
-- "Introduction to RStudio"
-- "Loading the data"
+- "Get familiar with the RStudio interface."
+- "Load the data into R."
 keypoints:
-- Make sure you set your working directory.
+- Use an RStudio Project to manage your working directory.
 - View a summary of your data to ensure your variables are of the right type.
 output: html_document
 ---
@@ -21,7 +21,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-setwd("~/git/LinearRegressionR/_episodes_rmd")
+# setwd("~/git/LinearRegressionR/_episodes_rmd")
 ```
 
 # Introduction to RStudio
@@ -33,11 +33,11 @@ Upon installing and opening RStudio, you will be greeted by three panels:
 * Environment/History/Connections (tabbed in upper right)
 * Files/Plots/Packages/Help/Viewer (tabbed in lower right)
 
-![RStudio Layout](../fig/01-fig1.png)
+![RStudio layout](../fig/01-fig1.png)
 
 Opening a text file (such as an R or Rmd file) in RStudio will open the file in a new panel in the top left.
 
-![RStudio Layout](../fig/01-fig2.png)
+![RStudio layout with new R script open](../fig/01-fig2.png)
 
 There are two main ways that you can run R commands or scripts within RStudio:
 
@@ -48,7 +48,7 @@ There are two main ways that you can run R commands or scripts within RStudio:
   * All of your code is saved for editing and later use.
   * You can run as many lines as you wish at once.
   
-The hash symbol (#) can be used to signal text in our script file that should not be run, which are called comments.
+The hash symbol (#) can be used to signal text in our script file that should not be run; this text is called a comment.
 An example of using comments to describe code is shown below.
 
 ```{r, eval=FALSE}
@@ -81,34 +81,38 @@ For example, running `? hist` will give you a description for base R's function 
 
 # First Example - Data Dictionary
 
-Today, we will be working on two data sets throughout the day to understand correlation and linear regression in R.
+We will be working on two datasets throughout the day to understand correlation and linear regression in R.
 
-In our first example we will use a data set consisting of 100 individuals with 13 different measurements taken.
-This is data of medical records, vitals and clinical examinations of participants with heart disease. 
+In our first example we will use a dataset consisting of 100 individuals with 13 different measurements taken.
+This dataset consists of medical records, vitals and clinical examinations of participants with heart disease.
 Descriptions of the 13 variables are given in the data dictionary below.
 
 Variable    | Description
 --------    | -----------
-Age         | Age in years
-Sex         | Sex; 0=Female, 1=Male
-Cp          | Chest Pain; 1=Typical Angina, 2=Atypical Angina, 3=Non-Anginal pain, 4=Asymptomatic
-Trestbps    | Resting Systolic BP in mmHg
-Chol        | Blood Cholesterol Level in mg/dl
-Fbs         | Fasting Blood Sugar;  0 =  less than 120mg/dl  and 1= greater than 120 mg/dl
-Exang       | Exercise Induced Angina;  0=No, 1=Yes
-Thalach     | Maximum Heart Rate Achieved
-Old Peak ST | ST wave depression induced by exercise
-Slope       | The slope of peak exercise segment;  1=Up-sloping, 2=Flat, 3=Down Sloping
-Ca          | Number of major vessels coloured by fluoroscopy
-Class       | Diagnosis Class; 0=No disease, 1-4 Various stage of disease in ascending order
-restecg     | Resting ECG abnormalities; 0=Normal, 1=ST Abnormality, 2=LVH
+age         | Age in years
+sex         | Sex; 0=Female, 1=Male
+chol        | Blood cholesterol level in mg/dl
+fbs         | Fasting blood sugar; 0=less than 120 mg/dl and 1=greater than 120 mg/dl
+thalach     | Maximum heart rate achieved
+trestbps    | Resting systolic blood pressure in mmHg
+restecg     | Resting ECG abnormalities; 0=Normal, 1=ST abnormality, 2=LVH
+exang       | Exercise induced angina; 0=No, 1=Yes
+oldpeak     | ST depression induced by exercise relative to rest
+slope       | The slope of peak exercise segment; 1=Up-sloping, 2=Flat, 3=Down-sloping
+ca          | Number of major vessels coloured by fluoroscopy
+class       | Diagnosis class; 0=No disease, 1-4=Various stages of disease in ascending order
+cp          | Chest pain; 1=Typical angina, 2=Atypical angina, 3=Non-anginal pain, 4=Asymptomatic
 
-# Working Directory
+<details markdown="1">
+<summary>Note about working directories</summary>
 
-The working directory is a file path on your computer that is the default location of any files you read or save in R.
-You can set this directory Files pane in RStudio, as shown below.
+If you set up an RStudio Project as described in the [setup instructions][lesson-setup], your working directory is already handled automatically and you can skip this note.
 
-[!RStudio Layout](../fig/01-fig3.png)
+If you're **not** using an RStudio Project, you'll need to set your working directory manually. The working directory is a file path on your computer that is the default location of any files you read or save in R.
+
+You can set this directory using the Files pane in RStudio, as shown below.
+
+![Set working directory](../fig/01-fig3.png)
 
 You can also set the working directory in the menu bar, under `Session -> Set Working Directory`.
 Alternatively, you can do this through the RStudio console using the command `setwd` by entering the absolute filepath as a string.
@@ -118,8 +122,10 @@ For example, to set the working directory to the downloads folder on Mac or Wind
 
 ```{r, eval=FALSE}
 setwd("~/Downloads") # for Mac
-setwd("C:\Users\YourUserName\Downloads") # for Windows
+setwd("C:/Users/YourUserName/Downloads") # for Windows
 ```
+
+</details>
 
 # Importing and Preparing the Data
 
@@ -160,21 +166,24 @@ To do this, we can use `as.factor` on each of the categorical columns in our dat
 heart$ID <- as.factor(heart$ID)
 heart$sex <- factor(heart$sex,levels = c(0, 1), labels = c("Female", "Male"))
 heart$fbs <- factor(heart$fbs,levels = c(0, 1), labels = c("<120", ">120"))
-heart$restecg <- factor(heart$restecg,levels = c(0, 1, 2), labels = c("Normal", "ST Abnormality", "LVH"))
+heart$restecg <- factor(heart$restecg,levels = c(0, 1, 2), labels = c("Normal", "ST abnormality", "LVH"))
 heart$exang <- factor(heart$exang,levels = c(0, 1), labels = c("No", "Yes"))
 heart$slope <- factor(heart$slope,levels = c(1, 2, 3), labels = c("Up-sloping", "Flat", "Down-sloping"))
-heart$cp <- factor(heart$cp,levels = c(1, 2, 3, 4), labels = c("Typical angina", "Atypical angina", "Non-Anginal pain", "Asymptomatic"))
 ```
 
 For the class variable, we will merge the four levels of disease into a single "disease" factor, leaving us with a binary variable.
 
 ```{r}
 heart$class <- as.factor(heart$class)
-levels(heart$class)[which(levels(heart$class) == "0")] <- "No Disease"
+levels(heart$class)[which(levels(heart$class) == "0")] <- "No disease"
 levels(heart$class)[which(levels(heart$class) %in% c("1", "2", "3", "4"))] <- "Disease"
 ```
 
-Running `summary` on the data again, now with the correct types, will give us the correct description of the data (counts for categorical variables and a five number summary and mean for the numerical variables).
+```{r}
+heart$cp <- factor(heart$cp,levels = c(1, 2, 3, 4), labels = c("Typical angina", "Atypical angina", "Non-anginal pain", "Asymptomatic"))
+```
+
+Running `summary` on the data again, now with the correct types, will give us the correct description of the data (counts for categorical variables and a five-number summary and mean for the numerical variables).
 
 ```{r}
 summary(heart)
